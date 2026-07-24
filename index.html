@@ -446,9 +446,23 @@
     color:var(--forest);
     padding:10px 18px;
     border-radius:24px;
-    transition:border-color 0.18s ease, background-color 0.18s ease;
+    display:inline-flex; align-items:center;
+    transition:border-color 0.18s ease, background-color 0.18s ease, transform 0.18s var(--ease-yandu);
   }
-  .capacity-tag:hover{ border-color:var(--marigold-text); background:rgba(224,121,60,0.06); }
+  .capacity-tag:hover{ border-color:var(--marigold-text); background:rgba(224,121,60,0.06); transform:translateY(-2px); }
+  /* pontinho que "acende" quando a tag entra: reforça a leitura de
+     capacidades se conectando, sem precisar de nuvem de linhas SVG
+     frágil sobre um layout que quebra linha (flex-wrap) */
+  .capacity-tag::before{
+    content:"";
+    width:5px; height:5px;
+    border-radius:50%;
+    background:var(--marigold);
+    margin-right:8px;
+    transform:scale(0);
+    transition:transform 0.3s var(--ease-yandu);
+  }
+  .capacity-tag.is-visible::before{ transform:scale(1); }
 
   /* ===== SOLUÇÕES ===== */
   .solutions-list{
@@ -478,31 +492,70 @@
     .solution-row{ grid-template-columns:1fr; gap:6px; }
   }
 
-  /* ===== PROCESSO ===== */
-  .process-grid{
+  /* ===== PROCESSO =====
+     Narrativa de scroll: no desktop, um trilho fino e sticky ao lado
+     esquerdo se preenche conforme o usuário rola pela lista de etapas
+     (scrub ligado à posição do scroll, nunca controla o scroll em si).
+     Cada etapa ganha destaque quando está em foco na tela. No mobile
+     o trilho some e sobra só a lista linear. */
+  .process-layout{
     display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:22px;
+    grid-template-columns:56px 1fr;
+    gap:32px;
+    align-items:start;
   }
+  .process-rail{
+    position:sticky;
+    top:110px;
+    height:min(360px, 60vh);
+    display:flex;
+    justify-content:center;
+  }
+  .process-rail-track{
+    position:relative;
+    width:3px;
+    height:100%;
+    background:rgba(31,61,43,0.12);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .process-rail-fill{
+    position:absolute; left:0; top:0;
+    width:100%; height:100%;
+    background:linear-gradient(to bottom, #6B8E6E, #E0793C);
+    transform:scaleY(0);
+    transform-origin:top;
+    border-radius:3px;
+  }
+  .process-steps{ display:flex; flex-direction:column; gap:20px; }
   .process-card{
+    display:flex;
+    align-items:flex-start;
+    gap:20px;
     background:var(--sage);
     border-radius:10px;
-    padding:26px 22px;
-    border-top:3px solid var(--moss);
-    transition:transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+    padding:24px 26px;
+    border-left:3px solid var(--moss);
+    transition:transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease, border-color 0.3s ease;
   }
-  /* a cor do topo evolui de moss a marigold ao longo das 6 etapas,
+  /* a cor evolui de moss a marigold ao longo das 6 etapas,
      reforçando visualmente a ideia de progresso/evolução do processo */
-  .process-card:nth-child(1){ border-top-color:#6B8E6E; }
-  .process-card:nth-child(2){ border-top-color:#7E8F63; }
-  .process-card:nth-child(3){ border-top-color:#93905A; }
-  .process-card:nth-child(4){ border-top-color:#AC8E50; }
-  .process-card:nth-child(5){ border-top-color:#C68A46; }
-  .process-card:nth-child(6){ border-top-color:#E0793C; }
-  .process-card:hover{ transform:translateY(-6px); box-shadow:0 16px 30px rgba(31,61,43,0.16); background:#E4E7D8; }
-  .process-card:active{ transform:translateY(-2px); box-shadow:0 8px 16px rgba(31,61,43,0.14); }
+  .process-card:nth-child(1){ border-left-color:#6B8E6E; }
+  .process-card:nth-child(2){ border-left-color:#7E8F63; }
+  .process-card:nth-child(3){ border-left-color:#93905A; }
+  .process-card:nth-child(4){ border-left-color:#AC8E50; }
+  .process-card:nth-child(5){ border-left-color:#C68A46; }
+  .process-card:nth-child(6){ border-left-color:#E0793C; }
+  .process-card:hover{ transform:translateY(-4px); box-shadow:0 16px 30px rgba(31,61,43,0.16); background:#E4E7D8; }
+  .process-card:active{ transform:translateY(-1px); box-shadow:0 8px 16px rgba(31,61,43,0.14); }
+  .process-card.is-active{
+    background:#E4E7D8;
+    box-shadow:0 16px 30px rgba(31,61,43,0.14);
+    border-left-width:5px;
+  }
   .process-num{
     width:32px; height:32px;
+    flex-shrink:0;
     display:flex; align-items:center; justify-content:center;
     background:var(--forest);
     color:var(--cream);
@@ -510,12 +563,21 @@
     font-weight:700;
     font-size:14px;
     border-radius:50%;
-    margin-bottom:14px;
+    transition:transform 0.3s var(--ease-yandu), box-shadow 0.3s var(--ease-yandu);
+  }
+  .process-card.is-active .process-num{
+    transform:scale(1.12);
+    box-shadow:0 0 0 6px rgba(224,121,60,0.15);
   }
   .process-card h3{ font-size:17.5px; margin-bottom:6px; color:var(--forest); }
   .process-card p{ font-size:13.5px; color:var(--ink); opacity:0.85; }
-  @media (max-width:800px){ .process-grid{ grid-template-columns:1fr 1fr; } }
-  @media (max-width:520px){ .process-grid{ grid-template-columns:1fr; } }
+  @media (max-width:900px){
+    .process-layout{ display:block; }
+    .process-rail{ display:none; }
+  }
+  @media (max-width:480px){
+    .process-card{ flex-direction:column; gap:10px; }
+  }
 
   /* ===== CASE EM DESTAQUE ===== */
   .case-block{ background:var(--sage); }
@@ -900,10 +962,10 @@
 <!-- CAPACIDADES -->
 <section class="block" id="capacidades" style="background:var(--sage);">
   <div class="wrap">
-    <div class="eyebrow">O que sustenta cada entrega</div>
-    <h2>Capacidades</h2>
-    <p class="lead">Antes de qualquer linha de código, tem entendimento de negócio, estratégia e design por trás. É isso que separa um produto que funciona de um produto que só existe.</p>
-    <div class="capacities-list">
+    <div class="eyebrow" data-reveal="up">O que sustenta cada entrega</div>
+    <h2 data-reveal="mask">Capacidades</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Antes de qualquer linha de código, tem entendimento de negócio, estratégia e design por trás. É isso que separa um produto que funciona de um produto que só existe.</p>
+    <div class="capacities-list" data-reveal-group="up" data-reveal-stagger="0.04">
       <span class="capacity-tag">Estratégia de produto</span>
       <span class="capacity-tag">UX</span>
       <span class="capacity-tag">UI</span>
@@ -921,27 +983,27 @@
 <!-- SOLUÇÕES -->
 <section class="block" id="solucoes">
   <div class="wrap">
-    <div class="eyebrow">Resolve problema, não só entrega site</div>
-    <h2>Soluções</h2>
-    <p class="lead">Organizadas pelo problema que resolvem, não pelo nome técnico do entregável.</p>
+    <div class="eyebrow" data-reveal="up">Resolve problema, não só entrega site</div>
+    <h2 data-reveal="mask">Soluções</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Organizadas pelo problema que resolvem, não pelo nome técnico do entregável.</p>
     <div class="solutions-list">
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="left">
         <div><h3>Presença Digital</h3></div>
         <p>Site institucional ou landing page pra você existir online de forma profissional e ser encontrado por quem procura o que você faz.</p>
       </div>
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="right">
         <div><h3>Produtos Digitais</h3></div>
         <p>Plataformas e sistemas web construídos do zero, com banco de dados e lógica de negócio real por trás, não só uma página estática.</p>
       </div>
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="left">
         <div><h3>Automações</h3></div>
         <p>Fluxos automáticos que organizam pedidos, atendimento e informações. Menos trabalho manual, menos coisa esquecida.</p>
       </div>
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="right">
         <div><h3>Integrações</h3></div>
         <p>Conexão entre ferramentas que hoje não conversam entre si, pra sua operação parar de depender de copiar e colar dado.</p>
       </div>
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="left">
         <div><h3>Dashboards</h3></div>
         <p>Painéis simples que juntam seus números num só lugar, pra você decidir com clareza, não no achismo.</p>
       </div>
@@ -952,39 +1014,58 @@
 <!-- PROCESSO -->
 <section class="block" id="processo" style="background:var(--sage);">
   <div class="wrap">
-    <div class="eyebrow">Sem mistério</div>
-    <h2>Processo</h2>
-    <p class="lead">Seis etapas, do entendimento do problema até a evolução contínua do que foi entregue.</p>
-    <div class="process-grid">
-      <div class="process-card">
-        <div class="process-num">1</div>
-        <h3>Entendimento</h3>
-        <p>Você me conta o que precisa e eu entendo o problema real por trás do pedido.</p>
+    <div class="eyebrow" data-reveal="up">Sem mistério</div>
+    <h2 data-reveal="mask">Processo</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Seis etapas, do entendimento do problema até a evolução contínua do que foi entregue.</p>
+    <div class="process-layout">
+      <div class="process-rail" aria-hidden="true">
+        <div class="process-rail-track">
+          <div class="process-rail-fill"></div>
+        </div>
       </div>
-      <div class="process-card">
-        <div class="process-num">2</div>
-        <h3>Estratégia</h3>
-        <p>Definimos o que realmente precisa ser construído e em que ordem, sem gordura no escopo.</p>
-      </div>
-      <div class="process-card">
-        <div class="process-num">3</div>
-        <h3>UX/UI</h3>
-        <p>Estrutura da experiência e identidade visual desenhadas pra facilitar a decisão de quem usa.</p>
-      </div>
-      <div class="process-card">
-        <div class="process-num">4</div>
-        <h3>Desenvolvimento</h3>
-        <p>Construção técnica do produto, com atenção a performance, acessibilidade e organização de código.</p>
-      </div>
-      <div class="process-card">
-        <div class="process-num">5</div>
-        <h3>Publicação</h3>
-        <p>Site ou sistema no ar, com ajustes finais incluídos até ficar redondo.</p>
-      </div>
-      <div class="process-card">
-        <div class="process-num">6</div>
-        <h3>Evolução</h3>
-        <p>Acompanhamento depois do lançamento, pra o produto continuar melhorando junto com o seu negócio.</p>
+      <div class="process-steps">
+        <div class="process-card">
+          <div class="process-num">1</div>
+          <div>
+            <h3>Entendimento</h3>
+            <p>Você me conta o que precisa e eu entendo o problema real por trás do pedido.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">2</div>
+          <div>
+            <h3>Estratégia</h3>
+            <p>Definimos o que realmente precisa ser construído e em que ordem, sem gordura no escopo.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">3</div>
+          <div>
+            <h3>UX/UI</h3>
+            <p>Estrutura da experiência e identidade visual desenhadas pra facilitar a decisão de quem usa.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">4</div>
+          <div>
+            <h3>Desenvolvimento</h3>
+            <p>Construção técnica do produto, com atenção a performance, acessibilidade e organização de código.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">5</div>
+          <div>
+            <h3>Publicação</h3>
+            <p>Site ou sistema no ar, com ajustes finais incluídos até ficar redondo.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">6</div>
+          <div>
+            <h3>Evolução</h3>
+            <p>Acompanhamento depois do lançamento, pra o produto continuar melhorando junto com o seu negócio.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -70,4 +70,30 @@
 
   document.querySelectorAll('[data-reveal]').forEach(initReveal);
   document.querySelectorAll('[data-reveal-group]').forEach(initRevealGroup);
+
+  // Processo (Fase 4): trilho de progresso ligado à posição do scroll
+  // (scrub) — lê o scroll, nunca o controla — + etapa ativa conforme
+  // o card passa pela faixa central da tela. Some no mobile via CSS
+  // (.process-rail{display:none}), então nem precisa condicional aqui.
+  var processSteps = document.querySelector('.process-steps');
+  var processFill = document.querySelector('.process-rail-fill');
+  if (processSteps && processFill) {
+    ScrollTrigger.create({
+      trigger: processSteps,
+      start: 'top 75%',
+      end: 'bottom 35%',
+      scrub: true,
+      onUpdate: function (self) {
+        processFill.style.transform = 'scaleY(' + self.progress + ')';
+      }
+    });
+  }
+  document.querySelectorAll('.process-card').forEach(function (card) {
+    ScrollTrigger.create({
+      trigger: card,
+      start: 'top 65%',
+      end: 'bottom 35%',
+      toggleClass: { targets: card, className: 'is-active' }
+    });
+  });
 })();
