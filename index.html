@@ -387,7 +387,8 @@
     background-image: radial-gradient(circle at 80% 15%, rgba(224,121,60,0.18) 0, transparent 45%),
                        radial-gradient(circle at 15% 90%, rgba(156,189,163,0.14) 0, transparent 45%);
   }
-  .project-visual svg{ position:relative; width:72px; height:72px; }
+  .project-visual svg{ position:relative; width:72px; height:72px; transition:transform 0.3s var(--ease-yandu); }
+  .project-card:hover .project-visual svg{ transform:scale(1.08) rotate(-3deg); }
   .project-visual .project-flag{
     position:absolute; top:16px; left:16px;
     background:var(--marigold); color:var(--ink);
@@ -427,6 +428,8 @@
   .project-btn.ghost:hover{ border-color:var(--marigold-text); color:var(--marigold-text); }
   .project-btn:hover{ transform:translateY(-2px); box-shadow:0 8px 16px rgba(31,61,43,0.18); }
   .project-btn:active{ transform:translateY(0); box-shadow:none; }
+  .project-btn svg{ transition:transform 0.18s var(--ease-yandu); }
+  .project-btn:hover svg{ transform:translate(2px,-2px); }
   @media (max-width:800px){
     .project-card{ grid-template-columns:1fr; }
     .project-visual{ min-height:150px; }
@@ -579,6 +582,11 @@
   }
   .case-link:hover{ transform:translateY(-2px); box-shadow:0 8px 16px rgba(0,0,0,0.22); }
   .case-link:active{ transform:translateY(0); box-shadow:0 3px 8px rgba(0,0,0,0.18); }
+  .case-link svg{ transition:transform 0.18s var(--ease-yandu); }
+  .case-link:hover svg{ transform:translate(2px,-2px); }
+  /* Case em destaque merece uma entrada mais lenta e deliberada
+     (é a prova social principal do site) */
+  .case-block .reveal.is-visible{ transition-duration:var(--dur-slow); }
   @media (max-width:800px){ .case-details{ grid-template-columns:1fr 1fr; } }
   @media (max-width:480px){
     .case-card{ padding:36px 24px 28px; }
@@ -836,17 +844,17 @@
 <!-- PROJETOS -->
 <section class="block" id="projetos">
   <div class="wrap">
-    <div class="eyebrow">Trabalho que já está no ar</div>
-    <h2>Projetos</h2>
-    <p class="lead">Cada projeto nasce de um problema real. Aqui está o que já foi resolvido, com mais chegando.</p>
+    <div class="eyebrow" data-reveal="up">Trabalho que já está no ar</div>
+    <h2 data-reveal="mask">Projetos</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Cada projeto nasce de um problema real. Aqui está o que já foi resolvido, com mais chegando.</p>
 
     <div class="projects-grid">
       <div class="project-card">
-        <div class="project-visual">
+        <div class="project-visual" data-reveal="left">
           <span class="project-flag">NO AR AGORA</span>
           <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#F6F3E9"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(30 73 22)"/></svg>
         </div>
-        <div class="project-content">
+        <div class="project-content" data-reveal="up" data-reveal-delay="0.15">
           <h3>Cuidadoras Conecta</h3>
           <p>Plataforma completa construída do zero, do banco de dados à hospedagem, conectando famílias a cuidadoras de forma simples e organizada.</p>
           <dl class="project-breakdown">
@@ -859,7 +867,7 @@
               <dd>Plataforma web própria, com banco de dados estruturado e deploy em produção, no ar com gente usando de verdade.</dd>
             </div>
           </dl>
-          <div class="project-tags">
+          <div class="project-tags" data-reveal-group="up" data-reveal-stagger="0.06">
             <span>Plataforma web</span>
             <span>Banco de dados</span>
             <span>Deploy em produção</span>
@@ -980,15 +988,15 @@
 <!-- CASE EM DESTAQUE -->
 <section class="block case-block" id="case-cuidadoras-conecta">
   <div class="wrap">
-    <div class="eyebrow">Prova real, não promessa</div>
-    <h2>Case em destaque</h2>
-    <p class="lead">Do primeiro rascunho até o uso real, com gente usando de verdade.</p>
+    <div class="eyebrow" data-reveal="up">Prova real, não promessa</div>
+    <h2 data-reveal="mask">Case em destaque</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Do primeiro rascunho até o uso real, com gente usando de verdade.</p>
 
-    <div class="case-card">
+    <div class="case-card" data-reveal="scale">
       <span class="case-flag">NO AR AGORA</span>
       <h3>Cuidadoras Conecta</h3>
       <p class="intro">Plataforma que conecta famílias a cuidadoras de forma simples e organizada, na região do Vale do Rio Pardo. Construída do zero, do banco de dados à hospedagem.</p>
-      <dl class="case-details">
+      <dl class="case-details" data-reveal-group="up" data-reveal-stagger="0.1">
         <div>
           <dt>Contexto</dt>
           <dd>Famílias precisavam encontrar cuidadoras de confiança sem um canal central e organizado pra isso.</dd>
