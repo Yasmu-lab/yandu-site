@@ -74,6 +74,7 @@
     font-family:'Inter', sans-serif;
     line-height:1.55;
   }
+  body.menu-open{ overflow:hidden; }
 
   a{ color:inherit; text-decoration:none; }
 
@@ -117,6 +118,11 @@
     -webkit-backdrop-filter:blur(6px);
     backdrop-filter:blur(6px);
     border-bottom:1px solid rgba(0,0,0,0.06);
+    transition:background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  header.is-scrolled{
+    background:rgba(246,243,233,0.98);
+    box-shadow:0 4px 20px rgba(0,0,0,0.06);
   }
   nav{
     display:flex; align-items:center; justify-content:space-between;
@@ -127,7 +133,19 @@
   .brand svg{ width:26px; height:26px; }
   .brand span{ font-family:'Quicksand', sans-serif; font-weight:700; font-size:19px; color:var(--forest); }
   .nav-links{ display:flex; gap:22px; font-size:13.5px; font-weight:600; }
+  .nav-links a{ position:relative; padding-bottom:3px; }
   .nav-links a:hover{ color:var(--marigold-text); }
+  .nav-links a::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:-1px;
+    height:2px;
+    background:var(--marigold);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform 0.25s var(--ease-yandu);
+  }
+  .nav-links a.is-active{ color:var(--forest); }
+  .nav-links a.is-active::after{ transform:scaleX(1); }
   .nav-cta{
     background:var(--forest); color:var(--cream);
     padding:9px 18px; border-radius:5px;
@@ -152,7 +170,7 @@
     display:none;
     background:none;
     border:none;
-    padding:6px;
+    padding:10px;
     color:var(--forest);
     cursor:pointer;
     border-radius:4px;
@@ -163,13 +181,29 @@
   .menu-toggle[aria-expanded="true"] .icon-close{ display:block; }
 
   .mobile-menu{
-    display:none;
-    flex-direction:column;
+    display:grid;
+    grid-template-rows:0fr;
     background:var(--cream);
-    border-top:1px solid rgba(0,0,0,0.06);
-    padding:6px 24px 18px;
+    border-top:1px solid transparent;
+    transition:grid-template-rows 0.3s var(--ease-yandu), border-color 0.3s var(--ease-yandu);
   }
-  .mobile-menu.is-open{ display:flex; }
+  .mobile-menu.is-open{
+    grid-template-rows:1fr;
+    border-top-color:rgba(0,0,0,0.06);
+  }
+  .mobile-menu-inner{
+    overflow:hidden;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    padding:6px 24px 18px;
+    opacity:0;
+    transition:opacity 0.2s ease;
+  }
+  .mobile-menu.is-open .mobile-menu-inner{
+    opacity:1;
+    transition-delay:0.1s;
+  }
   .mobile-menu a{
     padding:14px 2px;
     font-weight:600;
@@ -266,6 +300,55 @@
     .hero-ctas a{ width:100%; }
   }
 
+  /* ===== ENTRADA DA PÁGINA (Fase 2) =====
+     Puro CSS: roda sem depender de JS, sem tela de loading, sem
+     bloquear conteúdo. O reduced-motion global (linha ~680) já
+     zera animation-duration, então isso também está coberto. */
+  @keyframes yanduFadeUp{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes yanduMaskReveal{
+    from{ clip-path:inset(0 0 100% 0); }
+    to{ clip-path:inset(0 0 0% 0); }
+  }
+  @keyframes yanduHeaderIn{
+    from{ opacity:0; transform:translateY(-10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes yanduDraw{ to{ stroke-dashoffset:0; } }
+  @keyframes yanduDotIn{
+    from{ opacity:0; transform:scale(0.4); }
+    to{ opacity:0.75; transform:scale(1); }
+  }
+
+  header{ animation:yanduHeaderIn 0.5s var(--ease-yandu) both; }
+  .hero .eyebrow{ animation:yanduFadeUp 0.5s var(--ease-yandu) both; }
+  .hero h1{ animation:yanduMaskReveal 0.7s var(--ease-yandu) 0.12s both; }
+  .hero p{ animation:yanduFadeUp 0.6s var(--ease-yandu) 0.35s both; }
+  .hero-ctas .btn-primary{ animation:yanduFadeUp 0.5s var(--ease-yandu) 0.55s both; }
+  .hero-ctas .btn-secondary{ animation:yanduFadeUp 0.5s var(--ease-yandu) 0.63s both; }
+
+  /* Traço vira estrutura: o SVG do Hero se desenha na entrada.
+     Comprimentos calculados via getTotalLength() de cada path real. */
+  .hero-signature path,
+  .hero-signature rect,
+  .hero-signature line{
+    stroke-dasharray:var(--len);
+    stroke-dashoffset:var(--len);
+    animation:yanduDraw var(--dur, 0.6s) var(--ease-yandu) var(--delay, 0s) forwards;
+  }
+  .hero-signature .sig-wave{ --len:484; --dur:0.9s; --delay:0.4s; }
+  .hero-signature .sig-connect{ --len:168; --dur:0.4s; --delay:1.1s; }
+  .hero-signature .sig-frame{ --len:712; --dur:0.6s; --delay:1.35s; }
+  .hero-signature .sig-row1{ --len:164; --dur:0.35s; --delay:1.7s; }
+  .hero-signature .sig-row2{ --len:136; --dur:0.35s; --delay:1.8s; }
+  .hero-signature .sig-row3{ --len:152; --dur:0.35s; --delay:1.9s; }
+  .hero-signature .sig-dot{
+    animation:yanduDotIn 0.3s var(--ease-yandu) 2.15s both;
+    transform-origin:814px 182px;
+  }
+
   /* SECTION shared */
   section.block{ padding:88px 24px; }
   .block h2{ font-size:clamp(26px, 4vw, 36px); margin-bottom:14px; }
@@ -294,17 +377,17 @@
   .project-visual{
     position:relative;
     background:var(--forest);
-    display:flex; align-items:center; justify-content:center;
-    padding:32px;
+    overflow:hidden;
     min-height:220px;
   }
-  .project-visual::before{
-    content:"";
+  .project-visual img{
     position:absolute; inset:0;
-    background-image: radial-gradient(circle at 80% 15%, rgba(224,121,60,0.18) 0, transparent 45%),
-                       radial-gradient(circle at 15% 90%, rgba(156,189,163,0.14) 0, transparent 45%);
+    width:100%; height:100%;
+    object-fit:contain;
+    padding:20px;
+    transition:transform 0.4s var(--ease-yandu);
   }
-  .project-visual svg{ position:relative; width:72px; height:72px; }
+  .project-card:hover .project-visual img{ transform:scale(1.05); }
   .project-visual .project-flag{
     position:absolute; top:16px; left:16px;
     background:var(--marigold); color:var(--ink);
@@ -334,7 +417,7 @@
   .project-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
   .project-btn{
     font-weight:700; font-size:13.5px;
-    padding:10px 16px; border-radius:6px;
+    padding:13px 16px; border-radius:6px;
     display:inline-flex; align-items:center; gap:6px;
     transition:transform 0.18s ease, box-shadow 0.18s ease;
   }
@@ -344,6 +427,8 @@
   .project-btn.ghost:hover{ border-color:var(--marigold-text); color:var(--marigold-text); }
   .project-btn:hover{ transform:translateY(-2px); box-shadow:0 8px 16px rgba(31,61,43,0.18); }
   .project-btn:active{ transform:translateY(0); box-shadow:none; }
+  .project-btn svg{ transition:transform 0.18s var(--ease-yandu); }
+  .project-btn:hover svg{ transform:translate(2px,-2px); }
   @media (max-width:800px){
     .project-card{ grid-template-columns:1fr; }
     .project-visual{ min-height:150px; }
@@ -362,9 +447,23 @@
     color:var(--forest);
     padding:10px 18px;
     border-radius:24px;
-    transition:border-color 0.18s ease, background-color 0.18s ease;
+    display:inline-flex; align-items:center;
+    transition:border-color 0.18s ease, background-color 0.18s ease, transform 0.18s var(--ease-yandu);
   }
-  .capacity-tag:hover{ border-color:var(--marigold-text); background:rgba(224,121,60,0.06); }
+  .capacity-tag:hover{ border-color:var(--marigold-text); background:rgba(224,121,60,0.06); transform:translateY(-2px); }
+  /* pontinho que "acende" quando a tag entra: reforça a leitura de
+     capacidades se conectando, sem precisar de nuvem de linhas SVG
+     frágil sobre um layout que quebra linha (flex-wrap) */
+  .capacity-tag::before{
+    content:"";
+    width:5px; height:5px;
+    border-radius:50%;
+    background:var(--marigold);
+    margin-right:8px;
+    transform:scale(0);
+    transition:transform 0.3s var(--ease-yandu);
+  }
+  .capacity-tag.is-visible::before{ transform:scale(1); }
 
   /* ===== SOLUÇÕES ===== */
   .solutions-list{
@@ -377,9 +476,9 @@
     gap:28px;
     padding:30px 0;
     border-bottom:1px solid rgba(0,0,0,0.08);
-    transition:padding-left 0.2s ease;
+    transition:transform 0.2s ease;
   }
-  .solution-row:hover{ padding-left:8px; }
+  .solution-row:hover{ transform:translateX(8px); }
   .solution-row:hover h3{ color:var(--marigold-text); }
   .solution-row h3{ font-size:19px; color:var(--forest); transition:color 0.18s ease; display:flex; align-items:center; gap:10px; }
   .solution-row h3::before{
@@ -394,31 +493,70 @@
     .solution-row{ grid-template-columns:1fr; gap:6px; }
   }
 
-  /* ===== PROCESSO ===== */
-  .process-grid{
+  /* ===== PROCESSO =====
+     Narrativa de scroll: no desktop, um trilho fino e sticky ao lado
+     esquerdo se preenche conforme o usuário rola pela lista de etapas
+     (scrub ligado à posição do scroll, nunca controla o scroll em si).
+     Cada etapa ganha destaque quando está em foco na tela. No mobile
+     o trilho some e sobra só a lista linear. */
+  .process-layout{
     display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:22px;
+    grid-template-columns:56px 1fr;
+    gap:32px;
+    align-items:start;
   }
+  .process-rail{
+    position:sticky;
+    top:110px;
+    height:min(360px, 60vh);
+    display:flex;
+    justify-content:center;
+  }
+  .process-rail-track{
+    position:relative;
+    width:3px;
+    height:100%;
+    background:rgba(31,61,43,0.12);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .process-rail-fill{
+    position:absolute; left:0; top:0;
+    width:100%; height:100%;
+    background:linear-gradient(to bottom, #6B8E6E, #E0793C);
+    transform:scaleY(0);
+    transform-origin:top;
+    border-radius:3px;
+  }
+  .process-steps{ display:flex; flex-direction:column; gap:20px; }
   .process-card{
+    display:flex;
+    align-items:flex-start;
+    gap:20px;
     background:var(--sage);
     border-radius:10px;
-    padding:26px 22px;
-    border-top:3px solid var(--moss);
-    transition:transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+    padding:24px 26px;
+    border-left:3px solid var(--moss);
+    transition:transform 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease, border-color 0.3s ease;
   }
-  /* a cor do topo evolui de moss a marigold ao longo das 6 etapas,
+  /* a cor evolui de moss a marigold ao longo das 6 etapas,
      reforçando visualmente a ideia de progresso/evolução do processo */
-  .process-card:nth-child(1){ border-top-color:#6B8E6E; }
-  .process-card:nth-child(2){ border-top-color:#7E8F63; }
-  .process-card:nth-child(3){ border-top-color:#93905A; }
-  .process-card:nth-child(4){ border-top-color:#AC8E50; }
-  .process-card:nth-child(5){ border-top-color:#C68A46; }
-  .process-card:nth-child(6){ border-top-color:#E0793C; }
-  .process-card:hover{ transform:translateY(-6px); box-shadow:0 16px 30px rgba(31,61,43,0.16); background:#E4E7D8; }
-  .process-card:active{ transform:translateY(-2px); box-shadow:0 8px 16px rgba(31,61,43,0.14); }
+  .process-card:nth-child(1){ border-left-color:#6B8E6E; }
+  .process-card:nth-child(2){ border-left-color:#7E8F63; }
+  .process-card:nth-child(3){ border-left-color:#93905A; }
+  .process-card:nth-child(4){ border-left-color:#AC8E50; }
+  .process-card:nth-child(5){ border-left-color:#C68A46; }
+  .process-card:nth-child(6){ border-left-color:#E0793C; }
+  .process-card:hover{ transform:translateY(-4px); box-shadow:0 16px 30px rgba(31,61,43,0.16); background:#E4E7D8; }
+  .process-card:active{ transform:translateY(-1px); box-shadow:0 8px 16px rgba(31,61,43,0.14); }
+  .process-card.is-active{
+    background:#E4E7D8;
+    box-shadow:0 16px 30px rgba(31,61,43,0.14);
+    border-left-width:5px;
+  }
   .process-num{
     width:32px; height:32px;
+    flex-shrink:0;
     display:flex; align-items:center; justify-content:center;
     background:var(--forest);
     color:var(--cream);
@@ -426,12 +564,21 @@
     font-weight:700;
     font-size:14px;
     border-radius:50%;
-    margin-bottom:14px;
+    transition:transform 0.3s var(--ease-yandu), box-shadow 0.3s var(--ease-yandu);
+  }
+  .process-card.is-active .process-num{
+    transform:scale(1.12);
+    box-shadow:0 0 0 6px rgba(224,121,60,0.15);
   }
   .process-card h3{ font-size:17.5px; margin-bottom:6px; color:var(--forest); }
   .process-card p{ font-size:13.5px; color:var(--ink); opacity:0.85; }
-  @media (max-width:800px){ .process-grid{ grid-template-columns:1fr 1fr; } }
-  @media (max-width:520px){ .process-grid{ grid-template-columns:1fr; } }
+  @media (max-width:900px){
+    .process-layout{ display:block; }
+    .process-rail{ display:none; }
+  }
+  @media (max-width:480px){
+    .process-card{ flex-direction:column; gap:10px; }
+  }
 
   /* ===== CASE EM DESTAQUE ===== */
   .case-block{ background:var(--sage); }
@@ -445,6 +592,13 @@
     transition:box-shadow 0.25s ease, transform 0.25s ease;
   }
   .case-card:hover{ box-shadow:0 30px 60px rgba(0,0,0,0.22); transform:translateY(-3px); }
+  .case-visual{
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:28px;
+    box-shadow:0 16px 36px rgba(0,0,0,0.28);
+  }
+  .case-visual img{ width:100%; height:auto; display:block; }
   .case-flag{
     position:absolute;
     top:-12px; left:36px;
@@ -487,7 +641,7 @@
     color:var(--forest);
     font-weight:700;
     font-size:14px;
-    padding:10px 18px;
+    padding:13px 18px;
     border-radius:6px;
     display:inline-flex;
     align-items:center;
@@ -496,6 +650,11 @@
   }
   .case-link:hover{ transform:translateY(-2px); box-shadow:0 8px 16px rgba(0,0,0,0.22); }
   .case-link:active{ transform:translateY(0); box-shadow:0 3px 8px rgba(0,0,0,0.18); }
+  .case-link svg{ transition:transform 0.18s var(--ease-yandu); }
+  .case-link:hover svg{ transform:translate(2px,-2px); }
+  /* Case em destaque merece uma entrada mais lenta e deliberada
+     (é a prova social principal do site) */
+  .case-block .reveal.is-visible{ transition-duration:var(--dur-slow); }
   @media (max-width:800px){ .case-details{ grid-template-columns:1fr 1fr; } }
   @media (max-width:480px){
     .case-card{ padding:36px 24px 28px; }
@@ -513,6 +672,19 @@
     align-items:center;
   }
   .about-grid p{ font-size:16px; margin-bottom:16px; }
+  /* linha discreta conectando a trajetória (texto) ao processo:
+     cresce de cima pra baixo quando a seção entra na tela */
+  .about-text{ position:relative; padding-left:20px; }
+  .about-text::before{
+    content:"";
+    position:absolute; left:0; top:4px; bottom:4px;
+    width:2px;
+    background:linear-gradient(to bottom, var(--moss), var(--marigold));
+    transform:scaleY(0);
+    transform-origin:top;
+    transition:transform 0.9s var(--ease-yandu);
+  }
+  .about-text.is-visible::before{ transform:scaleY(1); }
   .about-mark{
     width:180px; height:180px;
     background:var(--forest);
@@ -555,7 +727,26 @@
     transition:transform 0.22s ease;
   }
   .faq-item[open] summary .icon{ transform:rotate(45deg); }
-  .faq-item p{
+  /* Painel animado sem depender do comportamento binário nativo do
+     <details> (que esconde o conteúdo com display:none, impossível
+     de animar). Sobrescrevemos pra display:grid sempre e controlamos
+     a altura via grid-template-rows — mesma técnica do menu mobile.
+     Se o navegador não suportar a transição, cai pro comportamento
+     nativo instantâneo: nunca quebra. */
+  .faq-item .faq-panel{
+    display:grid;
+    grid-template-rows:0fr;
+    opacity:0;
+    transition:grid-template-rows 0.25s var(--ease-yandu), opacity 0.2s ease;
+  }
+  .faq-item[open] .faq-panel{
+    grid-template-rows:1fr;
+    opacity:1;
+    transition-delay:0s, 0.05s;
+  }
+  .faq-item .faq-panel > p{
+    overflow:hidden;
+    min-height:0;
     font-size:14.5px;
     color:var(--ink);
     opacity:0.85;
@@ -569,9 +760,26 @@
     background:var(--forest);
     color:var(--cream);
     text-align:center;
+    position:relative;
+    overflow:hidden;
   }
   .contact-block .eyebrow{ color:#9CBDA3; }
-  .contact-block h2{ color:var(--cream); }
+  .contact-block h2{ color:var(--cream); position:relative; }
+  /* retoma o traço do Hero, agora resolvido: mesma moldura
+     estruturada, sem a linha orgânica nem o desenho em progresso
+     (aqui a ideia já virou produto, não precisa "se construir" de novo).
+     Usa o mesmo motor de reveal genérico (data-reveal="scale"). */
+  .cta-echo{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%, -50%);
+    width:min(560px, 90%);
+    height:auto;
+    pointer-events:none;
+  }
+  html.js-motion .contact-block .cta-echo.reveal-scale{ transform:translate(-50%, -50%) scale(0.96); }
+  .contact-block .cta-echo.is-visible{ transform:translate(-50%, -50%) !important; }
+  .contact-block .wrap{ position:relative; z-index:1; }
   .contact-links{
     display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
     margin-top:32px;
@@ -639,11 +847,52 @@
     .footer-grid{ justify-content:center; text-align:center; }
   }
 
+  /* ===== SISTEMA DE MOTION (fundação — Fase 1) =====
+     Tokens de easing/duração + classes utilitárias de reveal.
+     Estado inicial "escondido" só existe quando <html> tem a classe
+     .js-motion (adicionada por assets/js/motion.js somente se o JS
+     carregou e o usuário não pediu reduced motion). Sem JS ou com
+     reduced motion, todo conteúdo já nasce visível — nunca depende
+     de script pra aparecer. */
+  :root{
+    --ease-yandu: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 0.3s;
+    --dur-base: 0.6s;
+    --dur-slow: 0.9s;
+  }
+
+  html.js-motion .reveal{
+    opacity:0;
+    transform:translateY(24px);
+  }
+  html.js-motion .reveal.reveal-left{ transform:translateX(-28px); }
+  html.js-motion .reveal.reveal-right{ transform:translateX(28px); }
+  html.js-motion .reveal.reveal-scale{ transform:scale(0.96); }
+  html.js-motion .reveal.reveal-mask{
+    transform:none;
+    clip-path:inset(0 0 100% 0);
+  }
+
+  .reveal.is-visible{
+    opacity:1 !important;
+    transform:none !important;
+    clip-path:inset(0 0 0% 0) !important;
+    transition:
+      opacity var(--dur-base) var(--ease-yandu),
+      transform var(--dur-base) var(--ease-yandu),
+      clip-path var(--dur-slow) var(--ease-yandu);
+  }
+
   /* Respeita quem tem "reduzir movimento" ativado no sistema */
   @media (prefers-reduced-motion: reduce){
     *{
       transition-duration:0.01ms !important;
       animation-duration:0.01ms !important;
+    }
+    .reveal{
+      opacity:1 !important;
+      transform:none !important;
+      clip-path:none !important;
     }
   }
 </style>
@@ -675,26 +924,28 @@
     </div>
   </nav>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#projetos">Projetos</a>
-    <a href="#capacidades">Capacidades</a>
-    <a href="#solucoes">Soluções</a>
-    <a href="#processo">Processo</a>
-    <a href="#sobre">Sobre</a>
-    <a href="#faq">FAQ</a>
-    <a href="#contato" class="mobile-menu-cta">Chama agora</a>
+    <div class="mobile-menu-inner">
+      <a href="#projetos">Projetos</a>
+      <a href="#capacidades">Capacidades</a>
+      <a href="#solucoes">Soluções</a>
+      <a href="#processo">Processo</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contato" class="mobile-menu-cta">Chama agora</a>
+    </div>
   </div>
 </header>
 
 <!-- HERO -->
 <section class="hero" id="main-content">
   <svg class="hero-signature" aria-hidden="true" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice">
-    <path d="M0,158 C60,118 90,198 150,158 C210,118 240,198 300,158 C360,118 405,178 460,148" stroke="#9CBDA3" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.5"/>
-    <path d="M460,148 C520,128 565,108 622,108" stroke="#E0793C" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.75"/>
-    <rect x="622" y="66" width="220" height="148" rx="14" fill="none" stroke="#F6F3E9" stroke-width="2.5" opacity="0.45"/>
-    <line x1="650" y1="104" x2="814" y2="104" stroke="#F6F3E9" stroke-width="2.5" opacity="0.3"/>
-    <line x1="650" y1="128" x2="786" y2="128" stroke="#F6F3E9" stroke-width="2.5" opacity="0.22"/>
-    <line x1="650" y1="152" x2="802" y2="152" stroke="#F6F3E9" stroke-width="2.5" opacity="0.22"/>
-    <circle cx="814" cy="182" r="4.5" fill="#E0793C" opacity="0.75"/>
+    <path class="sig-wave" d="M0,158 C60,118 90,198 150,158 C210,118 240,198 300,158 C360,118 405,178 460,148" stroke="#9CBDA3" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.5"/>
+    <path class="sig-connect" d="M460,148 C520,128 565,108 622,108" stroke="#E0793C" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.75"/>
+    <rect class="sig-frame" x="622" y="66" width="220" height="148" rx="14" fill="none" stroke="#F6F3E9" stroke-width="2.5" opacity="0.45"/>
+    <line class="sig-row1" x1="650" y1="104" x2="814" y2="104" stroke="#F6F3E9" stroke-width="2.5" opacity="0.3"/>
+    <line class="sig-row2" x1="650" y1="128" x2="786" y2="128" stroke="#F6F3E9" stroke-width="2.5" opacity="0.22"/>
+    <line class="sig-row3" x1="650" y1="152" x2="802" y2="152" stroke="#F6F3E9" stroke-width="2.5" opacity="0.22"/>
+    <circle class="sig-dot" cx="814" cy="182" r="4.5" fill="#E0793C" opacity="0.75"/>
   </svg>
   <div class="wrap">
     <div class="eyebrow">Estúdio digital · Vale do Rio Pardo</div>
@@ -710,17 +961,17 @@
 <!-- PROJETOS -->
 <section class="block" id="projetos">
   <div class="wrap">
-    <div class="eyebrow">Trabalho que já está no ar</div>
-    <h2>Projetos</h2>
-    <p class="lead">Cada projeto nasce de um problema real. Aqui está o que já foi resolvido, com mais chegando.</p>
+    <div class="eyebrow" data-reveal="up">Trabalho que já está no ar</div>
+    <h2 data-reveal="mask">Projetos</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Cada projeto nasce de um problema real. Aqui está o que já foi resolvido, com mais chegando.</p>
 
     <div class="projects-grid">
       <div class="project-card">
-        <div class="project-visual">
+        <div class="project-visual" data-reveal="left">
           <span class="project-flag">NO AR AGORA</span>
-          <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#F6F3E9"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(30 73 22)"/></svg>
+          <img src="assets/img/cuidadoras-conecta-preview.png" alt="Card de apresentação do Cuidadoras Conecta: fundo verde-escuro com o nome do projeto, a frase 'Cuidado de verdade, perto de você' e o selo de cadastro gratuito" width="1200" height="630" loading="lazy">
         </div>
-        <div class="project-content">
+        <div class="project-content" data-reveal="up" data-reveal-delay="0.15">
           <h3>Cuidadoras Conecta</h3>
           <p>Plataforma completa construída do zero, do banco de dados à hospedagem, conectando famílias a cuidadoras de forma simples e organizada.</p>
           <dl class="project-breakdown">
@@ -733,7 +984,7 @@
               <dd>Plataforma web própria, com banco de dados estruturado e deploy em produção, no ar com gente usando de verdade.</dd>
             </div>
           </dl>
-          <div class="project-tags">
+          <div class="project-tags" data-reveal-group="up" data-reveal-stagger="0.06">
             <span>Plataforma web</span>
             <span>Banco de dados</span>
             <span>Deploy em produção</span>
@@ -761,10 +1012,10 @@
 <!-- CAPACIDADES -->
 <section class="block" id="capacidades" style="background:var(--sage);">
   <div class="wrap">
-    <div class="eyebrow">O que sustenta cada entrega</div>
-    <h2>Capacidades</h2>
-    <p class="lead">Antes de qualquer linha de código, tem entendimento de negócio, estratégia e design por trás. É isso que separa um produto que funciona de um produto que só existe.</p>
-    <div class="capacities-list">
+    <div class="eyebrow" data-reveal="up">O que sustenta cada entrega</div>
+    <h2 data-reveal="mask">Capacidades</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Antes de qualquer linha de código, tem entendimento de negócio, estratégia e design por trás. É isso que separa um produto que funciona de um produto que só existe.</p>
+    <div class="capacities-list" data-reveal-group="up" data-reveal-stagger="0.04">
       <span class="capacity-tag">Estratégia de produto</span>
       <span class="capacity-tag">UX</span>
       <span class="capacity-tag">UI</span>
@@ -782,27 +1033,27 @@
 <!-- SOLUÇÕES -->
 <section class="block" id="solucoes">
   <div class="wrap">
-    <div class="eyebrow">Resolve problema, não só entrega site</div>
-    <h2>Soluções</h2>
-    <p class="lead">Organizadas pelo problema que resolvem, não pelo nome técnico do entregável.</p>
+    <div class="eyebrow" data-reveal="up">Resolve problema, não só entrega site</div>
+    <h2 data-reveal="mask">Soluções</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Organizadas pelo problema que resolvem, não pelo nome técnico do entregável.</p>
     <div class="solutions-list">
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="left">
         <div><h3>Presença Digital</h3></div>
         <p>Site institucional ou landing page pra você existir online de forma profissional e ser encontrado por quem procura o que você faz.</p>
       </div>
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="right">
         <div><h3>Produtos Digitais</h3></div>
         <p>Plataformas e sistemas web construídos do zero, com banco de dados e lógica de negócio real por trás, não só uma página estática.</p>
       </div>
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="left">
         <div><h3>Automações</h3></div>
         <p>Fluxos automáticos que organizam pedidos, atendimento e informações. Menos trabalho manual, menos coisa esquecida.</p>
       </div>
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="right">
         <div><h3>Integrações</h3></div>
         <p>Conexão entre ferramentas que hoje não conversam entre si, pra sua operação parar de depender de copiar e colar dado.</p>
       </div>
-      <div class="solution-row">
+      <div class="solution-row" data-reveal="left">
         <div><h3>Dashboards</h3></div>
         <p>Painéis simples que juntam seus números num só lugar, pra você decidir com clareza, não no achismo.</p>
       </div>
@@ -813,39 +1064,58 @@
 <!-- PROCESSO -->
 <section class="block" id="processo" style="background:var(--sage);">
   <div class="wrap">
-    <div class="eyebrow">Sem mistério</div>
-    <h2>Processo</h2>
-    <p class="lead">Seis etapas, do entendimento do problema até a evolução contínua do que foi entregue.</p>
-    <div class="process-grid">
-      <div class="process-card">
-        <div class="process-num">1</div>
-        <h3>Entendimento</h3>
-        <p>Você me conta o que precisa e eu entendo o problema real por trás do pedido.</p>
+    <div class="eyebrow" data-reveal="up">Sem mistério</div>
+    <h2 data-reveal="mask">Processo</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Seis etapas, do entendimento do problema até a evolução contínua do que foi entregue.</p>
+    <div class="process-layout">
+      <div class="process-rail" aria-hidden="true">
+        <div class="process-rail-track">
+          <div class="process-rail-fill"></div>
+        </div>
       </div>
-      <div class="process-card">
-        <div class="process-num">2</div>
-        <h3>Estratégia</h3>
-        <p>Definimos o que realmente precisa ser construído e em que ordem, sem gordura no escopo.</p>
-      </div>
-      <div class="process-card">
-        <div class="process-num">3</div>
-        <h3>UX/UI</h3>
-        <p>Estrutura da experiência e identidade visual desenhadas pra facilitar a decisão de quem usa.</p>
-      </div>
-      <div class="process-card">
-        <div class="process-num">4</div>
-        <h3>Desenvolvimento</h3>
-        <p>Construção técnica do produto, com atenção a performance, acessibilidade e organização de código.</p>
-      </div>
-      <div class="process-card">
-        <div class="process-num">5</div>
-        <h3>Publicação</h3>
-        <p>Site ou sistema no ar, com ajustes finais incluídos até ficar redondo.</p>
-      </div>
-      <div class="process-card">
-        <div class="process-num">6</div>
-        <h3>Evolução</h3>
-        <p>Acompanhamento depois do lançamento, pra o produto continuar melhorando junto com o seu negócio.</p>
+      <div class="process-steps">
+        <div class="process-card">
+          <div class="process-num">1</div>
+          <div>
+            <h3>Entendimento</h3>
+            <p>Você me conta o que precisa e eu entendo o problema real por trás do pedido.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">2</div>
+          <div>
+            <h3>Estratégia</h3>
+            <p>Definimos o que realmente precisa ser construído e em que ordem, sem gordura no escopo.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">3</div>
+          <div>
+            <h3>UX/UI</h3>
+            <p>Estrutura da experiência e identidade visual desenhadas pra facilitar a decisão de quem usa.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">4</div>
+          <div>
+            <h3>Desenvolvimento</h3>
+            <p>Construção técnica do produto, com atenção a performance, acessibilidade e organização de código.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">5</div>
+          <div>
+            <h3>Publicação</h3>
+            <p>Site ou sistema no ar, com ajustes finais incluídos até ficar redondo.</p>
+          </div>
+        </div>
+        <div class="process-card">
+          <div class="process-num">6</div>
+          <div>
+            <h3>Evolução</h3>
+            <p>Acompanhamento depois do lançamento, pra o produto continuar melhorando junto com o seu negócio.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -854,15 +1124,18 @@
 <!-- CASE EM DESTAQUE -->
 <section class="block case-block" id="case-cuidadoras-conecta">
   <div class="wrap">
-    <div class="eyebrow">Prova real, não promessa</div>
-    <h2>Case em destaque</h2>
-    <p class="lead">Do primeiro rascunho até o uso real, com gente usando de verdade.</p>
+    <div class="eyebrow" data-reveal="up">Prova real, não promessa</div>
+    <h2 data-reveal="mask">Case em destaque</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">Do primeiro rascunho até o uso real, com gente usando de verdade.</p>
 
-    <div class="case-card">
+    <div class="case-card" data-reveal="scale">
       <span class="case-flag">NO AR AGORA</span>
+      <div class="case-visual">
+        <img src="assets/img/cuidadoras-conecta-preview.png" alt="Card de apresentação do Cuidadoras Conecta: fundo verde-escuro com o nome do projeto, a frase 'Cuidado de verdade, perto de você' e o selo de cadastro gratuito" width="1200" height="630" loading="lazy">
+      </div>
       <h3>Cuidadoras Conecta</h3>
       <p class="intro">Plataforma que conecta famílias a cuidadoras de forma simples e organizada, na região do Vale do Rio Pardo. Construída do zero, do banco de dados à hospedagem.</p>
-      <dl class="case-details">
+      <dl class="case-details" data-reveal-group="up" data-reveal-stagger="0.1">
         <div>
           <dt>Contexto</dt>
           <dd>Famílias precisavam encontrar cuidadoras de confiança sem um canal central e organizado pra isso.</dd>
@@ -895,12 +1168,14 @@
 <section class="block" id="sobre">
   <div class="wrap about-grid">
     <div>
-      <div class="eyebrow">Quem constrói</div>
-      <h2>Sobre</h2>
-      <p>A Yandu junta duas coisas que raramente andam juntas: entendimento de negócio e mão na massa técnica. Antes de programar, eu penso em processo. É isso que faz o resultado funcionar de verdade, não só parecer bonito.</p>
-      <p>Sou eu quem conduz cada projeto, do primeiro entendimento até a publicação, o que significa atenção direta e nenhuma camada de repasse entre quem decide e quem constrói. A Yandu nasceu pra levar produto digital de verdade a quem mais precisa e menos tem acesso: pequenos negócios e profissionais que não têm tempo nem orçamento pra esperar meses por um resultado.</p>
+      <div class="eyebrow" data-reveal="up">Quem constrói</div>
+      <h2 data-reveal="mask">Sobre</h2>
+      <div class="about-text" data-reveal="up" data-reveal-delay="0.1">
+        <p>A Yandu junta duas coisas que raramente andam juntas: entendimento de negócio e mão na massa técnica. Antes de programar, eu penso em processo. É isso que faz o resultado funcionar de verdade, não só parecer bonito.</p>
+        <p>Sou eu quem conduz cada projeto, do primeiro entendimento até a publicação, o que significa atenção direta e nenhuma camada de repasse entre quem decide e quem constrói. A Yandu nasceu pra levar produto digital de verdade a quem mais precisa e menos tem acesso: pequenos negócios e profissionais que não têm tempo nem orçamento pra esperar meses por um resultado.</p>
+      </div>
     </div>
-    <div class="about-mark">
+    <div class="about-mark" data-reveal="scale">
       <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#F6F3E9"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(30 73 22)"/></svg>
     </div>
   </div>
@@ -909,45 +1184,45 @@
 <!-- FAQ -->
 <section class="block" id="faq" style="background:var(--sage);">
   <div class="wrap">
-    <div class="eyebrow">Antes de decidir</div>
-    <h2>Perguntas frequentes</h2>
-    <p class="lead">O que a maioria pergunta antes de chamar no direct.</p>
+    <div class="eyebrow" data-reveal="up">Antes de decidir</div>
+    <h2 data-reveal="mask">Perguntas frequentes</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">O que a maioria pergunta antes de chamar no direct.</p>
     <div class="faq-list">
       <details class="faq-item">
         <summary>Qual o prazo pra entregar um projeto?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Varia com o escopo. Um site institucional costuma sair em poucos dias; uma plataforma completa ou automação mais robusta leva mais tempo. Isso fica claro na proposta, antes de qualquer trabalho começar.</p>
+        <div class="faq-panel"><p>Varia com o escopo. Um site institucional costuma sair em poucos dias; uma plataforma completa ou automação mais robusta leva mais tempo. Isso fica claro na proposta, antes de qualquer trabalho começar.</p></div>
       </details>
       <details class="faq-item">
         <summary>Como funciona o pagamento?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Valor e forma de pagamento são combinados na proposta, sem letra miúda. Nada muda no meio do caminho sem você saber antes.</p>
+        <div class="faq-panel"><p>Valor e forma de pagamento são combinados na proposta, sem letra miúda. Nada muda no meio do caminho sem você saber antes.</p></div>
       </details>
       <details class="faq-item">
         <summary>Existe suporte depois da entrega?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Sim. Ajustes finais já entram na entrega, e a evolução contínua do produto pode seguir depois, conforme sua necessidade.</p>
+        <div class="faq-panel"><p>Sim. Ajustes finais já entram na entrega, e a evolução contínua do produto pode seguir depois, conforme sua necessidade.</p></div>
       </details>
       <details class="faq-item">
         <summary>Atende fora do Vale do Rio Pardo?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>O foco é a região, mas todo o trabalho é feito remotamente, então negócios de outras cidades também podem chamar no direct.</p>
+        <div class="faq-panel"><p>O foco é a região, mas todo o trabalho é feito remotamente, então negócios de outras cidades também podem chamar no direct.</p></div>
       </details>
       <details class="faq-item">
         <summary>Preciso ter site pronto pra pensar em automação?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Não. Automação e site são frentes independentes. Dá pra começar por onde o problema estiver mais urgente.</p>
+        <div class="faq-panel"><p>Não. Automação e site são frentes independentes. Dá pra começar por onde o problema estiver mais urgente.</p></div>
       </details>
       <details class="faq-item">
         <summary>Não sei exatamente o que preciso, posso chamar mesmo assim?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Sim, essa é justamente a primeira etapa do processo: entender o problema real antes de definir a solução.</p>
+        <div class="faq-panel"><p>Sim, essa é justamente a primeira etapa do processo: entender o problema real antes de definir a solução.</p></div>
       </details>
     </div>
   </div>
@@ -955,11 +1230,18 @@
 
 <!-- CONTACT -->
 <section class="block contact-block" id="contato">
+  <svg class="cta-echo" data-reveal="scale" aria-hidden="true" viewBox="0 0 300 140" preserveAspectRatio="xMidYMid meet">
+    <rect x="20" y="20" width="180" height="100" rx="12" fill="none" stroke="#F6F3E9" stroke-width="2" opacity="0.28"/>
+    <line x1="40" y1="50" x2="160" y2="50" stroke="#F6F3E9" stroke-width="2" opacity="0.2"/>
+    <line x1="40" y1="70" x2="140" y2="70" stroke="#F6F3E9" stroke-width="2" opacity="0.16"/>
+    <line x1="40" y1="90" x2="150" y2="90" stroke="#F6F3E9" stroke-width="2" opacity="0.16"/>
+    <circle cx="160" cy="105" r="4" fill="#E0793C" opacity="0.6"/>
+  </svg>
   <div class="wrap">
-    <div class="eyebrow">Vamos conversar</div>
-    <h2>Tire sua ideia do papel agora</h2>
-    <p style="color:#D9E5DB; max-width:32em; margin:14px auto 0;">Me chama e conta o que você precisa. Respondo rápido e sem enrolar.</p>
-    <div class="contact-links">
+    <div class="eyebrow" data-reveal="up">Vamos conversar</div>
+    <h2 data-reveal="mask">Tire sua ideia do papel agora</h2>
+    <p style="color:#D9E5DB; max-width:32em; margin:14px auto 0;" data-reveal="up" data-reveal-delay="0.08">Me chama e conta o que você precisa. Respondo rápido e sem enrolar.</p>
+    <div class="contact-links" data-reveal-group="up" data-reveal-stagger="0.08">
       <a class="contact-btn" href="https://wa.me/5551992627338?text=Ol%C3%A1%2C%20vi%20o%20site%20da%20Yandu%20e%20queria%20saber%20mais%21" target="_blank" rel="noopener">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.44 1.32 4.94L2 22l5.29-1.39a9.9 9.9 0 004.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.12.11-1.8-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.6.83 2.06.9 2.21.07.15.12.33.02.53-.1.19-.15.31-.3.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.02 1.12 1 2.07 1.31 2.36 1.46.29.15.46.13.63-.08.17-.2.72-.84.91-1.13.19-.29.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.21.55.33.07.12.07.68-.17 1.35z"/></svg>
         WhatsApp
@@ -977,7 +1259,7 @@
 </section>
 
 <footer>
-  <div class="wrap footer-grid">
+  <div class="wrap footer-grid" data-reveal="up">
     <div class="footer-brand">
       <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#1F3D2B"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#1F3D2B" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#1F3D2B" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#1F3D2B" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#1F3D2B" transform="rotate(30 73 22)"/></svg>
       <span>yandu</span>
@@ -1010,26 +1292,53 @@
     var menuToggle = document.getElementById('menuToggle');
     var mobileMenu = document.getElementById('mobileMenu');
     if(menuToggle && mobileMenu){
+      var closeMobileMenu = function(){
+        mobileMenu.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Abrir menu');
+        document.body.classList.remove('menu-open');
+      };
       menuToggle.addEventListener('click', function(){
         var isOpen = mobileMenu.classList.toggle('is-open');
         menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         menuToggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+        document.body.classList.toggle('menu-open', isOpen);
       });
       mobileMenu.querySelectorAll('a').forEach(function(link){
-        link.addEventListener('click', function(){
-          mobileMenu.classList.remove('is-open');
-          menuToggle.setAttribute('aria-expanded', 'false');
-          menuToggle.setAttribute('aria-label', 'Abrir menu');
-        });
+        link.addEventListener('click', closeMobileMenu);
       });
       document.addEventListener('keydown', function(e){
         if(e.key === 'Escape' && mobileMenu.classList.contains('is-open')){
-          mobileMenu.classList.remove('is-open');
-          menuToggle.setAttribute('aria-expanded', 'false');
-          menuToggle.setAttribute('aria-label', 'Abrir menu');
+          closeMobileMenu();
           menuToggle.focus();
         }
       });
+    }
+
+    // Header: muda de estado (fundo/sombra) ao rolar
+    var header = document.querySelector('header');
+    if(header){
+      var onHeaderScroll = function(){
+        header.classList.toggle('is-scrolled', window.scrollY > 8);
+      };
+      onHeaderScroll();
+      window.addEventListener('scroll', onHeaderScroll, { passive:true });
+    }
+
+    // Nav: indicador visual da seção ativa conforme o scroll
+    var navLinks = document.querySelectorAll('.nav-links a');
+    var trackedSections = document.querySelectorAll('section[id]');
+    if(navLinks.length && trackedSections.length){
+      var sectionObserver = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(!entry.isIntersecting){ return; }
+          var id = entry.target.getAttribute('id');
+          navLinks.forEach(function(link){
+            link.classList.toggle('is-active', link.getAttribute('href') === '#' + id);
+          });
+        });
+      }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+      trackedSections.forEach(function(sec){ sectionObserver.observe(sec); });
     }
 
     // Ano dinâmico no rodapé
@@ -1049,6 +1358,10 @@
     });
   })();
 </script>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/js/motion.js" defer></script>
 
 </body>
 </html>
