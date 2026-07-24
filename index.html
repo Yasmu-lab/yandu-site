@@ -377,18 +377,16 @@
   .project-visual{
     position:relative;
     background:var(--forest);
-    display:flex; align-items:center; justify-content:center;
-    padding:32px;
+    overflow:hidden;
     min-height:220px;
   }
-  .project-visual::before{
-    content:"";
+  .project-visual img{
     position:absolute; inset:0;
-    background-image: radial-gradient(circle at 80% 15%, rgba(224,121,60,0.18) 0, transparent 45%),
-                       radial-gradient(circle at 15% 90%, rgba(156,189,163,0.14) 0, transparent 45%);
+    width:100%; height:100%;
+    object-fit:cover;
+    transition:transform 0.4s var(--ease-yandu);
   }
-  .project-visual svg{ position:relative; width:72px; height:72px; transition:transform 0.3s var(--ease-yandu); }
-  .project-card:hover .project-visual svg{ transform:scale(1.08) rotate(-3deg); }
+  .project-card:hover .project-visual img{ transform:scale(1.05); }
   .project-visual .project-flag{
     position:absolute; top:16px; left:16px;
     background:var(--marigold); color:var(--ink);
@@ -531,6 +529,13 @@
     transition:box-shadow 0.25s ease, transform 0.25s ease;
   }
   .case-card:hover{ box-shadow:0 30px 60px rgba(0,0,0,0.22); transform:translateY(-3px); }
+  .case-visual{
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:28px;
+    box-shadow:0 16px 36px rgba(0,0,0,0.28);
+  }
+  .case-visual img{ width:100%; height:auto; display:block; }
   .case-flag{
     position:absolute;
     top:-12px; left:36px;
@@ -852,7 +857,7 @@
       <div class="project-card">
         <div class="project-visual" data-reveal="left">
           <span class="project-flag">NO AR AGORA</span>
-          <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#F6F3E9"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(30 73 22)"/></svg>
+          <img src="assets/img/cuidadoras-conecta-preview.png" alt="Card de apresentação do Cuidadoras Conecta: fundo verde-escuro com o nome do projeto, a frase 'Cuidado de verdade, perto de você' e o selo de cadastro gratuito" width="1200" height="630" loading="lazy">
         </div>
         <div class="project-content" data-reveal="up" data-reveal-delay="0.15">
           <h3>Cuidadoras Conecta</h3>
@@ -994,6 +999,9 @@
 
     <div class="case-card" data-reveal="scale">
       <span class="case-flag">NO AR AGORA</span>
+      <div class="case-visual">
+        <img src="assets/img/cuidadoras-conecta-preview.png" alt="Card de apresentação do Cuidadoras Conecta: fundo verde-escuro com o nome do projeto, a frase 'Cuidado de verdade, perto de você' e o selo de cadastro gratuito" width="1200" height="630" loading="lazy">
+      </div>
       <h3>Cuidadoras Conecta</h3>
       <p class="intro">Plataforma que conecta famílias a cuidadoras de forma simples e organizada, na região do Vale do Rio Pardo. Construída do zero, do banco de dados à hospedagem.</p>
       <dl class="case-details" data-reveal-group="up" data-reveal-stagger="0.1">
