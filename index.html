@@ -671,6 +671,19 @@
     align-items:center;
   }
   .about-grid p{ font-size:16px; margin-bottom:16px; }
+  /* linha discreta conectando a trajetória (texto) ao processo:
+     cresce de cima pra baixo quando a seção entra na tela */
+  .about-text{ position:relative; padding-left:20px; }
+  .about-text::before{
+    content:"";
+    position:absolute; left:0; top:4px; bottom:4px;
+    width:2px;
+    background:linear-gradient(to bottom, var(--moss), var(--marigold));
+    transform:scaleY(0);
+    transform-origin:top;
+    transition:transform 0.9s var(--ease-yandu);
+  }
+  .about-text.is-visible::before{ transform:scaleY(1); }
   .about-mark{
     width:180px; height:180px;
     background:var(--forest);
@@ -713,7 +726,26 @@
     transition:transform 0.22s ease;
   }
   .faq-item[open] summary .icon{ transform:rotate(45deg); }
-  .faq-item p{
+  /* Painel animado sem depender do comportamento binário nativo do
+     <details> (que esconde o conteúdo com display:none, impossível
+     de animar). Sobrescrevemos pra display:grid sempre e controlamos
+     a altura via grid-template-rows — mesma técnica do menu mobile.
+     Se o navegador não suportar a transição, cai pro comportamento
+     nativo instantâneo: nunca quebra. */
+  .faq-item .faq-panel{
+    display:grid;
+    grid-template-rows:0fr;
+    opacity:0;
+    transition:grid-template-rows 0.25s var(--ease-yandu), opacity 0.2s ease;
+  }
+  .faq-item[open] .faq-panel{
+    grid-template-rows:1fr;
+    opacity:1;
+    transition-delay:0s, 0.05s;
+  }
+  .faq-item .faq-panel > p{
+    overflow:hidden;
+    min-height:0;
     font-size:14.5px;
     color:var(--ink);
     opacity:0.85;
@@ -727,9 +759,26 @@
     background:var(--forest);
     color:var(--cream);
     text-align:center;
+    position:relative;
+    overflow:hidden;
   }
   .contact-block .eyebrow{ color:#9CBDA3; }
-  .contact-block h2{ color:var(--cream); }
+  .contact-block h2{ color:var(--cream); position:relative; }
+  /* retoma o traço do Hero, agora resolvido: mesma moldura
+     estruturada, sem a linha orgânica nem o desenho em progresso
+     (aqui a ideia já virou produto, não precisa "se construir" de novo).
+     Usa o mesmo motor de reveal genérico (data-reveal="scale"). */
+  .cta-echo{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%, -50%);
+    width:min(560px, 90%);
+    height:auto;
+    pointer-events:none;
+  }
+  html.js-motion .contact-block .cta-echo.reveal-scale{ transform:translate(-50%, -50%) scale(0.96); }
+  .contact-block .cta-echo.is-visible{ transform:translate(-50%, -50%) !important; }
+  .contact-block .wrap{ position:relative; z-index:1; }
   .contact-links{
     display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
     margin-top:32px;
@@ -1118,12 +1167,14 @@
 <section class="block" id="sobre">
   <div class="wrap about-grid">
     <div>
-      <div class="eyebrow">Quem constrói</div>
-      <h2>Sobre</h2>
-      <p>A Yandu junta duas coisas que raramente andam juntas: entendimento de negócio e mão na massa técnica. Antes de programar, eu penso em processo. É isso que faz o resultado funcionar de verdade, não só parecer bonito.</p>
-      <p>Sou eu quem conduz cada projeto, do primeiro entendimento até a publicação, o que significa atenção direta e nenhuma camada de repasse entre quem decide e quem constrói. A Yandu nasceu pra levar produto digital de verdade a quem mais precisa e menos tem acesso: pequenos negócios e profissionais que não têm tempo nem orçamento pra esperar meses por um resultado.</p>
+      <div class="eyebrow" data-reveal="up">Quem constrói</div>
+      <h2 data-reveal="mask">Sobre</h2>
+      <div class="about-text" data-reveal="up" data-reveal-delay="0.1">
+        <p>A Yandu junta duas coisas que raramente andam juntas: entendimento de negócio e mão na massa técnica. Antes de programar, eu penso em processo. É isso que faz o resultado funcionar de verdade, não só parecer bonito.</p>
+        <p>Sou eu quem conduz cada projeto, do primeiro entendimento até a publicação, o que significa atenção direta e nenhuma camada de repasse entre quem decide e quem constrói. A Yandu nasceu pra levar produto digital de verdade a quem mais precisa e menos tem acesso: pequenos negócios e profissionais que não têm tempo nem orçamento pra esperar meses por um resultado.</p>
+      </div>
     </div>
-    <div class="about-mark">
+    <div class="about-mark" data-reveal="scale">
       <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#F6F3E9"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#F6F3E9" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#F6F3E9" transform="rotate(30 73 22)"/></svg>
     </div>
   </div>
@@ -1132,45 +1183,45 @@
 <!-- FAQ -->
 <section class="block" id="faq" style="background:var(--sage);">
   <div class="wrap">
-    <div class="eyebrow">Antes de decidir</div>
-    <h2>Perguntas frequentes</h2>
-    <p class="lead">O que a maioria pergunta antes de chamar no direct.</p>
+    <div class="eyebrow" data-reveal="up">Antes de decidir</div>
+    <h2 data-reveal="mask">Perguntas frequentes</h2>
+    <p class="lead" data-reveal="up" data-reveal-delay="0.08">O que a maioria pergunta antes de chamar no direct.</p>
     <div class="faq-list">
       <details class="faq-item">
         <summary>Qual o prazo pra entregar um projeto?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Varia com o escopo. Um site institucional costuma sair em poucos dias; uma plataforma completa ou automação mais robusta leva mais tempo. Isso fica claro na proposta, antes de qualquer trabalho começar.</p>
+        <div class="faq-panel"><p>Varia com o escopo. Um site institucional costuma sair em poucos dias; uma plataforma completa ou automação mais robusta leva mais tempo. Isso fica claro na proposta, antes de qualquer trabalho começar.</p></div>
       </details>
       <details class="faq-item">
         <summary>Como funciona o pagamento?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Valor e forma de pagamento são combinados na proposta, sem letra miúda. Nada muda no meio do caminho sem você saber antes.</p>
+        <div class="faq-panel"><p>Valor e forma de pagamento são combinados na proposta, sem letra miúda. Nada muda no meio do caminho sem você saber antes.</p></div>
       </details>
       <details class="faq-item">
         <summary>Existe suporte depois da entrega?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Sim. Ajustes finais já entram na entrega, e a evolução contínua do produto pode seguir depois, conforme sua necessidade.</p>
+        <div class="faq-panel"><p>Sim. Ajustes finais já entram na entrega, e a evolução contínua do produto pode seguir depois, conforme sua necessidade.</p></div>
       </details>
       <details class="faq-item">
         <summary>Atende fora do Vale do Rio Pardo?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>O foco é a região, mas todo o trabalho é feito remotamente, então negócios de outras cidades também podem chamar no direct.</p>
+        <div class="faq-panel"><p>O foco é a região, mas todo o trabalho é feito remotamente, então negócios de outras cidades também podem chamar no direct.</p></div>
       </details>
       <details class="faq-item">
         <summary>Preciso ter site pronto pra pensar em automação?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Não. Automação e site são frentes independentes. Dá pra começar por onde o problema estiver mais urgente.</p>
+        <div class="faq-panel"><p>Não. Automação e site são frentes independentes. Dá pra começar por onde o problema estiver mais urgente.</p></div>
       </details>
       <details class="faq-item">
         <summary>Não sei exatamente o que preciso, posso chamar mesmo assim?
           <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#1F3D2B" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </summary>
-        <p>Sim, essa é justamente a primeira etapa do processo: entender o problema real antes de definir a solução.</p>
+        <div class="faq-panel"><p>Sim, essa é justamente a primeira etapa do processo: entender o problema real antes de definir a solução.</p></div>
       </details>
     </div>
   </div>
@@ -1178,11 +1229,18 @@
 
 <!-- CONTACT -->
 <section class="block contact-block" id="contato">
+  <svg class="cta-echo" data-reveal="scale" aria-hidden="true" viewBox="0 0 300 140" preserveAspectRatio="xMidYMid meet">
+    <rect x="20" y="20" width="180" height="100" rx="12" fill="none" stroke="#F6F3E9" stroke-width="2" opacity="0.28"/>
+    <line x1="40" y1="50" x2="160" y2="50" stroke="#F6F3E9" stroke-width="2" opacity="0.2"/>
+    <line x1="40" y1="70" x2="140" y2="70" stroke="#F6F3E9" stroke-width="2" opacity="0.16"/>
+    <line x1="40" y1="90" x2="150" y2="90" stroke="#F6F3E9" stroke-width="2" opacity="0.16"/>
+    <circle cx="160" cy="105" r="4" fill="#E0793C" opacity="0.6"/>
+  </svg>
   <div class="wrap">
-    <div class="eyebrow">Vamos conversar</div>
-    <h2>Tire sua ideia do papel agora</h2>
-    <p style="color:#D9E5DB; max-width:32em; margin:14px auto 0;">Me chama e conta o que você precisa. Respondo rápido e sem enrolar.</p>
-    <div class="contact-links">
+    <div class="eyebrow" data-reveal="up">Vamos conversar</div>
+    <h2 data-reveal="mask">Tire sua ideia do papel agora</h2>
+    <p style="color:#D9E5DB; max-width:32em; margin:14px auto 0;" data-reveal="up" data-reveal-delay="0.08">Me chama e conta o que você precisa. Respondo rápido e sem enrolar.</p>
+    <div class="contact-links" data-reveal-group="up" data-reveal-stagger="0.08">
       <a class="contact-btn" href="https://wa.me/5551992627338?text=Ol%C3%A1%2C%20vi%20o%20site%20da%20Yandu%20e%20queria%20saber%20mais%21" target="_blank" rel="noopener">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.44 1.32 4.94L2 22l5.29-1.39a9.9 9.9 0 004.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.03c-.24.68-1.4 1.32-1.94 1.4-.5.08-1.12.11-1.8-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.66.5.24.6.83 2.06.9 2.21.07.15.12.33.02.53-.1.19-.15.31-.3.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.02 1.12 1 2.07 1.31 2.36 1.46.29.15.46.13.63-.08.17-.2.72-.84.91-1.13.19-.29.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.21.55.33.07.12.07.68-.17 1.35z"/></svg>
         WhatsApp
@@ -1200,7 +1258,7 @@
 </section>
 
 <footer>
-  <div class="wrap footer-grid">
+  <div class="wrap footer-grid" data-reveal="up">
     <div class="footer-brand">
       <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#1F3D2B"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#1F3D2B" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#1F3D2B" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#1F3D2B" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#1F3D2B" transform="rotate(30 73 22)"/></svg>
       <span>yandu</span>
