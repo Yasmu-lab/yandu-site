@@ -377,9 +377,9 @@
     gap:28px;
     padding:30px 0;
     border-bottom:1px solid rgba(0,0,0,0.08);
-    transition:padding-left 0.2s ease;
+    transition:transform 0.2s ease;
   }
-  .solution-row:hover{ padding-left:8px; }
+  .solution-row:hover{ transform:translateX(8px); }
   .solution-row:hover h3{ color:var(--marigold-text); }
   .solution-row h3{ font-size:19px; color:var(--forest); transition:color 0.18s ease; display:flex; align-items:center; gap:10px; }
   .solution-row h3::before{
@@ -639,11 +639,52 @@
     .footer-grid{ justify-content:center; text-align:center; }
   }
 
+  /* ===== SISTEMA DE MOTION (fundação — Fase 1) =====
+     Tokens de easing/duração + classes utilitárias de reveal.
+     Estado inicial "escondido" só existe quando <html> tem a classe
+     .js-motion (adicionada por assets/js/motion.js somente se o JS
+     carregou e o usuário não pediu reduced motion). Sem JS ou com
+     reduced motion, todo conteúdo já nasce visível — nunca depende
+     de script pra aparecer. */
+  :root{
+    --ease-yandu: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 0.3s;
+    --dur-base: 0.6s;
+    --dur-slow: 0.9s;
+  }
+
+  html.js-motion .reveal{
+    opacity:0;
+    transform:translateY(24px);
+  }
+  html.js-motion .reveal.reveal-left{ transform:translateX(-28px); }
+  html.js-motion .reveal.reveal-right{ transform:translateX(28px); }
+  html.js-motion .reveal.reveal-scale{ transform:scale(0.96); }
+  html.js-motion .reveal.reveal-mask{
+    transform:none;
+    clip-path:inset(0 0 100% 0);
+  }
+
+  .reveal.is-visible{
+    opacity:1 !important;
+    transform:none !important;
+    clip-path:inset(0 0 0% 0) !important;
+    transition:
+      opacity var(--dur-base) var(--ease-yandu),
+      transform var(--dur-base) var(--ease-yandu),
+      clip-path var(--dur-slow) var(--ease-yandu);
+  }
+
   /* Respeita quem tem "reduzir movimento" ativado no sistema */
   @media (prefers-reduced-motion: reduce){
     *{
       transition-duration:0.01ms !important;
       animation-duration:0.01ms !important;
+    }
+    .reveal{
+      opacity:1 !important;
+      transform:none !important;
+      clip-path:none !important;
     }
   }
 </style>
@@ -1049,6 +1090,10 @@
     });
   })();
 </script>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/js/motion.js" defer></script>
 
 </body>
 </html>
