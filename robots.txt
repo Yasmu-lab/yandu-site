@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yandu-oficial.vercel.app/sitemap.xml
+Sitemap: https://yandu-site.vercel.app/sitemap.xml
