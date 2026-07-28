@@ -410,8 +410,17 @@
      container retangular — respiro entre o Hero denso e os
      Projetos, criando variação de ritmo. */
   .manifesto{
+    position:relative;
     padding:100px 24px;
     background:var(--cream);
+  }
+  /* blend suave saindo do forest escuro do Hero, em vez de corte seco */
+  .manifesto::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0;
+    height:90px;
+    background:linear-gradient(to bottom, rgba(31,61,43,0.14), transparent);
+    pointer-events:none;
   }
   .manifesto .wrap{ max-width:920px; }
   .manifesto p{
@@ -529,6 +538,58 @@
   .solution-row p{ font-size:14.5px; color:var(--ink); opacity:0.85; max-width:40em; }
   @media (max-width:640px){
     .solution-row{ grid-template-columns:1fr; gap:6px; }
+  }
+
+  /* ===== CONECTOR ENTRE SEÇÕES =====
+     Linha curta que "liga" Soluções ao Processo — reforça que a
+     página é uma narrativa contínua, não seções empilhadas. Mesmo
+     padrão já comprovado da linha do Sobre (reveal via classe
+     .is-visible, sem GSAP/ScrollTrigger novo). */
+  .section-connector-wrap{
+    display:flex;
+    justify-content:center;
+    padding:36px 0;
+    background:var(--sage);
+  }
+  .section-connector{
+    width:2px;
+    height:64px;
+    background:linear-gradient(to bottom, var(--moss), var(--marigold));
+    transform-origin:top;
+    transition:transform 0.9s var(--ease-yandu);
+  }
+  html.js-motion .section-connector{ transform:scaleY(0); }
+  .section-connector-wrap.is-visible .section-connector{ transform:scaleY(1); }
+
+  /* ===== TIPOGRAFIA EM MOVIMENTO (marquee) =====
+     Retoma as competências que saíam da antiga seção Capacidades,
+     agora como faixa de tipografia contínua em vez de nuvem de tags.
+     "Controlado": pausa no hover; reduced-motion (regra global já
+     existente) zera a animação e trava num frame estático. */
+  .marquee{
+    overflow:hidden;
+    background:var(--forest);
+    padding:22px 0;
+  }
+  .marquee-track{
+    display:flex;
+    gap:14px;
+    width:max-content;
+    animation:yanduMarquee 34s linear infinite;
+  }
+  .marquee:hover .marquee-track{ animation-play-state:paused; }
+  .marquee-track span{
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:#9CBDA3;
+    white-space:nowrap;
+  }
+  .marquee-track span.dot{ color:var(--marigold); }
+  @keyframes yanduMarquee{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
   }
 
   /* ===== PROCESSO =====
@@ -653,6 +714,15 @@
   @media (max-width:800px){ .about-grid{ grid-template-columns:1fr; } .about-mark{ order:-1; width:120px; height:120px; } .about-mark svg{ width:56px; height:56px; } }
 
   /* FAQ */
+  #faq{ position:relative; }
+  /* blend suave entrando no forest escuro do CTA final logo depois */
+  #faq::after{
+    content:"";
+    position:absolute; bottom:0; left:0; right:0;
+    height:90px;
+    background:linear-gradient(to bottom, transparent, rgba(31,61,43,0.5));
+    pointer-events:none;
+  }
   .faq-list{ display:flex; flex-direction:column; gap:12px; max-width:44em; }
   .faq-item{
     background:var(--sage);
@@ -984,7 +1054,7 @@
 <section class="block" id="solucoes">
   <div class="wrap">
     <div class="eyebrow" data-reveal="up">Resolve problema, não só entrega site</div>
-    <h2 data-reveal="mask">Soluções</h2>
+    <h2 data-reveal="left">Soluções</h2>
     <p class="lead" data-reveal="up" data-reveal-delay="0.08">Organizadas pelo problema que resolvem, não pelo nome técnico do entregável.</p>
     <div class="solutions-list">
       <div class="solution-row" data-reveal="left">
@@ -1011,11 +1081,16 @@
   </div>
 </section>
 
+<!-- CONECTOR: liga Soluções ao Processo, reforça continuidade entre seções -->
+<div class="section-connector-wrap" data-reveal="up" aria-hidden="true">
+  <span class="section-connector"></span>
+</div>
+
 <!-- PROCESSO -->
 <section class="block" id="processo" style="background:var(--sage);">
   <div class="wrap">
     <div class="eyebrow" data-reveal="up">Sem mistério</div>
-    <h2 data-reveal="mask">Processo</h2>
+    <h2 data-reveal="right">Processo</h2>
     <p class="lead" data-reveal="up" data-reveal-delay="0.08">Seis etapas, do entendimento do problema até a evolução contínua do que foi entregue.</p>
     <div class="process-layout">
       <div class="process-rail" aria-hidden="true">
@@ -1071,6 +1146,16 @@
   </div>
 </section>
 
+<!-- MARQUEE: tipografia em movimento, retoma as competências que
+     saíam da seção Capacidades (removida), de forma mais leve --
+     controlado (pausa no hover), some com reduced motion -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Estratégia</span><span class="dot">·</span><span>UX</span><span class="dot">·</span><span>UI</span><span class="dot">·</span><span>Desenvolvimento</span><span class="dot">·</span><span>SEO técnico</span><span class="dot">·</span><span>Performance</span><span class="dot">·</span><span>Acessibilidade</span><span class="dot">·</span><span>Automação</span><span class="dot">·</span>
+    <span>Estratégia</span><span class="dot">·</span><span>UX</span><span class="dot">·</span><span>UI</span><span class="dot">·</span><span>Desenvolvimento</span><span class="dot">·</span><span>SEO técnico</span><span class="dot">·</span><span>Performance</span><span class="dot">·</span><span>Acessibilidade</span><span class="dot">·</span><span>Automação</span><span class="dot">·</span>
+  </div>
+</div>
+
 <!-- ABOUT -->
 <section class="block" id="sobre">
   <div class="wrap about-grid">
@@ -1092,7 +1177,7 @@
 <section class="block" id="faq" style="background:var(--sage);">
   <div class="wrap">
     <div class="eyebrow" data-reveal="up">Antes de decidir</div>
-    <h2 data-reveal="mask">Perguntas frequentes</h2>
+    <h2 data-reveal="left">Perguntas frequentes</h2>
     <p class="lead" data-reveal="up" data-reveal-delay="0.08">O que a maioria pergunta antes de chamar no direct.</p>
     <div class="faq-list">
       <details class="faq-item">
