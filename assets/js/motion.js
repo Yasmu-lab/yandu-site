@@ -71,6 +71,105 @@
   document.querySelectorAll('[data-reveal]').forEach(initReveal);
   document.querySelectorAll('[data-reveal-group]').forEach(initRevealGroup);
 
+  // Hero scene (Fase 3): fragmentos soltos que se organizam + janela
+  // de produto que se monta, representando IDEIA → ESTRATÉGIA →
+  // INTERFACE → PRODUTO FUNCIONANDO. Roda no load, não depende de
+  // scroll. gsap.from() define o estado inicial só quando executa —
+  // sem JS ou com reduced motion (return acima), tudo já está na
+  // posição final via CSS normal, nada fica escondido.
+  (function initHeroScene() {
+    var scene = document.querySelector('.hero-scene');
+    if (!scene) { return; }
+    var frags = scene.querySelectorAll('.hero-frag');
+    var win = scene.querySelector('.hero-window');
+    var lines = scene.querySelectorAll('.hero-window-line');
+    var block = scene.querySelector('.hero-window-block');
+    var dot = scene.querySelector('.hero-window-dot');
+    var far = scene.querySelector('.hero-scene-far');
+    var near = scene.querySelector('.hero-scene-near');
+
+    var tl = gsap.timeline({ delay: 0.2 });
+    tl.from(frags, {
+      opacity: 0,
+      scale: 0.6,
+      x: function (i) { return (i % 2 === 0 ? -1 : 1) * 90; },
+      y: -70,
+      rotation: function (i) { return (i % 2 === 0 ? -1 : 1) * 30; },
+      duration: 0.8,
+      ease: 'back.out(1.6)',
+      stagger: 0.12
+    })
+      .from(win, {
+        opacity: 0,
+        y: 90,
+        scale: 0.9,
+        duration: 0.7,
+        ease: 'power3.out'
+      }, '-=0.3')
+      .from(lines, {
+        scaleX: 0,
+        transformOrigin: 'left center',
+        duration: 0.4,
+        ease: 'power2.out',
+        stagger: 0.1
+      }, '-=0.25')
+      .from(block, {
+        opacity: 0,
+        scale: 0.85,
+        duration: 0.4,
+        ease: 'power2.out'
+      }, '-=0.15')
+      .from(dot, {
+        scale: 0,
+        duration: 0.3,
+        ease: 'back.out(2)'
+      }, '-=0.1')
+      .call(function () {
+        gsap.to(dot, { opacity: 0.4, scale: 1.3, duration: 1.1, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      });
+
+    // Parallax de ponteiro: só desktop com mouse de verdade, e só
+    // enquanto o Hero estiver na tela (IntersectionObserver evita
+    // listener rodando à toa depois que o usuário já rolou pra longe).
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      var heroEl = document.querySelector('.hero');
+      var heroVisible = true;
+      new IntersectionObserver(function (entries) {
+        heroVisible = entries[0].isIntersecting;
+      }).observe(heroEl);
+
+      var qxFar = gsap.quickTo(far, 'x', { duration: 0.6, ease: 'power3.out' });
+      var qyFar = gsap.quickTo(far, 'y', { duration: 0.6, ease: 'power3.out' });
+      var qxNear = gsap.quickTo(near, 'x', { duration: 0.6, ease: 'power3.out' });
+      var qyNear = gsap.quickTo(near, 'y', { duration: 0.6, ease: 'power3.out' });
+
+      heroEl.addEventListener('mousemove', function (e) {
+        if (!heroVisible) { return; }
+        var r = heroEl.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        qxFar(px * 24);
+        qyFar(py * 16);
+        qxNear(px * 12);
+        qyNear(py * 8);
+      });
+    }
+
+    // Continuidade no scroll: a cena se desloca em velocidades
+    // diferentes por camada conforme o Hero sai da tela (scrub lê o
+    // scroll, nunca o controla) — o movimento continua além do load.
+    gsap.to(far, {
+      y: -70,
+      ease: 'none',
+      scrollTrigger: { trigger: scene, start: 'top top', end: 'bottom top', scrub: true }
+    });
+    gsap.to(near, {
+      y: -34,
+      ease: 'none',
+      scrollTrigger: { trigger: scene, start: 'top top', end: 'bottom top', scrub: true }
+    });
+  })();
+
   // Processo (Fase 4): trilho de progresso ligado à posição do scroll
   // (scrub) — lê o scroll, nunca o controla — + etapa ativa conforme
   // o card passa pela faixa central da tela. Some no mobile via CSS
