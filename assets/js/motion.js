@@ -170,6 +170,26 @@
     });
   })();
 
+  // Projetos: mockup acompanha parte do scroll (profundidade real,
+  // não decorativa). O GSAP anima um wrapper (.project-visual-wrap)
+  // separado do elemento que o motor de reveal controla
+  // (.project-visual, clip-path via CSS/classe). Mantendo GSAP e o
+  // reveal por classe em elementos diferentes, cada um só mexe na
+  // sua própria propriedade — sem os dois sistemas disputando o
+  // mesmo elemento.
+  document.querySelectorAll('.project-visual-wrap').forEach(function (wrap) {
+    gsap.to(wrap, {
+      y: -24,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: wrap.closest('.project-feature'),
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+  });
+
   // Processo (Fase 4): trilho de progresso ligado à posição do scroll
   // (scrub) — lê o scroll, nunca o controla — + etapa ativa conforme
   // o card passa pela faixa central da tela. Some no mobile via CSS

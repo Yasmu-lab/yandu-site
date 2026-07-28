@@ -424,51 +424,57 @@
   .manifesto .accent{ color:var(--marigold-text); }
   @media (max-width:480px){ .manifesto{ padding:64px 20px; } }
 
-  /* ===== PROJETOS ===== */
-  .projects-grid{
+  /* ===== PROJETOS =====
+     Bloco editorial, não card em caixa: a imagem é a âncora visual
+     (sombra própria, sem container/fundo em volta), texto ao lado
+     sem moldura. Menos "conjunto de cards", mais peça única. */
+  .projects-list{ display:flex; flex-direction:column; gap:64px; }
+  .project-feature{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(min(420px, 100%), 1fr));
-    gap:28px;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:48px;
+    align-items:center;
   }
-  .project-card{
-    background:var(--sage);
-    border-radius:14px;
-    overflow:hidden;
-    display:grid;
-    grid-template-columns:0.85fr 1.15fr;
-    box-shadow:0 18px 40px rgba(31,61,43,0.10);
-    transition:box-shadow 0.25s ease, transform 0.25s ease;
-  }
-  .project-card:hover{ box-shadow:0 26px 54px rgba(31,61,43,0.16); transform:translateY(-3px); }
   .project-visual{
     position:relative;
-    background:var(--forest);
+    border-radius:14px;
     overflow:hidden;
-    min-height:220px;
+    box-shadow:0 30px 60px rgba(31,61,43,0.18);
   }
   .project-visual img{
-    position:absolute; inset:0;
-    width:100%; height:100%;
-    object-fit:contain;
-    padding:20px;
-    transition:transform 0.4s var(--ease-yandu);
+    display:block;
+    width:100%;
+    height:auto;
+    transition:transform 0.5s var(--ease-yandu);
   }
-  .project-card:hover .project-visual img{ transform:scale(1.05); }
+  .project-feature:hover .project-visual img{ transform:scale(1.04); }
   .project-visual .project-flag{
-    position:absolute; top:16px; left:16px;
+    position:absolute; top:18px; left:18px;
     background:var(--marigold); color:var(--ink);
     font-family:'Space Mono', monospace;
     font-size:10.5px; font-weight:700; letter-spacing:0.06em;
     padding:5px 12px; border-radius:4px;
+    animation:yanduFloat 3s ease-in-out infinite;
   }
-  .project-content{ padding:34px 32px; display:flex; flex-direction:column; gap:14px; }
+  @keyframes yanduFloat{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(-4px); }
+  }
+  .project-content{ display:flex; flex-direction:column; gap:14px; }
   .project-category{
     font-family:'Space Mono', monospace;
     font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
     color:var(--marigold-text);
   }
-  .project-content h3{ font-size:23px; color:var(--forest); margin-top:-6px; }
-  .project-content > p{ font-size:14.5px; color:var(--ink); opacity:0.85; }
+  .project-content h3{ font-size:28px; color:var(--forest); margin-top:-6px; }
+  .project-content > p{ font-size:15px; color:var(--ink); opacity:0.85; }
+  .project-role{ display:flex; flex-wrap:wrap; gap:5px 8px; align-items:baseline; }
+  .project-role-label{
+    font-family:'Space Mono', monospace;
+    font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--moss-text);
+  }
+  .project-role-value{ font-size:13.5px; color:var(--ink); opacity:0.85; }
   .project-tags{ display:flex; gap:8px; flex-wrap:wrap; }
   .project-tags span{
     font-family:'Space Mono', monospace;
@@ -494,11 +500,7 @@
   .project-btn svg{ transition:transform 0.18s var(--ease-yandu); }
   .project-btn:hover svg{ transform:translate(2px,-2px); }
   @media (max-width:800px){
-    .project-card{ grid-template-columns:1fr; }
-    .project-visual{ min-height:150px; }
-  }
-  @media (max-width:480px){
-    .project-content{ padding:26px 22px; }
+    .project-feature{ grid-template-columns:1fr; gap:24px; }
   }
 
   /* ===== SOLUÇÕES ===== */
@@ -937,16 +939,22 @@
     <h2 data-reveal="mask">Projetos</h2>
     <p class="lead" data-reveal="up" data-reveal-delay="0.08">Cada projeto nasce de um problema real. Aqui está o que já foi resolvido, com mais chegando.</p>
 
-    <div class="projects-grid">
-      <div class="project-card">
-        <div class="project-visual" data-reveal="left">
-          <span class="project-flag">NO AR AGORA</span>
-          <img src="assets/img/cuidadoras-conecta-preview.png" alt="Card de apresentação do Cuidadoras Conecta: fundo verde-escuro com o nome do projeto, a frase 'Cuidado de verdade, perto de você' e o selo de cadastro gratuito" width="1200" height="630" loading="lazy">
+    <div class="projects-list">
+      <div class="project-feature">
+        <div class="project-visual-wrap">
+          <div class="project-visual" data-reveal="mask">
+            <span class="project-flag">NO AR AGORA</span>
+            <img src="assets/img/cuidadoras-conecta-preview.png" alt="Card de apresentação do Cuidadoras Conecta: fundo verde-escuro com o nome do projeto, a frase 'Cuidado de verdade, perto de você' e o selo de cadastro gratuito" width="1200" height="630" loading="lazy">
+          </div>
         </div>
-        <div class="project-content" data-reveal="up" data-reveal-delay="0.15">
+        <div class="project-content" data-reveal="right" data-reveal-delay="0.15">
           <span class="project-category">Plataforma web</span>
           <h3>Cuidadoras Conecta</h3>
           <p>Conecta famílias a cuidadoras de idosos de forma direta, sem intermediário. Construído do zero: banco de dados, interface e hospedagem, no ar com gente usando de verdade.</p>
+          <div class="project-role">
+            <span class="project-role-label">Papel da Yandu</span>
+            <span class="project-role-value">Estratégia, UX, UI e desenvolvimento, do rascunho à publicação</span>
+          </div>
           <div class="project-tags" data-reveal-group="up" data-reveal-stagger="0.06">
             <span>Plataforma web</span>
             <span>Banco de dados</span>
@@ -963,10 +971,10 @@
       </div>
 
       <!--
-        Próximo projeto: duplique o bloco .project-card acima,
-        troque o conteúdo (problema, solução, tags, links) e ele
-        entra automaticamente na grade (projects-grid é responsiva
-        e aceita quantos cards forem necessários).
+        Próximo projeto: duplique o bloco .project-feature acima
+        dentro de .projects-list e troque o conteúdo. Cada peça
+        empilha verticalmente (projects-list), mantendo o tratamento
+        editorial em vez de virar grade de cards outra vez.
       -->
     </div>
   </div>
