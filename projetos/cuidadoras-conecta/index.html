@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuidadoras Conecta · Case study | Yandu</title>
+<meta name="description" content="Como a Yandu construiu do zero a plataforma que conecta famílias a cuidadoras de idosos no Vale do Rio Pardo: estratégia, UX, UI, desenvolvimento e publicação.">
+<meta name="theme-color" content="#1F3D2B">
+<link rel="canonical" href="https://yandu-site.vercel.app/projetos/cuidadoras-conecta">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Yandu">
+<meta property="og:title" content="Cuidadoras Conecta · Case study | Yandu">
+<meta property="og:description" content="Como a Yandu construiu do zero a plataforma que conecta famílias a cuidadoras de idosos no Vale do Rio Pardo.">
+<meta property="og:url" content="https://yandu-site.vercel.app/projetos/cuidadoras-conecta">
+<meta property="og:image" content="https://yandu-site.vercel.app/assets/img/cuidadoras-conecta-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cuidadoras Conecta · Case study | Yandu">
+<meta name="twitter:description" content="Como a Yandu construiu do zero a plataforma que conecta famílias a cuidadoras de idosos no Vale do Rio Pardo.">
+<meta name="twitter:image" content="https://yandu-site.vercel.app/assets/img/cuidadoras-conecta-preview.png">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231F3D2B'/%3E%3Ccircle cx='50' cy='78' r='9' fill='%23F6F3E9'/%3E%3Cpath d='M50 70 C 50 50, 38 42, 30 28' stroke='%23F6F3E9' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M50 70 C 50 50, 62 42, 70 28' stroke='%23F6F3E9' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='27' cy='22' rx='11' ry='7' fill='%23F6F3E9' transform='rotate(-30 27 22)'/%3E%3Cellipse cx='73' cy='22' rx='11' ry='7' fill='%23F6F3E9' transform='rotate(30 73 22)'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "Cuidadoras Conecta",
+  "creator": { "@type": "Organization", "name": "Yandu", "url": "https://yandu-site.vercel.app/" },
+  "about": "Plataforma que conecta famílias a cuidadoras de idosos e acompanhantes hospitalares no Vale do Rio Pardo, RS",
+  "url": "https://yandu-site.vercel.app/projetos/cuidadoras-conecta"
+}
+</script>
+
+<style>
+  :root{
+    --forest: #1F3D2B;
+    --sage: #EDEFE3;
+    --marigold: #E0793C;
+    --ink: #16241B;
+    --cream: #F6F3E9;
+    --moss: #6B8E6E;
+    --moss-text: #4F6B52;
+    --marigold-text: #A85426;
+    --marigold-on-dark: #EDA06B;
+    --ease-yandu: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-base: 0.6s;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--cream); color:var(--ink); font-family:'Inter', sans-serif; line-height:1.6; }
+  a{ color:inherit; text-decoration:none; }
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline:2.5px solid var(--marigold); outline-offset:3px; border-radius:4px;
+  }
+  .skip-link{
+    position:absolute; left:-999px; top:auto;
+    background:var(--marigold); color:var(--ink);
+    padding:12px 20px; border-radius:0 0 8px 0; font-weight:700; z-index:100;
+  }
+  .skip-link:focus{ left:0; top:0; }
+  .wrap{ max-width:920px; margin:0 auto; padding:0 24px; }
+  @media (max-width:480px){ .wrap{ padding:0 20px; } }
+  .eyebrow{
+    font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--moss-text); margin-bottom:14px;
+  }
+  h1, h2, h3{ font-family:'Quicksand', sans-serif; font-weight:700; color:var(--forest); }
+
+  /* ===== SISTEMA DE MOTION (reaproveitado do index.html, mesmos tokens/engine) ===== */
+  html.js-motion .reveal{ opacity:0; transform:translateY(24px); }
+  html.js-motion .reveal.reveal-left{ transform:translateX(-28px); }
+  html.js-motion .reveal.reveal-right{ transform:translateX(28px); }
+  html.js-motion .reveal.reveal-scale{ transform:scale(0.96); }
+  html.js-motion .reveal.reveal-mask{ transform:none; clip-path:inset(0 0 100% 0); }
+  .reveal.is-visible{
+    opacity:1 !important; transform:none !important; clip-path:inset(0 0 0% 0) !important;
+    transition:opacity var(--dur-base) var(--ease-yandu), transform var(--dur-base) var(--ease-yandu), clip-path 0.9s var(--ease-yandu);
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ transition-duration:0.01ms !important; animation-duration:0.01ms !important; }
+    .reveal{ opacity:1 !important; transform:none !important; clip-path:none !important; }
+  }
+
+  /* HEADER */
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(246,243,233,0.94);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(0,0,0,0.06);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px; max-width:1080px; margin:0 auto;
+  }
+  .brand{ display:flex; align-items:center; gap:8px; }
+  .brand svg{ width:24px; height:24px; }
+  .brand span{ font-family:'Quicksand', sans-serif; font-weight:700; font-size:18px; color:var(--forest); }
+  .nav-links{ display:flex; align-items:center; gap:20px; font-size:13.5px; font-weight:600; }
+  .nav-links a:hover{ color:var(--marigold-text); }
+  .nav-cta{
+    background:var(--forest); color:var(--cream);
+    padding:9px 16px; border-radius:5px; font-size:13px; font-weight:700;
+    transition:background-color 0.18s ease, transform 0.18s ease;
+  }
+  .nav-cta:hover{ background:#28492F; transform:translateY(-2px); }
+  @media (max-width:560px){ .nav-links a:not(.nav-cta){ display:none; } }
+
+  /* HERO DO CASE */
+  .case-hero{
+    background:var(--forest); color:var(--cream);
+    padding:72px 24px 64px;
+  }
+  .case-hero .eyebrow{ color:#9CBDA3; }
+  .case-hero h1{
+    font-size:clamp(32px, 5vw, 50px); line-height:1.08; color:var(--cream); margin-bottom:16px;
+  }
+  .case-hero .tagline{ font-size:19px; color:var(--marigold-on-dark); font-weight:600; margin-bottom:18px; }
+  .case-hero p{ font-size:16px; color:#D9E5DB; max-width:38em; margin-bottom:28px; }
+  .case-hero-meta{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:30px; }
+  .case-hero-meta span{
+    font-family:'Space Mono', monospace; font-size:11.5px; letter-spacing:0.05em;
+    border:1px solid rgba(246,243,233,0.3); color:#D9E5DB; padding:6px 12px; border-radius:20px;
+  }
+  .case-hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn-primary, .btn-secondary{ transition:transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease; }
+  .btn-primary{ background:var(--marigold); color:var(--ink); padding:13px 24px; border-radius:6px; font-weight:700; font-size:15px; display:inline-flex; align-items:center; gap:6px; }
+  .btn-primary:hover{ background:#EA8952; transform:translateY(-3px); box-shadow:0 10px 20px rgba(224,121,60,0.35); }
+  .btn-secondary{ border:1.5px solid #6B8E6E; color:var(--cream); padding:12px 22px; border-radius:6px; font-weight:600; font-size:15px; }
+  .btn-secondary:hover{ background:rgba(255,255,255,0.08); border-color:var(--cream); transform:translateY(-3px); }
+  .case-hero-image{ margin-top:40px; border-radius:14px; overflow:hidden; box-shadow:0 30px 60px rgba(0,0,0,0.3); max-width:640px; }
+  .case-hero-image img{ display:block; width:100%; height:auto; }
+
+  /* SECTION shared */
+  .case-section{ padding:64px 24px; }
+  .case-section.bg-sage{ background:var(--sage); }
+  .case-section h2{ font-size:clamp(22px, 3vw, 30px); margin-bottom:14px; }
+  .case-section .lead{ color:var(--moss-text); font-size:15.5px; max-width:44em; margin-bottom:20px; }
+  .case-section p{ font-size:15px; max-width:60em; margin-bottom:14px; }
+  .case-section p:last-child{ margin-bottom:0; }
+  .case-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:36px; }
+  .case-grid > div{ max-width:none; }
+  @media (max-width:480px){ .case-section{ padding:44px 20px; } }
+
+  .tag-list{ display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+  .tag-list span{
+    font-family:'Space Mono', monospace; font-size:11.5px; border:1px solid rgba(31,61,43,0.25);
+    color:var(--forest); padding:5px 12px; border-radius:20px;
+  }
+
+  .note-pending{
+    background:rgba(224,121,60,0.08);
+    padding:16px 20px; border-radius:8px; font-size:14px; color:var(--ink); opacity:0.9;
+  }
+  .note-pending::before{
+    content:"Pendente";
+    display:block;
+    font-family:'Space Mono', monospace;
+    font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--marigold-text); margin-bottom:8px;
+  }
+
+  .cta-final{
+    background:var(--forest); color:var(--cream); text-align:center; padding:72px 24px;
+  }
+  .cta-final .eyebrow{ color:#9CBDA3; }
+  .cta-final h2{ color:var(--cream); margin-bottom:14px; }
+  .cta-final p{ color:#D9E5DB; max-width:34em; margin:0 auto 28px; }
+  .cta-final .case-hero-ctas{ justify-content:center; }
+
+  footer{ padding:32px 24px; background:var(--cream); border-top:1px solid rgba(0,0,0,0.08); text-align:center; }
+  footer .footer-brand{ display:inline-flex; align-items:center; gap:8px; margin-bottom:10px; }
+  footer .footer-brand svg{ width:18px; height:18px; }
+  footer .footer-brand span{ font-family:'Quicksand', sans-serif; font-weight:700; color:var(--forest); }
+  footer .footer-copy{ font-family:'Space Mono', monospace; font-size:11px; color:var(--moss-text); }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Pular para o conteúdo</a>
+
+<header>
+  <nav>
+    <a href="/" class="brand">
+      <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#1F3D2B"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#1F3D2B" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#1F3D2B" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#1F3D2B" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#1F3D2B" transform="rotate(30 73 22)"/></svg>
+      <span>yandu</span>
+    </a>
+    <div class="nav-links">
+      <a href="/#projetos">Ver todos os projetos</a>
+      <a href="/#contato" class="nav-cta">Falar sobre um projeto</a>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO DO PROJETO -->
+<section class="case-hero" id="main-content">
+  <div class="wrap">
+    <div class="eyebrow" data-reveal="up">Case study · No ar agora</div>
+    <h1 data-reveal="mask">Cuidadoras Conecta</h1>
+    <p class="tagline" data-reveal="up" data-reveal-delay="0.08">"Cuidado de verdade, perto de você."</p>
+    <p data-reveal="up" data-reveal-delay="0.14">Plataforma que conecta famílias a cuidadoras de idosos e acompanhantes hospitalares de confiança no Vale do Rio Pardo (RS), de forma direta, sem intermediário. Construída pela Yandu do zero: banco de dados, interface e hospedagem.</p>
+    <div class="case-hero-meta" data-reveal-group="up" data-reveal-stagger="0.05">
+      <span>Plataforma web</span>
+      <span>Banco de dados</span>
+      <span>Deploy em produção</span>
+      <span>Santa Cruz do Sul e região</span>
+    </div>
+    <div class="case-hero-ctas" data-reveal="up" data-reveal-delay="0.2">
+      <a href="https://cuidadoras-conecta-rs.vercel.app/" target="_blank" rel="noopener" class="btn-primary">
+        Acessar o produto
+        <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
+      </a>
+      <a href="/#projetos" class="btn-secondary">Ver na Home</a>
+    </div>
+    <div class="case-hero-image" data-reveal="mask">
+      <img src="/assets/img/cuidadoras-conecta-preview.png" alt="Card de apresentação do Cuidadoras Conecta: fundo verde-escuro com o nome do projeto e a frase 'Cuidado de verdade, perto de você'" width="1200" height="630" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- VISÃO GERAL -->
+<section class="case-section" id="visao-geral">
+  <div class="wrap">
+    <div class="eyebrow" data-reveal="up">Visão geral</div>
+    <h2 data-reveal="mask">Do problema real a um produto no ar</h2>
+    <p data-reveal="up">O Cuidadoras Conecta nasceu de uma dor concreta: encontrar cuidadora de confiança pra um idoso da família, na região do Vale do Rio Pardo, dependia de indicação boca a boca e grupo de WhatsApp. A Yandu conduziu o projeto inteiro (estratégia, UX, UI, desenvolvimento e publicação) até virar uma plataforma web própria, no ar, com gente usando de verdade.</p>
+  </div>
+</section>
+
+<!-- PROBLEMA, PÚBLICO, OBJETIVOS -->
+<section class="case-section bg-sage" id="problema">
+  <div class="wrap">
+    <div class="case-grid">
+      <div data-reveal="left">
+        <div class="eyebrow">Problema</div>
+        <h2>Conexão informal e desorganizada</h2>
+        <p>Famílias e cuidadoras se encontravam sem um lugar central pra isso: recomendação pessoal, grupos de bairro, tentativa e erro. Sem canal confiável, o processo demorava e gerava insegurança pros dois lados.</p>
+      </div>
+      <div data-reveal="up" data-reveal-delay="0.08" id="publico">
+        <div class="eyebrow">Público</div>
+        <h2>Dois lados da mesma necessidade</h2>
+        <p>De um lado, famílias buscando cuidado de confiança pra um idoso. Do outro, cuidadoras de idosos e acompanhantes hospitalares da região buscando trabalho. A plataforma precisa servir bem os dois, não só um.</p>
+      </div>
+      <div data-reveal="right" id="objetivos">
+        <div class="eyebrow">Objetivos</div>
+        <h2>Conexão direta, sem barreira</h2>
+        <p>Criar um canal direto entre quem cuida e quem precisa de cuidado, gratuito pra cuidadoras se cadastrarem, sem burocracia, cobrindo várias cidades da região, não só a sede.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESTRATÉGIA E ARQUITETURA -->
+<section class="case-section" id="estrategia">
+  <div class="case-grid wrap">
+    <div data-reveal="left">
+      <div class="eyebrow">Estratégia</div>
+      <h2>Yandu do primeiro rascunho à publicação</h2>
+      <p>Sem repasse entre quem decide e quem constrói: a Yandu conduziu entendimento do problema, estratégia, UX, UI e desenvolvimento até o deploy em produção, com atenção direta em cada etapa.</p>
+    </div>
+    <div data-reveal="right" id="arquitetura">
+      <div class="eyebrow">Arquitetura</div>
+      <h2>Banco de dados próprio, deploy em produção</h2>
+      <p>Aplicação web com banco de dados estruturado, construída do zero (não é um site institucional estático) e hospedada na Vercel, com deploy contínuo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- UX E UI -->
+<section class="case-section bg-sage" id="ux">
+  <div class="case-grid wrap">
+    <div data-reveal="left">
+      <div class="eyebrow">UX</div>
+      <h2>Dois caminhos de entrada claros</h2>
+      <p>A navegação separa desde o primeiro momento quem busca cuidado de quem oferece cuidado, cada um com seu próprio CTA. Uma barra de confiança (cidades atendidas, gratuidade pra cuidadoras, ausência de burocracia) aparece logo na primeira dobra, reduzindo a insegurança de quem chega.</p>
+    </div>
+    <div data-reveal="right" id="ui">
+      <div class="eyebrow">UI</div>
+      <h2>Identidade acolhedora, não corporativa</h2>
+      <p>Paleta terrosa (verde-escuro, creme, laranja), ilustrações de árvores reforçando a ideia de raiz e região, tipografia serifada com presença (Fraunces) combinada com Atkinson Hyperlegible, fonte desenhada especificamente pra legibilidade: uma escolha de acessibilidade deliberada, não só estética.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FUNCIONALIDADES -->
+<section class="case-section" id="funcionalidades">
+  <div class="wrap">
+    <div class="eyebrow" data-reveal="up">Principais funcionalidades</div>
+    <h2 data-reveal="mask">O que o produto faz</h2>
+    <div class="tag-list" data-reveal-group="up" data-reveal-stagger="0.05">
+      <span>Busca de cuidadoras por cidade</span>
+      <span>Cadastro gratuito de cuidadoras</span>
+      <span>Conexão direta, sem intermediário</span>
+      <span>Cobertura multi-cidade na região</span>
+      <span>Indicadores de confiança na Home</span>
+    </div>
+  </div>
+</section>
+
+<!-- TELAS DESKTOP E MOBILE -->
+<section class="case-section bg-sage" id="telas-desktop">
+  <div class="wrap">
+    <div class="eyebrow" data-reveal="up">Telas desktop e mobile</div>
+    <h2 data-reveal="mask">Ainda sem capturas reais nesta versão</h2>
+    <p data-reveal="up">Esta seção está preparada, mas não tem capturas de tela reais da interface ainda. O Hero do produto usa uma cena animada em Three.js (WebGL), o que torna uma screenshot estática pouco representativa da experiência de verdade. A forma mais fiel de conhecer as telas é acessar o produto no ar.</p>
+    <div class="case-hero-ctas" data-reveal="up" data-reveal-delay="0.08" id="telas-mobile">
+      <a href="https://cuidadoras-conecta-rs.vercel.app/" target="_blank" rel="noopener" class="btn-secondary" style="color:var(--forest); border-color:var(--forest);">
+        Ver o produto ao vivo
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TECNOLOGIAS -->
+<section class="case-section" id="tecnologias">
+  <div class="wrap">
+    <div class="eyebrow" data-reveal="up">Tecnologias</div>
+    <h2 data-reveal="mask">O que roda por baixo</h2>
+    <div class="tag-list" data-reveal-group="up" data-reveal-stagger="0.05">
+      <span>HTML5 · CSS3 · JavaScript</span>
+      <span>Three.js (cena animada no Hero)</span>
+      <span>AOS (animações de scroll)</span>
+      <span>Google Fonts: Fraunces + Atkinson Hyperlegible</span>
+      <span>Hospedagem Vercel</span>
+    </div>
+  </div>
+</section>
+
+<!-- SEO E ACESSIBILIDADE -->
+<section class="case-section bg-sage" id="seo-acessibilidade">
+  <div class="wrap">
+    <div class="eyebrow" data-reveal="up">SEO e acessibilidade</div>
+    <h2 data-reveal="mask">Legibilidade como decisão de design</h2>
+    <p data-reveal="up">A escolha da Atkinson Hyperlegible pro texto de corpo é uma decisão de acessibilidade explícita: é uma fonte desenhada pela Braille Institute especificamente pra maximizar legibilidade pra baixa visão. Uma auditoria completa de SEO técnico e acessibilidade deste produto (fora do escopo do site institucional da Yandu) ainda não foi feita. Fica registrado aqui como próximo passo, não como algo já validado.</p>
+  </div>
+</section>
+
+<!-- APRENDIZADOS E PRÓXIMOS PASSOS -->
+<section class="case-section" id="aprendizados">
+  <div class="case-grid wrap">
+    <div data-reveal="left">
+      <div class="eyebrow">Aprendizados</div>
+      <h2>Pendente</h2>
+      <div class="note-pending">Aprendizados documentados formalmente sobre este projeto ainda não existem. Se você tiver reflexões sobre o que funcionou bem ou o que faria diferente, esta seção está pronta pra receber esse conteúdo, sem inventar nada no lugar.</div>
+    </div>
+    <div data-reveal="right" id="proximos-passos">
+      <div class="eyebrow">Próximos passos</div>
+      <h2>Pendente</h2>
+      <div class="note-pending">O roadmap do produto é definido pelo time do Cuidadoras Conecta, não pela Yandu isoladamente. Assim que houver próximos passos compartilháveis, eles entram aqui.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL / LINK PARA O PRODUTO -->
+<section class="cta-final" id="produto">
+  <div class="wrap">
+    <div class="eyebrow" data-reveal="up">Link para o produto</div>
+    <h2 data-reveal="mask">Conhecer o Cuidadoras Conecta ao vivo</h2>
+    <p data-reveal="up">A melhor forma de entender o produto é usando. Ele está no ar, gratuito pra cuidadoras se cadastrarem, atendendo a região do Vale do Rio Pardo.</p>
+    <div class="case-hero-ctas" data-reveal="up" data-reveal-delay="0.08">
+      <a href="https://cuidadoras-conecta-rs.vercel.app/" target="_blank" rel="noopener" class="btn-primary">
+        Acessar cuidadoras-conecta-rs.vercel.app
+        <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
+      </a>
+      <a href="/#contato" class="btn-secondary">Falar sobre o seu projeto</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="/" class="footer-brand">
+    <svg aria-hidden="true" viewBox="0 0 100 100"><circle cx="50" cy="78" r="9" fill="#1F3D2B"/><path d="M50 70 C 50 50, 38 42, 30 28" stroke="#1F3D2B" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M50 70 C 50 50, 62 42, 70 28" stroke="#1F3D2B" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="27" cy="22" rx="11" ry="7" fill="#1F3D2B" transform="rotate(-30 27 22)"/><ellipse cx="73" cy="22" rx="11" ry="7" fill="#1F3D2B" transform="rotate(30 73 22)"/></svg>
+    <span>yandu</span>
+  </a>
+  <div class="footer-copy">© <span id="year"></span> yandu · case study · Cuidadoras Conecta</div>
+</footer>
+
+<script>
+  (function(){
+    var yearEl = document.getElementById('year');
+    if(yearEl){ yearEl.textContent = new Date().getFullYear(); }
+  })();
+</script>
+
+<script src="../../assets/vendor/gsap.min.js" defer></script>
+<script src="../../assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="../../assets/js/motion.js" defer></script>
+
+</body>
+</html>
