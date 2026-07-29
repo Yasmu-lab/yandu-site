@@ -918,6 +918,14 @@
       transform:none !important;
       clip-path:none !important;
     }
+    /* animações com iteration-count:infinite não param só com
+       duration:0.01ms — ficam repetindo em alta frequência, o que
+       pisca/treme em vez de parar. Precisam de animation:none
+       explícito. */
+    .marquee-track, .project-flag{
+      animation:none !important;
+    }
+    html{ scroll-behavior:auto; }
   }
 </style>
 </head>
