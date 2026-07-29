@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://yandu-site.vercel.app/sitemap.xml
