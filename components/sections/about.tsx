@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { LogoMark } from "@/components/logo-mark";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/section-heading";
+import { ABOUT } from "@/content/site";
 import { fadeUp } from "@/lib/motion";
 
 export function About() {
@@ -12,7 +13,7 @@ export function About() {
     <section id="sobre" className="bg-sage px-6 py-22 md:py-28">
       <div className="mx-auto grid max-w-[1080px] items-center gap-12 md:grid-cols-2">
         <div className="order-2 md:order-1">
-          <SectionHeading eyebrow="Quem constrói" title="A Yandu" className="mb-6" />
+          <SectionHeading eyebrow={ABOUT.eyebrow} title={ABOUT.title} className="mb-6" />
           <div className="relative pl-5">
             <motion.span
               aria-hidden="true"
@@ -22,20 +23,11 @@ export function About() {
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="absolute left-0 top-1 h-[calc(100%-8px)] w-0.5 origin-top bg-gradient-to-b from-moss to-marigold"
             />
-            <Reveal variants={fadeUp}>
-              <p className="mb-4 text-base text-ink">
-                Somos um estúdio digital do Vale do Rio Pardo (RS) que existe pra transformar ideia
-                e processo em produto digital de verdade — não só uma página bonita, mas algo que
-                sustenta a operação de um negócio.
-              </p>
-            </Reveal>
-            <Reveal variants={fadeUp} delay={0.1}>
-              <p className="text-base text-ink">
-                Cobrimos da estratégia ao deploy em produção, com a mesma equipe do início ao fim.
-                Isso significa menos retrabalho, menos perda de contexto e um produto pensado do
-                jeito que seu negócio realmente opera.
-              </p>
-            </Reveal>
+            {ABOUT.paragraphs.map((paragraph, i) => (
+              <Reveal key={paragraph} variants={fadeUp} delay={i * 0.1}>
+                <p className="mb-4 text-base text-ink last:mb-0">{paragraph}</p>
+              </Reveal>
+            ))}
           </div>
         </div>
 
