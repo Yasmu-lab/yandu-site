@@ -13,20 +13,20 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { href: "#projetos", label: "Projetos" },
-  { href: "#servicos", label: "Serviços" },
-  { href: "#processo", label: "Processo" },
-  { href: "#sobre", label: "Sobre" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#servicos", label: "Serviços" },
+  { href: "/#processo", label: "Processo" },
+  { href: "/#projetos", label: "Projetos" },
+  { href: "/#sobre", label: "Sobre" },
+  { href: "/#faq", label: "FAQ" },
 ] as const;
 
 export const HERO = {
   eyebrow: "Estúdio digital · Vale do Rio Pardo",
   prefix: "Criamos",
   rotatingWords: ["Sites", "Sistemas", "Automações", "Experiências Digitais"],
-  lead: "A Yandu transforma sua ideia num negócio digital que funciona de verdade: do primeiro entendimento até o dia em que tudo está no ar, pronto pra ser usado.",
-  primaryCta: { href: "#contato", label: "Chama agora" },
-  secondaryCta: { href: "#projetos", label: "Ver projetos" },
+  lead: "Ideia boa parada na gaveta não vale nada. A Yandu tira a sua de lá e transforma em algo que funciona de verdade — rápido, bonito e no ar.",
+  primaryCta: { href: "/#contato", label: "Chama agora" },
+  secondaryCta: { href: "/#projetos", label: "Ver projetos" },
 } as const;
 
 export const CAPACITIES = [
@@ -44,10 +44,13 @@ export const CAPACITIES = [
 export type Project = {
   slug: string;
   flag: string;
+  category: string;
   title: string;
+  shortDescription: string;
   description: string;
   problem: string;
   solution: string;
+  result: string;
   tags: string[];
   image: { src: string; alt: string; width: number; height: number };
   video?: string;
@@ -58,13 +61,18 @@ export const PROJECTS: Project[] = [
   {
     slug: "cuidadoras-conecta",
     flag: "No ar agora",
+    category: "Plataforma web",
     title: "Cuidadoras Conecta",
+    shortDescription:
+      "Uma plataforma que aproxima famílias de cuidadoras de verdade, com mais segurança e menos informalidade.",
     description:
       "Construímos do zero um espaço só deles: um jeito simples e seguro de famílias encontrarem cuidadoras de verdade, sem depender de indicação boca a boca ou grupo de WhatsApp desorganizado.",
     problem:
       "Famílias e cuidadoras se encontravam de forma informal e desorganizada, sem um lugar central e confiável pra isso.",
     solution:
       "Criamos um espaço próprio pra essa conexão acontecer — já no ar, funcionando todos os dias, com gente usando de verdade.",
+    result:
+      "Está no ar e em uso real por famílias e cuidadoras do Vale do Rio Pardo, com cadastro aberto e gratuito.",
     tags: ["Feito sob medida", "Já no ar", "Sistema completo"],
     image: {
       src: "/images/cuidadoras-conecta-preview.png",
@@ -77,6 +85,7 @@ export const PROJECTS: Project[] = [
         href: "https://cuidadoras-conecta-rs.vercel.app/",
         label: "Acessar site",
       },
+      caseHref: "/projetos/cuidadoras-conecta",
     },
   },
 ];
@@ -170,7 +179,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Quanto tempo leva um projeto?",
     answer:
-      "Depende do tamanho: um site institucional costuma levar de 2 a 3 semanas; sistemas mais completos variam de 4 a 10 semanas. Isso é definido junto com você logo no começo.",
+      "Depende do tamanho e da complexidade do que você precisa. A gente te passa um prazo realista assim que entende o que precisa ser feito — sem chute e sem enrolação.",
   },
   {
     question: "Vocês atendem fora do Vale do Rio Pardo?",
@@ -190,7 +199,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Vocês fazem só as telas ou também constroem o sistema?",
     answer:
-      "Os dois, com a mesma equipe do início ao fim — do primeiro entendimento até o dia em que está tudo no ar. Isso evita retrabalho e garante que nada se perde no meio do caminho.",
+      "Os dois. É a mesma equipe que pensa a tela e constrói o que funciona por trás dela — assim nada se perde na tradução entre um e outro.",
   },
 ] as const;
 
@@ -199,7 +208,7 @@ export const ABOUT = {
   title: "A Yandu",
   paragraphs: [
     "Somos um estúdio digital do Vale do Rio Pardo (RS) que existe pra transformar ideia em negócio digital de verdade — não só uma página bonita, mas algo que sustenta o dia a dia de quem trabalha.",
-    "Cuidamos de tudo, do primeiro entendimento até o dia em que está tudo no ar, com a mesma equipe do início ao fim. Isso significa menos retrabalho e uma solução pensada do jeito que seu negócio realmente funciona.",
+    "A mesma equipe cuida de tudo, da primeira conversa até o dia em que está no ar. Menos gente no meio, menos retrabalho, e uma solução pensada pro seu negócio — não pro concorrente.",
   ],
 } as const;
 

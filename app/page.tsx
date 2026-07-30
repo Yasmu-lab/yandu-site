@@ -12,9 +12,9 @@ export default function Home() {
     <main>
       <Hero />
       <CapacitiesStrip />
-      <Projects />
       <Services />
       <Process />
+      <Projects />
       <About />
       <FAQ />
       <Contact />

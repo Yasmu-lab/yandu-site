@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { LogoMark } from "@/components/logo-mark";
@@ -27,8 +28,8 @@ export function SiteHeader() {
   }, []);
 
   useEffect(() => {
-    const sections = NAV_LINKS.map((l) => document.querySelector(l.href)).filter(
-      (el): el is Element => Boolean(el),
+    const sections = NAV_LINKS.map((l) => document.getElementById(l.href.split("#")[1])).filter(
+      (el): el is HTMLElement => Boolean(el),
     );
     if (!sections.length) return;
 
@@ -36,7 +37,7 @@ export function SiteHeader() {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setActiveHash(`#${entry.target.id}`);
+            setActiveHash(`/#${entry.target.id}`);
           }
         }
       },
@@ -60,16 +61,16 @@ export function SiteHeader() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto flex max-w-[1080px] items-center justify-between px-6 py-4"
       >
-        <a href="#main-content" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <LogoMark className="h-[26px] w-[26px]" />
           <span className="font-heading text-[19px] font-bold text-forest">
             {SITE.name.toLowerCase()}
           </span>
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-5 text-[13.5px] font-semibold md:flex">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className={cn(
@@ -78,13 +79,13 @@ export function SiteHeader() {
               )}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#contato"
+          <Link
+            href="/#contato"
             className={cn(
               "hidden rounded-md bg-forest px-4.5 py-2.5 text-[13px] font-bold text-cream opacity-0 transition-all duration-300 hover:bg-forest-deep md:inline-flex",
               ctaVisible && "opacity-100",
@@ -92,7 +93,7 @@ export function SiteHeader() {
             style={{ pointerEvents: ctaVisible ? "auto" : "none" }}
           >
             Chama agora
-          </a>
+          </Link>
           <button
             type="button"
             aria-expanded={menuOpen}

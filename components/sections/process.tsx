@@ -31,7 +31,7 @@ export function Process() {
           <SectionHeading
             eyebrow="Como cada projeto acontece"
             title="Como trabalhamos"
-            lead="Seis etapas reais, sem atalho, do primeiro entendimento até o dia em que está tudo no ar."
+            lead="Sem atalho e sem passo pulado: seis etapas reais, uma de cada vez."
             className="mb-12"
           />
           <ProcessMobileList />
@@ -47,7 +47,7 @@ export function Process() {
           <SectionHeading
             eyebrow="Como cada projeto acontece"
             title="Como trabalhamos"
-            lead="Seis etapas reais, sem atalho, do primeiro entendimento até o dia em que está tudo no ar."
+            lead="Sem atalho e sem passo pulado: seis etapas reais, uma de cada vez."
             className="mb-12"
           />
           <ProcessMobileList />

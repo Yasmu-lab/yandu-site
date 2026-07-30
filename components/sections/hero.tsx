@@ -4,11 +4,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { useRef } from "react";
 
-import { FloatingMockup } from "@/components/motion/floating-mockup";
+import { HeroStage } from "@/components/hero/hero-stage";
 import { MagneticButton } from "@/components/motion/magnetic-button";
-import { OrganicBlob } from "@/components/motion/organic-blob";
 import { RotatingWord } from "@/components/motion/rotating-word";
-import { SignatureLine } from "@/components/motion/signature-line";
 import { Button } from "@/components/ui/button";
 import { HERO, PROJECTS } from "@/content/site";
 import { EASE_YANDU } from "@/lib/motion";
@@ -21,8 +19,8 @@ export function Hero() {
     target: ref,
     offset: ["start start", "end start"],
   });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const mockupParallaxY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const stageParallaxY = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const featuredProject = PROJECTS[0];
 
@@ -30,20 +28,9 @@ export function Hero() {
     <section
       ref={ref}
       id="main-content"
-      className="relative overflow-hidden bg-forest px-6 pb-28 pt-32 text-cream md:pb-40 md:pt-40"
+      className="relative overflow-hidden bg-[radial-gradient(120%_100%_at_50%_0%,#264a34_0%,#1F3D2B_45%,#142a1d_100%)] px-6 pb-28 pt-32 text-cream md:pb-40 md:pt-40"
     >
-      <OrganicBlob
-        className="left-[-10%] top-[-10%] h-[420px] w-[420px]"
-        color="var(--color-moss)"
-        speed={40}
-      />
-      <OrganicBlob
-        className="right-[-15%] bottom-[-15%] h-[480px] w-[480px]"
-        color="var(--color-marigold)"
-        speed={70}
-      />
-
-      <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
+      <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-16 md:grid-cols-[1.05fr_0.95fr]">
         <motion.div
           style={reduceMotion ? undefined : { y: parallaxY, opacity: fade }}
           className="text-center md:text-left"
@@ -105,21 +92,19 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          style={reduceMotion ? undefined : { y: mockupParallaxY }}
-          className="hidden md:block"
+          style={reduceMotion ? undefined : { y: stageParallaxY }}
+          className="relative h-[340px] sm:h-[400px] md:h-[460px]"
         >
-          <FloatingMockup
+          <HeroStage
             src={featuredProject.image.src}
             alt={featuredProject.image.alt}
-            className="mx-auto w-full max-w-[420px] rotate-3"
+            className="relative h-full"
           />
         </motion.div>
       </div>
 
-      <SignatureLine tone="dark" className="absolute inset-x-0 bottom-0 h-[140px] w-full opacity-80 md:h-[200px]" />
-
       <motion.a
-        href="#projetos"
+        href="/#projetos"
         aria-label="Rolar para a próxima seção"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.7 }}
