@@ -24,22 +24,21 @@ export const HERO = {
   eyebrow: "Estúdio digital · Vale do Rio Pardo",
   prefix: "Criamos",
   rotatingWords: ["Sites", "Sistemas", "Automações", "Experiências Digitais"],
-  lead: "A Yandu transforma ideia e processo em produto digital que funciona: pensado do jeito que seu negócio realmente opera, do primeiro rascunho ao deploy em produção.",
+  lead: "A Yandu transforma sua ideia num negócio digital que funciona de verdade: do primeiro entendimento até o dia em que tudo está no ar, pronto pra ser usado.",
   primaryCta: { href: "#contato", label: "Chama agora" },
   secondaryCta: { href: "#projetos", label: "Ver projetos" },
 } as const;
 
 export const CAPACITIES = [
-  "Estratégia de produto",
-  "UX",
-  "UI",
-  "Desenvolvimento",
-  "Arquitetura de sistemas",
-  "SEO técnico",
-  "Performance",
-  "Acessibilidade",
-  "Automação",
-  "Integrações",
+  "Planejamento estratégico",
+  "Telas fáceis de usar",
+  "Construção sob medida",
+  "Sistemas bem organizados",
+  "Aparecer no Google",
+  "Carregamento rápido",
+  "Acessível pra todo mundo",
+  "Tarefas automáticas",
+  "Sistemas conversando entre si",
 ] as const;
 
 export type Project = {
@@ -61,12 +60,12 @@ export const PROJECTS: Project[] = [
     flag: "No ar agora",
     title: "Cuidadoras Conecta",
     description:
-      "Plataforma completa construída do zero, do banco de dados à hospedagem, conectando famílias a cuidadoras de forma simples e organizada.",
+      "Construímos do zero um espaço só deles: um jeito simples e seguro de famílias encontrarem cuidadoras de verdade, sem depender de indicação boca a boca ou grupo de WhatsApp desorganizado.",
     problem:
       "Famílias e cuidadoras se encontravam de forma informal e desorganizada, sem um lugar central e confiável pra isso.",
     solution:
-      "Plataforma web própria, com banco de dados estruturado e deploy em produção — no ar, com gente usando de verdade.",
-    tags: ["Plataforma web", "Banco de dados", "Deploy em produção"],
+      "Criamos um espaço próprio pra essa conexão acontecer — já no ar, funcionando todos os dias, com gente usando de verdade.",
+    tags: ["Feito sob medida", "Já no ar", "Sistema completo"],
     image: {
       src: "/images/cuidadoras-conecta-preview.png",
       alt: "Card de apresentação do Cuidadoras Conecta: fundo verde-escuro com o nome do projeto, a frase 'Cuidado de verdade, perto de você' e o selo de cadastro gratuito",
@@ -95,28 +94,28 @@ export const SERVICES: Service[] = [
     title: "Sites",
     short: "Presença digital",
     description:
-      "Site institucional ou landing page pra você existir online de forma profissional e ser encontrado por quem procura o que você faz.",
+      "Um site bonito, rápido e fácil de usar pra você existir online, ser encontrado no Google e passar confiança pra quem chega até você.",
   },
   {
     slug: "sistemas",
     title: "Sistemas",
-    short: "Produtos digitais",
+    short: "Feito sob medida",
     description:
-      "Plataformas e sistemas web construídos do zero, com banco de dados e lógica de negócio real por trás — não só uma página estática.",
+      "Seu próprio sistema, pensado do jeito que seu negócio realmente funciona — com tudo o que você precisa organizado num só lugar.",
   },
   {
     slug: "automacoes",
     title: "Automações",
     short: "Menos trabalho manual",
     description:
-      "Fluxos automáticos que organizam pedidos, atendimento e informações. Menos trabalho manual, menos coisa esquecida.",
+      "Tarefas repetitivas acontecendo sozinhas: pedidos, respostas e organização em dia, sem alguém precisando copiar e colar nada.",
   },
   {
-    slug: "ux-ui",
-    title: "UX/UI",
-    short: "Design que resolve",
+    slug: "integracoes",
+    title: "Integrações",
+    short: "Sistemas conversando",
     description:
-      "Wireframes que viram telas finais com intenção: cada decisão visual existe pra guiar o olhar e facilitar a decisão de quem usa.",
+      "Conectamos as ferramentas que você já usa pra que troquem informação sozinhas, sem retrabalho e sem planilha duplicada.",
   },
 ] as const;
 
@@ -129,33 +128,39 @@ export type ProcessStep = {
 export const PROCESS_STEPS: ProcessStep[] = [
   {
     step: "01",
-    title: "Descoberta",
+    title: "Entendimento",
     description:
-      "Entendemos seu negócio, seu público e o problema real por trás do pedido, antes de desenhar qualquer solução.",
+      "Ouvimos você antes de qualquer coisa: seu negócio, seu público e o problema real que precisa ser resolvido.",
   },
   {
     step: "02",
-    title: "Estratégia",
+    title: "Planejamento",
     description:
-      "Definimos escopo, prioridades e arquitetura da solução — o que entra na primeira entrega e o que vem depois.",
+      "Decidimos juntos o que entra primeiro e o que vem depois, pra cada entrega já nascer com propósito claro.",
   },
   {
     step: "03",
     title: "Design",
     description:
-      "Wireframes viram telas finais, com identidade visual própria e decisões guiadas por como as pessoas realmente usam.",
+      "Transformamos a ideia em telas bonitas, intuitivas e fáceis de usar — pensadas pra quem vai usar de verdade.",
   },
   {
     step: "04",
     title: "Desenvolvimento",
     description:
-      "Construção com padrão de produção: banco de dados, performance e acessibilidade desde a primeira linha de código.",
+      "Construímos tudo com cuidado técnico nos bastidores, pra funcionar rápido, com segurança e sem trava.",
   },
   {
     step: "05",
-    title: "Entrega",
+    title: "Publicação",
     description:
-      "Deploy em produção, validado ponta a ponta, com a base de código pronta pra crescer conforme seu negócio evolui.",
+      "Colocamos sua solução no ar, pronta pra uso, testada de ponta a ponta antes de chegar até você.",
+  },
+  {
+    step: "06",
+    title: "Evolução",
+    description:
+      "Acompanhamos depois da entrega, prontos pra crescer e evoluir junto com o seu negócio.",
   },
 ] as const;
 
@@ -165,7 +170,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Quanto tempo leva um projeto?",
     answer:
-      "Depende do escopo: um site institucional costuma levar de 2 a 3 semanas; sistemas e plataformas com banco de dados variam de 4 a 10 semanas. Isso é definido junto com você na fase de Estratégia.",
+      "Depende do tamanho: um site institucional costuma levar de 2 a 3 semanas; sistemas mais completos variam de 4 a 10 semanas. Isso é definido junto com você logo no começo.",
   },
   {
     question: "Vocês atendem fora do Vale do Rio Pardo?",
@@ -178,16 +183,25 @@ export const FAQ_ITEMS: FaqItem[] = [
       "Não. Se você ainda não tem marca definida, isso entra na fase de Design junto com o restante do projeto.",
   },
   {
-    question: "Como funciona a manutenção depois da entrega?",
+    question: "E se eu precisar mudar alguma coisa depois que ficar pronto?",
     answer:
-      "Todo projeto sai com documentação e arquitetura pensada pra evoluir. Manutenção e novas features podem ser contratadas sob demanda.",
+      "Toda solução já nasce pronta pra crescer. Se quiser adicionar algo novo ou ajustar alguma coisa depois, é só chamar a gente.",
   },
   {
-    question: "Vocês fazem só o design ou também o desenvolvimento?",
+    question: "Vocês fazem só as telas ou também constroem o sistema?",
     answer:
-      "Os dois. A Yandu cobre da estratégia ao deploy em produção — design e desenvolvimento pela mesma equipe, sem perda de contexto entre etapas.",
+      "Os dois, com a mesma equipe do início ao fim — do primeiro entendimento até o dia em que está tudo no ar. Isso evita retrabalho e garante que nada se perde no meio do caminho.",
   },
 ] as const;
+
+export const ABOUT = {
+  eyebrow: "Quem constrói",
+  title: "A Yandu",
+  paragraphs: [
+    "Somos um estúdio digital do Vale do Rio Pardo (RS) que existe pra transformar ideia em negócio digital de verdade — não só uma página bonita, mas algo que sustenta o dia a dia de quem trabalha.",
+    "Cuidamos de tudo, do primeiro entendimento até o dia em que está tudo no ar, com a mesma equipe do início ao fim. Isso significa menos retrabalho e uma solução pensada do jeito que seu negócio realmente funciona.",
+  ],
+} as const;
 
 export const CONTACT = {
   eyebrow: "Vamos conversar",
