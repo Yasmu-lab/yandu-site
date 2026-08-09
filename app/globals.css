@@ -1,23 +1,20 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-forest: #1f3d2b;
-  --color-forest-deep: #142a1d;
-  --color-sage: #edefe3;
-  --color-marigold: #e0793c;
-  --color-marigold-hover: #ea8952;
-  --color-ink: #16241b;
-  --color-cream: #f6f3e9;
-  --color-moss: #6b8e6e;
+  --color-bg: #faf6ed;
+  --color-ink: #173f39;
+  --color-ink-deep: #0e312c;
+  --color-panel: #f1eadc;
+  --color-coral: #ed735f;
+  --color-hero-text: #f6f0e4;
 
-  /* WCAG AA-safe text variants for use as foreground color on light/dark bg */
-  --color-moss-text: #4f6b52;
-  --color-marigold-text: #a85426;
-  --color-marigold-on-dark: #eda06b;
+  /* WCAG AA-safe variants */
+  --color-coral-text: #c14f3c;
+  --color-ink-soft: #173f39cc;
 
-  --font-heading: var(--font-quicksand);
-  --font-body: var(--font-inter);
-  --font-mono: var(--font-space-mono);
+  --font-sans: var(--font-geist-sans);
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-geist-mono);
 
   --ease-yandu: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 0.3s;
@@ -30,19 +27,30 @@ html {
   overflow-x: hidden;
 }
 
+/* Header is fixed (not sticky), so anchored scroll targets need room
+   to clear it instead of landing underneath. */
+section[id] {
+  scroll-margin-top: 88px;
+}
+
 body {
-  background: var(--color-cream);
+  background: var(--color-bg);
   color: var(--color-ink);
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--font-sans), Arial, sans-serif;
 }
 
 body.menu-open {
   overflow: hidden;
 }
 
+.font-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
 ::selection {
-  background: var(--color-marigold);
-  color: var(--color-ink);
+  background: var(--color-coral);
+  color: var(--color-hero-text);
 }
 
 /* Focus visibility must survive every custom :focus reset below */
@@ -50,7 +58,7 @@ a:focus-visible,
 button:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2.5px solid var(--color-marigold);
+  outline: 2.5px solid var(--color-coral);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -59,8 +67,8 @@ summary:focus-visible,
   position: fixed;
   left: -999px;
   top: auto;
-  background: var(--color-marigold);
-  color: var(--color-ink);
+  background: var(--color-coral);
+  color: var(--color-hero-text);
   padding: 12px 20px;
   border-radius: 0 0 8px 0;
   font-weight: 700;
@@ -72,13 +80,31 @@ summary:focus-visible,
   top: 0;
 }
 
-/* Custom cursor: only ever enabled by JS on fine-pointer, motion-safe
-   desktops. Everyone else (touch, reduced motion, no-JS) keeps the
-   system cursor -- this class is the single on/off switch. */
-.has-custom-cursor,
-.has-custom-cursor a,
-.has-custom-cursor button {
-  cursor: none;
+@keyframes hero-ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+.hero-media .hero-video,
+.hero-media img {
+  animation: hero-ken-burns 20s ease-in-out infinite alternate;
+}
+
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll 28s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
