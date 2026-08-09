@@ -1,22 +1,18 @@
-import { About } from "@/components/sections/about";
-import { CapacitiesStrip } from "@/components/sections/capacities-strip";
 import { Contact } from "@/components/sections/contact";
-import { FAQ } from "@/components/sections/faq";
 import { Hero } from "@/components/sections/hero";
+import { Manifesto } from "@/components/sections/manifesto";
 import { Process } from "@/components/sections/process";
-import { Projects } from "@/components/sections/projects";
 import { Services } from "@/components/sections/services";
+import { Ticker } from "@/components/sections/ticker";
 
 export default function Home() {
   return (
-    <main>
+    <main id="main-content">
       <Hero />
-      <CapacitiesStrip />
+      <Manifesto />
+      <Ticker />
       <Services />
       <Process />
-      <Projects />
-      <About />
-      <FAQ />
       <Contact />
     </main>
   );

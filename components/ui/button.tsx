@@ -5,17 +5,19 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-bold transition-[transform,box-shadow,background-color,border-color] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         primary:
-          "bg-marigold text-ink hover:bg-marigold-hover hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(224,121,60,0.35)] active:translate-y-0",
-        secondary:
-          "border-[1.5px] border-moss text-cream hover:bg-white/10 hover:border-cream hover:-translate-y-0.5",
+          "bg-coral text-ink-deep hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(237,115,95,0.35)] active:translate-y-0",
+        "on-dark":
+          "border-[1.5px] border-hero-text/70 text-hero-text hover:bg-hero-text/10 hover:border-hero-text hover:-translate-y-0.5",
+        "on-coral":
+          "bg-ink-deep text-hero-text hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(14,49,44,0.35)] active:translate-y-0",
         outline:
-          "border-[1.5px] border-forest/30 text-forest hover:border-marigold-text hover:text-marigold-text",
-        ghost: "text-forest hover:text-marigold-text",
+          "border-[1.5px] border-ink/25 text-ink hover:border-coral hover:text-coral-text",
+        ghost: "text-ink hover:text-coral-text",
       },
       size: {
         default: "h-auto px-6 py-3",
