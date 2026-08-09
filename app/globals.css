@@ -1,20 +1,21 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #faf6ed;
-  --color-ink: #173f39;
-  --color-ink-deep: #0e312c;
-  --color-panel: #f1eadc;
-  --color-coral: #ed735f;
-  --color-hero-text: #f6f0e4;
+  --color-bone: #ffffff;
+  --color-ash-mist: #efefef;
+  --color-vault-ink: #0f111a;
+  --color-absolute: #000000;
+  --color-carbon: #141414;
+  --color-charcoal: #2a2a2a;
+  --color-graphite: #222222;
+  --color-silver-veil: #aeaeae;
+  --color-frost: #a6b8d1;
+  --color-cobalt-signal: #1c53bd;
+  --color-electric-sky: #53adfe;
 
-  /* WCAG AA-safe variants */
-  --color-coral-text: #c14f3c;
-  --color-ink-soft: #173f39cc;
-
-  --font-sans: var(--font-geist-sans);
-  --font-serif: Georgia, "Times New Roman", serif;
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-interdisplay);
+  --font-display: var(--font-roobert);
+  --font-mono: var(--font-fragmentmono);
 
   --ease-yandu: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 0.3s;
@@ -34,23 +35,29 @@ section[id] {
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-ink);
+  background: var(--color-bone);
+  color: var(--color-vault-ink);
   font-family: var(--font-sans), Arial, sans-serif;
+  font-weight: 400;
 }
 
 body.menu-open {
   overflow: hidden;
 }
 
-.font-accent {
-  font-family: var(--font-serif);
-  font-style: italic;
+/* The system's single chromatic accent: an 8-16px gradient mark, never a
+   background fill or a text color. */
+.accent-mark {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-cobalt-signal), var(--color-electric-sky));
 }
 
 ::selection {
-  background: var(--color-coral);
-  color: var(--color-hero-text);
+  background: var(--color-vault-ink);
+  color: var(--color-bone);
 }
 
 /* Focus visibility must survive every custom :focus reset below */
@@ -58,7 +65,7 @@ a:focus-visible,
 button:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2.5px solid var(--color-coral);
+  outline: 2px solid var(--color-electric-sky);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -67,11 +74,11 @@ summary:focus-visible,
   position: fixed;
   left: -999px;
   top: auto;
-  background: var(--color-coral);
-  color: var(--color-hero-text);
+  background: var(--color-vault-ink);
+  color: var(--color-bone);
   padding: 12px 20px;
   border-radius: 0 0 8px 0;
-  font-weight: 700;
+  font-weight: 400;
   z-index: 100;
 }
 

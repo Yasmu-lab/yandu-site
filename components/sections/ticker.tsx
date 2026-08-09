@@ -6,10 +6,10 @@ function TickerGroup() {
       {TICKER_ITEMS.map((item) => (
         <span
           key={item}
-          className="flex items-center gap-10 text-sm font-semibold uppercase tracking-[0.16em] text-ink"
+          className="flex items-center gap-10 font-mono text-sm uppercase tracking-[0.16em] text-bone"
         >
           {item}
-          <span className="text-coral">✦</span>
+          <span className="text-frost">✦</span>
         </span>
       ))}
     </div>
@@ -18,10 +18,8 @@ function TickerGroup() {
 
 export function Ticker() {
   return (
-    <div className="overflow-hidden border-y border-ink/10 bg-bg py-7">
-      <span className="sr-only">
-        {TICKER_ITEMS.join(", ")}
-      </span>
+    <div className="overflow-hidden border-y border-graphite bg-vault-ink py-7">
+      <span className="sr-only">{TICKER_ITEMS.join(", ")}</span>
       <div className="ticker-track flex w-max">
         <TickerGroup />
         <TickerGroup />

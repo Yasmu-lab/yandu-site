@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 
-import { MagneticButton } from "@/components/motion/magnetic-button";
+import { Button } from "@/components/ui/button";
 import { NAV_LINKS, SITE } from "@/content/site";
 import { EASE_YANDU } from "@/lib/motion";
 
@@ -40,14 +40,14 @@ export function NavOverlay({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, ease: EASE_YANDU }}
-          className="fixed inset-0 z-[90] flex flex-col bg-ink-deep text-hero-text"
+          className="fixed inset-0 z-[90] flex flex-col bg-vault-ink text-bone"
         >
           <div className="flex items-center justify-between px-6 py-5 md:px-10">
-            <span className="text-lg font-semibold tracking-tight">yandu</span>
+            <span className="text-lg font-normal tracking-[-0.02em]">yandu</span>
             <button
               type="button"
               onClick={onClose}
-              className="text-sm font-semibold uppercase tracking-[0.1em] hover:text-coral"
+              className="font-mono text-sm uppercase tracking-[0.018em] transition-opacity hover:opacity-70"
             >
               Fechar ×
             </button>
@@ -68,7 +68,7 @@ export function NavOverlay({
                   hidden: { opacity: 0, y: 16 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_YANDU } },
                 }}
-                className="text-4xl font-semibold tracking-tight transition-colors hover:text-coral md:text-6xl"
+                className="font-[family-name:var(--font-display)] text-4xl font-normal tracking-[-0.02em] transition-colors hover:text-frost md:text-6xl"
               >
                 {link.label}
               </motion.a>
@@ -80,17 +80,17 @@ export function NavOverlay({
               }}
               className="mt-8"
             >
-              <MagneticButton>
+              <Button asChild variant="arrow-dark" size="lg">
                 <a
                   href={SITE.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={onClose}
-                  className="inline-flex rounded-full bg-coral px-6 py-3.5 text-base font-semibold text-ink-deep"
                 >
                   Conversar no WhatsApp
+                  <span className="accent-mark" aria-hidden="true" />
                 </a>
-              </MagneticButton>
+              </Button>
             </motion.div>
           </motion.nav>
         </motion.div>

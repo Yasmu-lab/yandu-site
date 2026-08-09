@@ -5,7 +5,7 @@ export const SITE = {
   description:
     "Yandu é um estúdio criativo independente. Sites, identidades visuais e experiências digitais para marcas que querem parecer mais elas mesmas.",
   locale: "pt_BR",
-  themeColor: "#173F39",
+  themeColor: "#0F111A",
   instagram: "https://www.instagram.com/yandu.oficial/",
   whatsapp:
     "https://wa.me/5551992627338?text=Ol%C3%A1%2C%20Yandu!%20Quero%20conversar%20sobre%20um%20projeto.",

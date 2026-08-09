@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
+import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -9,6 +8,27 @@ import { MotionConfigProvider } from "@/components/motion/motion-config-provider
 import { SITE } from "@/content/site";
 
 import "./globals.css";
+
+const interdisplay = Inter({
+  variable: "--font-interdisplay",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+const roobert = Manrope({
+  variable: "--font-roobert",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
+const fragmentmono = JetBrains_Mono({
+  variable: "--font-fragmentmono",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -22,7 +42,7 @@ export const metadata: Metadata = {
     icon: [
       {
         url:
-          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23173F39'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-style='italic' font-size='54' fill='%23ED735F' text-anchor='middle'%3Ey%3C/text%3E%3C/svg%3E",
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230F111A'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='50' fill='%23ffffff' text-anchor='middle'%3Ey%3C/text%3E%3Crect x='68' y='30' width='10' height='10' rx='2' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%231C53BD'/%3E%3Cstop offset='1' stop-color='%2353ADFE'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E",
         type: "image/svg+xml",
       },
     ],
@@ -67,7 +87,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${GeistSans.variable} ${GeistMono.variable} h-full antialiased`}
+      className={`${interdisplay.variable} ${roobert.variable} ${fragmentmono.variable} h-full antialiased`}
     >
       <head>
         <script
