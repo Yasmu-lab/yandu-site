@@ -26,7 +26,7 @@ export function SiteHeader() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300",
           scrolled
-            ? "bg-bg/90 shadow-[0_1px_0_rgba(23,63,57,0.08)] backdrop-blur-md"
+            ? "bg-bone/90 shadow-[0_1px_0_rgba(15,17,26,0.08)] backdrop-blur-md"
             : "bg-transparent",
         )}
       >
@@ -34,8 +34,8 @@ export function SiteHeader() {
           <Link
             href="#inicio"
             className={cn(
-              "text-lg font-semibold tracking-tight transition-colors",
-              scrolled ? "text-ink" : "text-hero-text",
+              "text-lg font-normal tracking-[-0.02em] transition-colors",
+              scrolled ? "text-vault-ink" : "text-bone",
             )}
           >
             yandu
@@ -47,8 +47,8 @@ export function SiteHeader() {
             aria-controls="nav-overlay"
             onClick={() => setMenuOpen(true)}
             className={cn(
-              "text-sm font-semibold uppercase tracking-[0.1em] transition-colors",
-              scrolled ? "text-ink hover:text-coral-text" : "text-hero-text hover:text-coral",
+              "font-mono text-sm uppercase tracking-[0.018em] transition-opacity hover:opacity-70",
+              scrolled ? "text-vault-ink" : "text-bone",
             )}
           >
             Menu

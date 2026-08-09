@@ -5,28 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-xs font-normal uppercase tracking-[0.018em] transition-[border-color,background-color,opacity] duration-200 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        primary:
-          "bg-coral text-ink-deep hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(237,115,95,0.35)] active:translate-y-0",
-        "on-dark":
-          "border-[1.5px] border-hero-text/70 text-hero-text hover:bg-hero-text/10 hover:border-hero-text hover:-translate-y-0.5",
-        "on-coral":
-          "bg-ink-deep text-hero-text hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(14,49,44,0.35)] active:translate-y-0",
-        outline:
-          "border-[1.5px] border-ink/25 text-ink hover:border-coral hover:text-coral-text",
-        ghost: "text-ink hover:text-coral-text",
+        "ghost-dark": "border border-bone/70 text-bone hover:border-bone",
+        "ghost-light": "border border-vault-ink/25 text-vault-ink hover:border-vault-ink",
+        "arrow-dark": "bg-charcoal/60 text-bone hover:bg-charcoal/80",
       },
       size: {
         default: "h-auto px-6 py-3",
-        sm: "h-auto px-4 py-2 text-[13.5px]",
-        lg: "h-auto px-7 py-4 text-base",
+        sm: "h-auto px-4 py-2",
+        lg: "h-auto px-7 py-4 text-sm",
       },
     },
     defaultVariants: {
-      variant: "primary",
+      variant: "ghost-dark",
       size: "default",
     },
   },

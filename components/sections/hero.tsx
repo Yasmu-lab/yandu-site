@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-import { MagneticButton } from "@/components/motion/magnetic-button";
 import { Button } from "@/components/ui/button";
 import { HERO } from "@/content/site";
 import { EASE_YANDU } from "@/lib/motion";
@@ -15,7 +14,7 @@ export function Hero() {
   return (
     <section
       id="inicio"
-      className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-ink-deep"
+      className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-vault-ink"
     >
       <div aria-hidden="true" className="hero-media absolute inset-0">
         {reduceMotion ? (
@@ -25,11 +24,11 @@ export function Hero() {
             fill
             priority
             sizes="100vw"
-            className="object-cover"
+            className="object-cover grayscale"
           />
         ) : (
           <video
-            className="hero-video absolute inset-0 h-full w-full object-cover"
+            className="hero-video absolute inset-0 h-full w-full object-cover grayscale"
             autoPlay
             muted
             loop
@@ -46,16 +45,16 @@ export function Hero() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(7,25,22,0.55) 0%, rgba(7,25,22,0.22) 42%, rgba(7,25,22,0.68) 100%), linear-gradient(90deg, rgba(8,31,27,0.45), rgba(0,0,0,0) 50%, rgba(8,31,27,0.25))",
+            "linear-gradient(180deg, rgba(15,17,26,0.55) 0%, rgba(15,17,26,0.25) 42%, rgba(15,17,26,0.7) 100%), linear-gradient(90deg, rgba(0,0,0,0.4), rgba(0,0,0,0) 50%, rgba(0,0,0,0.25))",
         }}
       />
 
-      <div className="relative z-10 flex flex-col items-center px-6 text-center text-hero-text">
+      <div className="relative z-10 flex flex-col items-center px-6 text-center text-bone">
         <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE_YANDU, delay: 0.15 }}
-          className="text-sm tracking-[0.08em] text-hero-text/85"
+          className="font-mono text-sm uppercase tracking-[0.018em] text-silver-veil"
         >
           {HERO.eyebrow}
         </motion.p>
@@ -64,7 +63,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: EASE_YANDU, delay: 0.3 }}
-          className="mt-4 text-[clamp(48px,11vw,140px)] font-semibold leading-none tracking-[0.06em]"
+          className="mt-4 font-[family-name:var(--font-display)] text-[clamp(48px,11vw,140px)] font-normal leading-none"
         >
           {HERO.mark}
         </motion.h1>
@@ -73,7 +72,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE_YANDU, delay: 0.5 }}
-          className="mt-6 font-mono text-xs uppercase tracking-[0.22em] text-hero-text/75"
+          className="mt-6 font-mono text-xs uppercase tracking-[0.22em] text-silver-veil"
         >
           {HERO.tagline}
         </motion.p>
@@ -84,11 +83,9 @@ export function Hero() {
           transition={{ duration: 0.6, ease: EASE_YANDU, delay: 0.65 }}
           className="mt-10"
         >
-          <MagneticButton>
-            <Button asChild variant="on-dark" size="lg">
-              <a href={HERO.cta.href}>{HERO.cta.label}</a>
-            </Button>
-          </MagneticButton>
+          <Button asChild variant="ghost-dark" size="lg">
+            <a href={HERO.cta.href}>{HERO.cta.label}</a>
+          </Button>
         </motion.div>
       </div>
     </section>
