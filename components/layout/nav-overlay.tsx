@@ -75,7 +75,7 @@ export function NavOverlay({
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navegação"
-      className="fixed inset-0 z-90 flex flex-col bg-ink text-stone md:hidden"
+      className="fixed inset-0 z-90 flex flex-col bg-ink text-cream md:hidden"
     >
       <div className="flex items-center justify-between px-6 py-4">
         <span className="type-wordmark text-xl">Yandu</span>
@@ -95,13 +95,13 @@ export function NavOverlay({
             href={link.href}
             onClick={onClose}
             data-nav-item
-            className="type-display text-[13vw] text-stone transition-opacity hover:opacity-60"
+            className="type-display text-[13vw] text-cream transition-opacity hover:opacity-60"
           >
             {link.label}
           </a>
         ))}
         <div data-nav-item className="mt-8">
-          <PillLink href={SITE.whatsapp} external tone="stone">
+          <PillLink href={SITE.whatsapp} external tone="cream">
             Conversar no WhatsApp
           </PillLink>
         </div>

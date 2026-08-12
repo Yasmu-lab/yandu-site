@@ -3,10 +3,10 @@ import { FAQ_INTRO, FAQ_ITEMS } from "@/content/site";
 
 export function Faq() {
   return (
-    <section id="faq" className="px-6 py-24 md:px-10 md:py-32">
+    <section id="faq" className="px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <div data-reveal-group>
-          <Label className="text-mist">{FAQ_INTRO.label}</Label>
+          <Label className="text-graphite">{FAQ_INTRO.label}</Label>
           <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
             <Display className="text-ink">{FAQ_INTRO.headline}</Display>
             <p data-reveal className="max-w-xs text-sm leading-relaxed text-graphite">

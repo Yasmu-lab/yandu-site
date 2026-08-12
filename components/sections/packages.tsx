@@ -30,10 +30,10 @@ export function Packages() {
   }, [activeId]);
 
   return (
-    <section id="pacotes" className="px-6 py-24 md:px-10 md:py-32">
+    <section id="pacotes" className="px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto max-w-[1320px]">
         <div data-reveal-group>
-          <Label className="text-mist">{PACKAGES_INTRO.label}</Label>
+          <Label className="text-graphite">{PACKAGES_INTRO.label}</Label>
           <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
             <Display className="max-w-[18ch] text-ink">{PACKAGES_INTRO.headline}</Display>
             <p data-reveal className="max-w-xs text-sm leading-relaxed text-graphite">
@@ -60,9 +60,9 @@ export function Packages() {
                 aria-controls={`panel-${pkg.id}`}
                 onClick={() => setActiveId(pkg.id)}
                 className={cn(
-                  "type-label rounded-full border px-5 py-3 transition-colors duration-300",
+                  "type-label inline-flex min-h-11 items-center rounded-full border px-5 transition-colors duration-300",
                   selected
-                    ? "border-ink bg-ink text-stone"
+                    ? "border-ink bg-ink text-cream"
                     : "border-ink/25 text-ink hover:border-ink",
                 )}
               >
@@ -95,14 +95,14 @@ export function Packages() {
           </div>
 
           <div data-panel-item>
-            <p className="type-label text-mist">Capacidades envolvidas</p>
+            <p className="type-label text-graphite">Capacidades envolvidas</p>
             <ul className="mt-5 flex flex-col">
               {active.stack.map((item) => (
                 <li
                   key={item}
                   className="rule flex items-center gap-3 py-3.5 text-ink"
                 >
-                  <Asterisk className="text-xs text-mist" />
+                  <Asterisk className="text-xs text-graphite" />
                   <span className="text-sm">{item}</span>
                 </li>
               ))}

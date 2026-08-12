@@ -2,17 +2,24 @@
 
 @theme inline {
   /* Canvas + surfaces */
-  --color-stone: #e6e2d9;
-  --color-chalk: #f3f1eb;
+  --color-cream: #f1ebdd;
+  --color-chalk: #f8f5ec;
 
   /* Text */
-  --color-ink: #14130e;
-  --color-graphite: #55514a;
-  --color-mist: #635e55;
+  --color-ink: #171713;
+  --color-graphite: #625f57;
 
-  /* The one full-bleed chromatic. Project photography carries the rest. */
-  --color-slate: #3b415a;
-  --color-slate-deep: #2b3044;
+  /* Large chromatic fields */
+  --color-forest: #173b32;
+  --color-forest-deep: #0f2a23;
+
+  /* Accents.
+     coral and lime both fail contrast as text on cream (2.6:1 and 1.5:1), so
+     on cream they are limited to rules, dots, borders and fills. coral-ink is
+     the darkened coral used when an accent WORD needs to read on cream. */
+  --color-coral: #e46f55;
+  --color-coral-ink: #b23d22;
+  --color-lime: #bacb6b;
 
   --font-display: var(--font-bricolage);
   --font-sans: var(--font-instrument);
@@ -30,7 +37,7 @@ section[id] {
 }
 
 body {
-  background: var(--color-stone);
+  background: var(--color-cream);
   color: var(--color-ink);
   font-family: var(--font-sans), Arial, sans-serif;
   font-weight: 400;
@@ -42,16 +49,23 @@ body.menu-open {
 
 ::selection {
   background: var(--color-ink);
-  color: var(--color-stone);
+  color: var(--color-cream);
 }
 
 a:focus-visible,
 button:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--color-slate);
+  outline: 2px solid var(--color-coral-ink);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* Focus rings need a light colour once the ground goes dark. */
+.on-dark a:focus-visible,
+.on-dark button:focus-visible,
+.on-dark summary:focus-visible {
+  outline-color: var(--color-lime);
 }
 
 .skip-link {
@@ -59,7 +73,7 @@ summary:focus-visible,
   left: -999px;
   top: auto;
   background: var(--color-ink);
-  color: var(--color-stone);
+  color: var(--color-cream);
   padding: 12px 20px;
   z-index: 100;
 }
@@ -69,9 +83,7 @@ summary:focus-visible,
   top: 0;
 }
 
-/* ===== Display type =====
-   Bricolage is a variable grotesque; tightening the optical size and
-   width axes at large sizes is what gives it the poster-like set. */
+/* ===== Display type ===== */
 .type-display {
   font-family: var(--font-display), sans-serif;
   font-variation-settings: "opsz" 48, "wdth" 100;
@@ -97,15 +109,38 @@ summary:focus-visible,
   text-transform: uppercase;
 }
 
+/* ===== Grain ===== */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 /* ===== Hero ground =====
-   Drafting-paper grid and an outlined echo of Yandu's own wordmark. Abstract
-   on purpose: the hero must not borrow another brand's artwork or copy as
-   its texture. */
+   Drafting grid plus an outlined echo of Yandu's own wordmark. The glow
+   follows the cursor so the surface reads as responsive rather than printed. */
 .hero-grid {
   background-image:
-    linear-gradient(to right, rgba(230, 226, 217, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(230, 226, 217, 0.055) 1px, transparent 1px);
+    linear-gradient(to right, rgba(241, 235, 221, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(241, 235, 221, 0.06) 1px, transparent 1px);
   background-size: 72px 72px;
+}
+
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    260px circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(228, 111, 85, 0.16),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 500ms var(--ease-yandu);
 }
 
 .hero-ghost {
@@ -116,32 +151,29 @@ summary:focus-visible,
   letter-spacing: -0.04em;
   line-height: 0.8;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(230, 226, 217, 0.14);
-}
-
-/* ===== Grain =====
-   A single fixed noise layer over the whole page keeps the flat colour
-   fields from reading as digital-clean. */
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  -webkit-text-stroke: 1px rgba(241, 235, 221, 0.13);
 }
 
 /* ===== Reveal =====
-   Initial states are applied only once the motion layer has mounted, so
-   a failed or disabled JS run still renders every section visible. */
-.motion-ready [data-reveal] {
+   Hidden starting states apply only once the motion layer mounts, so a page
+   without JS renders every section visible. */
+.motion-ready [data-reveal],
+.motion-ready [data-mask] > * {
   opacity: 0;
 }
 
-/* ===== Marquee =====
-   Duplicated track, translated by exactly -50% so the seam never shows.
-   GSAP drives the scroll-linked variant; this is the ambient fallback. */
+.motion-ready [data-grow] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Line masks are built by SplitText; each line needs its own clipping box. */
+.split-line-wrap {
+  overflow: hidden;
+  display: block;
+}
+
+/* ===== Marquee ===== */
 @keyframes marquee-drift {
   from {
     transform: translate3d(0, 0, 0);
@@ -154,16 +186,15 @@ summary:focus-visible,
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee-drift 38s linear infinite;
+  animation: marquee-drift 46s linear infinite;
 }
 
-.marquee-track:hover {
-  animation-play-state: paused;
+/* Slowed rather than frozen, so hovering does not read as a broken loop. */
+.marquee:hover .marquee-track {
+  animation-duration: 160s;
 }
 
-/* ===== Asterisk marker =====
-   Yandu's structural tick. Spins slowly and continuously so a static
-   screenshot of any fold still reads as a page in motion. */
+/* ===== Asterisk ===== */
 @keyframes asterisk-turn {
   to {
     transform: rotate(360deg);
@@ -175,22 +206,109 @@ summary:focus-visible,
   animation: asterisk-turn 9s linear infinite;
 }
 
-/* ===== Project card ===== */
-.card-media {
+/* ===== Project cards =====
+   The print is taller than its frame; hovering pans down it to suggest
+   scrolling the real site. Height math lives in the component. */
+.card-frame {
+  position: relative;
   overflow: hidden;
-  background: var(--color-slate-deep);
+  background: var(--color-forest-deep);
 }
 
-.card-media img {
-  transition: transform 900ms var(--ease-yandu);
+.card-pan {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  transition: transform 3.2s cubic-bezier(0.33, 0, 0.25, 1);
 }
 
-.group:hover .card-media img {
-  transform: scale(1.04);
+.group:hover .card-pan,
+.group:focus-visible .card-pan {
+  transform: translateY(var(--pan, -45%));
 }
 
-/* Rules between list rows, drawn as a scaling pseudo-element so GSAP can
-   wipe them in rather than fading a border. */
+.card-arrow {
+  transition:
+    transform 380ms var(--ease-yandu),
+    color 380ms var(--ease-yandu);
+}
+
+.group:hover .card-arrow {
+  transform: translate(4px, -4px) rotate(45deg);
+}
+
+.card-title {
+  transition: transform 380ms var(--ease-yandu);
+}
+
+.group:hover .card-title {
+  transform: translateX(6px);
+}
+
+/* Segment tint is carried on a variable so one rule serves every card. */
+.card-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--seg, var(--color-forest));
+  opacity: 0;
+  transition: opacity 420ms var(--ease-yandu);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.group:hover .card-frame::after {
+  opacity: 0.22;
+}
+
+/* ===== Contextual cursor ===== */
+.ctx-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--color-coral);
+  color: var(--color-ink);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition:
+    opacity 220ms var(--ease-yandu),
+    scale 220ms var(--ease-yandu);
+}
+
+.ctx-cursor[data-active="true"] {
+  opacity: 1;
+  scale: 1;
+}
+
+/* ===== Filter row =====
+   Scrolls inside itself on small screens instead of widening the page. */
+.filter-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding-bottom: 2px;
+}
+
+.filter-row::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-row > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+/* ===== Rules ===== */
 .rule {
   position: relative;
 }
@@ -203,8 +321,26 @@ summary:focus-visible,
   height: 1px;
   background: currentColor;
   opacity: 0.18;
-  transform: scaleX(var(--rule-scale, 1));
-  transform-origin: left;
+}
+
+/* ===== Process rail ===== */
+.step-num {
+  transition:
+    color 420ms var(--ease-yandu),
+    scale 420ms var(--ease-yandu);
+}
+
+.step[data-active="true"] .step-num {
+  color: var(--color-coral-ink);
+  scale: 1.35;
+}
+
+.step[data-active="true"] .step-title {
+  color: var(--color-ink);
+}
+
+.step[data-active="true"] .step-body {
+  color: var(--color-graphite);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -217,7 +353,17 @@ summary:focus-visible,
     scroll-behavior: auto !important;
   }
 
-  .motion-ready [data-reveal] {
+  .motion-ready [data-reveal],
+  .motion-ready [data-mask] > * {
     opacity: 1;
+  }
+
+  .motion-ready [data-grow] {
+    transform: none;
+  }
+
+  .card-pan,
+  .group:hover .card-pan {
+    transform: none;
   }
 }
