@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+import { NAV_LINKS, SITE } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 import { NavOverlay } from "./nav-overlay";
@@ -30,16 +32,36 @@ export function SiteHeader() {
             : "bg-transparent",
         )}
       >
-        <nav className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-5 md:px-10">
+        <nav className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-5 md:px-10">
           <Link
-            href="#inicio"
+            href="/#inicio"
             className={cn(
-              "text-lg font-normal tracking-[-0.02em] transition-colors",
+              "font-[family-name:var(--font-display)] text-lg italic tracking-[-0.01em] transition-colors",
               scrolled ? "text-vault-ink" : "text-bone",
             )}
           >
             yandu
           </Link>
+
+          <div className="hidden items-center gap-8 md:flex">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "font-mono text-xs uppercase tracking-[0.12em] transition-opacity hover:opacity-60",
+                  scrolled ? "text-vault-ink" : "text-bone",
+                )}
+              >
+                {link.label}
+              </a>
+            ))}
+            <Button asChild variant={scrolled ? "solid-dark" : "solid-light"} size="sm">
+              <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">
+                Vamos conversar
+              </a>
+            </Button>
+          </div>
 
           <button
             type="button"
@@ -47,7 +69,7 @@ export function SiteHeader() {
             aria-controls="nav-overlay"
             onClick={() => setMenuOpen(true)}
             className={cn(
-              "font-mono text-sm uppercase tracking-[0.018em] transition-opacity hover:opacity-70",
+              "font-mono text-xs uppercase tracking-[0.12em] transition-opacity hover:opacity-70 md:hidden",
               scrolled ? "text-vault-ink" : "text-bone",
             )}
           >

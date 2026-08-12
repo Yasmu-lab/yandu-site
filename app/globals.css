@@ -14,7 +14,7 @@
   --color-electric-sky: #53adfe;
 
   --font-sans: var(--font-interdisplay);
-  --font-display: var(--font-roobert);
+  --font-display: var(--font-fraunces);
   --font-mono: var(--font-fragmentmono);
 
   --ease-yandu: cubic-bezier(0.22, 1, 0.36, 1);
@@ -87,18 +87,40 @@ summary:focus-visible,
   top: 0;
 }
 
-@keyframes hero-ken-burns {
-  from {
-    transform: scale(1);
+/* ===== Hero: layered atmosphere =====
+   Two soft radial fields drift independently (mouse parallax handled in
+   JS via transform on .hero-field), plus a fine dot grid for depth --
+   a 2D stand-in for a 3D scene's layered camera planes. */
+.hero-field {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(38% 42% at 22% 28%, color-mix(in srgb, var(--color-cobalt-signal) 40%, transparent), transparent 70%),
+    radial-gradient(32% 38% at 82% 70%, color-mix(in srgb, var(--color-electric-sky) 30%, transparent), transparent 72%);
+  filter: blur(60px);
+  will-change: transform;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--color-bone) 14%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black 40%, transparent 85%);
+}
+
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
-  to {
-    transform: scale(1.06);
+  50% {
+    transform: translate3d(1.5%, -2.5%, 0) scale(1.04);
   }
 }
 
-.hero-media .hero-video,
-.hero-media img {
-  animation: hero-ken-burns 20s ease-in-out infinite alternate;
+.hero-field {
+  animation: blob-drift 16s ease-in-out infinite;
 }
 
 @keyframes ticker-scroll {
@@ -111,7 +133,39 @@ summary:focus-visible,
 }
 
 .ticker-track {
-  animation: ticker-scroll 28s linear infinite;
+  animation: ticker-scroll 32s linear infinite;
+}
+
+@keyframes tag-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.tag-drift {
+  animation: tag-drift 5s ease-in-out infinite;
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+
+.scroll-cue-dot {
+  animation: scroll-cue 1.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

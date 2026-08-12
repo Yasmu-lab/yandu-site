@@ -40,10 +40,12 @@ export function NavOverlay({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, ease: EASE_YANDU }}
-          className="fixed inset-0 z-[90] flex flex-col bg-vault-ink text-bone"
+          className="fixed inset-0 z-[90] flex flex-col bg-vault-ink text-bone md:hidden"
         >
           <div className="flex items-center justify-between px-6 py-5 md:px-10">
-            <span className="text-lg font-normal tracking-[-0.02em]">yandu</span>
+            <span className="font-[family-name:var(--font-display)] text-lg italic tracking-[-0.01em]">
+              yandu
+            </span>
             <button
               type="button"
               onClick={onClose}
@@ -68,7 +70,7 @@ export function NavOverlay({
                   hidden: { opacity: 0, y: 16 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_YANDU } },
                 }}
-                className="font-[family-name:var(--font-display)] text-4xl font-normal tracking-[-0.02em] transition-colors hover:text-frost md:text-6xl"
+                className="font-[family-name:var(--font-display)] text-4xl font-normal tracking-[-0.01em] transition-colors hover:text-frost"
               >
                 {link.label}
               </motion.a>
@@ -80,7 +82,7 @@ export function NavOverlay({
               }}
               className="mt-8"
             >
-              <Button asChild variant="arrow-dark" size="lg">
+              <Button asChild variant="solid-light" size="lg">
                 <a
                   href={SITE.whatsapp}
                   target="_blank"

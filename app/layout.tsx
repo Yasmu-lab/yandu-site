@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -12,21 +12,23 @@ import "./globals.css";
 const interdisplay = Inter({
   variable: "--font-interdisplay",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
-const roobert = Manrope({
-  variable: "--font-roobert",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: "variable",
+  style: ["normal", "italic"],
+  axes: ["opsz", "SOFT"],
   display: "swap",
 });
 
 const fragmentmono = JetBrains_Mono({
   variable: "--font-fragmentmono",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -87,7 +89,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${interdisplay.variable} ${roobert.variable} ${fragmentmono.variable} h-full antialiased`}
+      className={`${interdisplay.variable} ${fraunces.variable} ${fragmentmono.variable} h-full antialiased`}
     >
       <head>
         <script
