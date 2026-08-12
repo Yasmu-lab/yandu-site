@@ -1,32 +1,33 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Manrope } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, Martian_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { MotionConfigProvider } from "@/components/motion/motion-config-provider";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { SITE } from "@/content/site";
 
 import "./globals.css";
 
-const interdisplay = Inter({
-  variable: "--font-interdisplay",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: "variable",
+  axes: ["opsz", "wdth"],
   display: "swap",
 });
 
-const roobert = Manrope({
-  variable: "--font-roobert",
+const instrument = Instrument_Sans({
+  variable: "--font-instrument",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
-const fragmentmono = JetBrains_Mono({
-  variable: "--font-fragmentmono",
+const martian = Martian_Mono({
+  variable: "--font-martian",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     icon: [
       {
         url:
-          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230F111A'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='50' fill='%23ffffff' text-anchor='middle'%3Ey%3C/text%3E%3Crect x='68' y='30' width='10' height='10' rx='2' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%231C53BD'/%3E%3Cstop offset='1' stop-color='%2353ADFE'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E",
+          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314130E'/%3E%3Ctext x='50' y='72' font-family='Arial,sans-serif' font-weight='bold' font-size='62' fill='%23E6E2D9' text-anchor='middle'%3EY%3C/text%3E%3C/svg%3E",
         type: "image/svg+xml",
       },
     ],
@@ -87,29 +88,23 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${interdisplay.variable} ${roobert.variable} ${fragmentmono.variable} h-full antialiased`}
+      className={`${bricolage.variable} ${instrument.variable} ${martian.variable} h-full antialiased`}
     >
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* Without JS, scroll-reveal animations never run, so their
-            inline "hidden" starting styles would otherwise hide real
-            content permanently. Force everything visible in that case. */}
-        <noscript>
-          <style>{`[style*="opacity:0"]{opacity:1 !important;transform:none !important;clip-path:none !important;filter:none !important;}`}</style>
-        </noscript>
       </head>
-      <body className="min-h-full">
+      <body className="grain min-h-full">
         <a href="#main-content" className="skip-link">
           Pular para o conteúdo
         </a>
-        <MotionConfigProvider>
+        <MotionProvider>
           <SiteHeader />
           {children}
           <SiteFooter />
-        </MotionConfigProvider>
+        </MotionProvider>
         <Analytics />
       </body>
     </html>

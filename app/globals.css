@@ -1,42 +1,37 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bone: #ffffff;
-  --color-ash-mist: #efefef;
-  --color-vault-ink: #0f111a;
-  --color-absolute: #000000;
-  --color-carbon: #141414;
-  --color-charcoal: #2a2a2a;
-  --color-graphite: #222222;
-  --color-silver-veil: #aeaeae;
-  --color-frost: #a6b8d1;
-  --color-cobalt-signal: #1c53bd;
-  --color-electric-sky: #53adfe;
+  /* Canvas + surfaces */
+  --color-stone: #e6e2d9;
+  --color-chalk: #f3f1eb;
 
-  --font-sans: var(--font-interdisplay);
-  --font-display: var(--font-roobert);
-  --font-mono: var(--font-fragmentmono);
+  /* Text */
+  --color-ink: #14130e;
+  --color-graphite: #55514a;
+  --color-mist: #635e55;
+
+  /* The one full-bleed chromatic. Project photography carries the rest. */
+  --color-slate: #3b415a;
+  --color-slate-deep: #2b3044;
+
+  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-instrument);
+  --font-mono: var(--font-martian);
 
   --ease-yandu: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 0.3s;
-  --dur-base: 0.6s;
-  --dur-slow: 0.9s;
 }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
 }
 
-/* Header is fixed (not sticky), so anchored scroll targets need room
-   to clear it instead of landing underneath. */
 section[id] {
   scroll-margin-top: 88px;
 }
 
 body {
-  background: var(--color-bone);
-  color: var(--color-vault-ink);
+  background: var(--color-stone);
+  color: var(--color-ink);
   font-family: var(--font-sans), Arial, sans-serif;
   font-weight: 400;
 }
@@ -45,40 +40,27 @@ body.menu-open {
   overflow: hidden;
 }
 
-/* The system's single chromatic accent: an 8-16px gradient mark, never a
-   background fill or a text color. */
-.accent-mark {
-  display: inline-block;
-  width: 0.5em;
-  height: 0.5em;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--color-cobalt-signal), var(--color-electric-sky));
-}
-
 ::selection {
-  background: var(--color-vault-ink);
-  color: var(--color-bone);
+  background: var(--color-ink);
+  color: var(--color-stone);
 }
 
-/* Focus visibility must survive every custom :focus reset below */
 a:focus-visible,
 button:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--color-electric-sky);
+  outline: 2px solid var(--color-slate);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .skip-link {
   position: fixed;
   left: -999px;
   top: auto;
-  background: var(--color-vault-ink);
-  color: var(--color-bone);
+  background: var(--color-ink);
+  color: var(--color-stone);
   padding: 12px 20px;
-  border-radius: 0 0 8px 0;
-  font-weight: 400;
   z-index: 100;
 }
 
@@ -87,31 +69,142 @@ summary:focus-visible,
   top: 0;
 }
 
-@keyframes hero-ken-burns {
+/* ===== Display type =====
+   Bricolage is a variable grotesque; tightening the optical size and
+   width axes at large sizes is what gives it the poster-like set. */
+.type-display {
+  font-family: var(--font-display), sans-serif;
+  font-variation-settings: "opsz" 48, "wdth" 100;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 0.94;
+}
+
+.type-wordmark {
+  font-family: var(--font-display), sans-serif;
+  font-variation-settings: "opsz" 96, "wdth" 85;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+
+.type-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ===== Hero ground =====
+   Drafting-paper grid and an outlined echo of Yandu's own wordmark. Abstract
+   on purpose: the hero must not borrow another brand's artwork or copy as
+   its texture. */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgba(230, 226, 217, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230, 226, 217, 0.055) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.hero-ghost {
+  font-family: var(--font-display), sans-serif;
+  font-variation-settings: "opsz" 96, "wdth" 85;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(230, 226, 217, 0.14);
+}
+
+/* ===== Grain =====
+   A single fixed noise layer over the whole page keeps the flat colour
+   fields from reading as digital-clean. */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ===== Reveal =====
+   Initial states are applied only once the motion layer has mounted, so
+   a failed or disabled JS run still renders every section visible. */
+.motion-ready [data-reveal] {
+  opacity: 0;
+}
+
+/* ===== Marquee =====
+   Duplicated track, translated by exactly -50% so the seam never shows.
+   GSAP drives the scroll-linked variant; this is the ambient fallback. */
+@keyframes marquee-drift {
   from {
-    transform: scale(1);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: scale(1.06);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
-.hero-media .hero-video,
-.hero-media img {
-  animation: hero-ken-burns 20s ease-in-out infinite alternate;
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-drift 38s linear infinite;
 }
 
-@keyframes ticker-scroll {
-  from {
-    transform: translateX(0);
-  }
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ===== Asterisk marker =====
+   Yandu's structural tick. Spins slowly and continuously so a static
+   screenshot of any fold still reads as a page in motion. */
+@keyframes asterisk-turn {
   to {
-    transform: translateX(-50%);
+    transform: rotate(360deg);
   }
 }
 
-.ticker-track {
-  animation: ticker-scroll 28s linear infinite;
+.asterisk {
+  display: inline-block;
+  animation: asterisk-turn 9s linear infinite;
+}
+
+/* ===== Project card ===== */
+.card-media {
+  overflow: hidden;
+  background: var(--color-slate-deep);
+}
+
+.card-media img {
+  transition: transform 900ms var(--ease-yandu);
+}
+
+.group:hover .card-media img {
+  transform: scale(1.04);
+}
+
+/* Rules between list rows, drawn as a scaling pseudo-element so GSAP can
+   wipe them in rather than fading a border. */
+.rule {
+  position: relative;
+}
+
+.rule::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.18;
+  transform: scaleX(var(--rule-scale, 1));
+  transform-origin: left;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -122,5 +215,9 @@ summary:focus-visible,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .motion-ready [data-reveal] {
+    opacity: 1;
   }
 }

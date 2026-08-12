@@ -1,18 +1,26 @@
+import { AboutIntro } from "@/components/sections/about-intro";
+import { Capabilities } from "@/components/sections/capabilities";
 import { Contact } from "@/components/sections/contact";
+import { Faq } from "@/components/sections/faq";
 import { Hero } from "@/components/sections/hero";
-import { Manifesto } from "@/components/sections/manifesto";
+import { Marquee } from "@/components/sections/marquee";
+import { Packages } from "@/components/sections/packages";
 import { Process } from "@/components/sections/process";
-import { Services } from "@/components/sections/services";
-import { Ticker } from "@/components/sections/ticker";
+import { Statement } from "@/components/sections/statement";
+import { Work } from "@/components/sections/work";
 
 export default function Home() {
   return (
     <main id="main-content">
       <Hero />
-      <Manifesto />
-      <Ticker />
-      <Services />
+      <AboutIntro />
+      <Work />
+      <Marquee />
+      <Packages />
+      <Capabilities />
       <Process />
+      <Statement />
+      <Faq />
       <Contact />
     </main>
   );

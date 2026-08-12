@@ -1,11 +1,10 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { PillLink } from "@/components/ui/primitives";
 import { NAV_LINKS, SITE } from "@/content/site";
-import { EASE_YANDU } from "@/lib/motion";
+import { EASE, gsap } from "@/lib/gsap";
 
 export function NavOverlay({
   open,
@@ -14,6 +13,14 @@ export function NavOverlay({
   open: boolean;
   onClose: () => void;
 }) {
+  // Kept mounted through the exit animation so closing is animated too.
+  // Adjusted during render rather than in an effect, so opening paints the
+  // overlay in the same commit instead of one frame late.
+  const [mounted, setMounted] = useState(open);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  if (open && !mounted) setMounted(true);
+
   useEffect(() => {
     document.body.classList.toggle("menu-open", open);
     return () => document.body.classList.remove("menu-open");
@@ -28,73 +35,77 @@ export function NavOverlay({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  return (
-    <AnimatePresence>
-      {open ? (
-        <motion.div
-          id="nav-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menu de navegação"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: EASE_YANDU }}
-          className="fixed inset-0 z-[90] flex flex-col bg-vault-ink text-bone"
-        >
-          <div className="flex items-center justify-between px-6 py-5 md:px-10">
-            <span className="text-lg font-normal tracking-[-0.02em]">yandu</span>
-            <button
-              type="button"
-              onClick={onClose}
-              className="font-mono text-sm uppercase tracking-[0.018em] transition-opacity hover:opacity-70"
-            >
-              Fechar ×
-            </button>
-          </div>
+  useLayoutEffect(() => {
+    const overlay = overlayRef.current;
+    if (!mounted || !overlay) return;
 
-          <motion.nav
-            className="flex flex-1 flex-col items-start justify-center gap-3 px-8 md:px-10"
-            initial="hidden"
-            animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
+    const ctx = gsap.context(() => {
+      const items = overlay.querySelectorAll("[data-nav-item]");
+
+      if (open) {
+        gsap.set(overlay, { clipPath: "inset(0 0 100% 0)" });
+        gsap
+          .timeline()
+          .to(overlay, { clipPath: "inset(0 0 0% 0)", duration: 0.55, ease: EASE })
+          .fromTo(
+            items,
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.45, ease: EASE, stagger: 0.06 },
+            "-=0.25",
+          );
+      } else {
+        gsap.to(overlay, {
+          clipPath: "inset(0 0 100% 0)",
+          duration: 0.4,
+          ease: "power2.in",
+          onComplete: () => setMounted(false),
+        });
+      }
+    }, overlay);
+
+    return () => ctx.revert();
+  }, [open, mounted]);
+
+  if (!mounted) return null;
+
+  return (
+    <div
+      ref={overlayRef}
+      id="nav-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu de navegação"
+      className="fixed inset-0 z-90 flex flex-col bg-ink text-stone md:hidden"
+    >
+      <div className="flex items-center justify-between px-6 py-4">
+        <span className="type-wordmark text-xl">Yandu</span>
+        <button
+          type="button"
+          onClick={onClose}
+          className="type-label transition-opacity hover:opacity-70"
+        >
+          Fechar ×
+        </button>
+      </div>
+
+      <nav className="flex flex-1 flex-col items-start justify-center gap-4 px-6">
+        {NAV_LINKS.map((link) => (
+          <a
+            key={link.href}
+            href={link.href}
+            onClick={onClose}
+            data-nav-item
+            className="type-display text-[13vw] text-stone transition-opacity hover:opacity-60"
           >
-            {NAV_LINKS.map((link) => (
-              <motion.a
-                key={link.href}
-                href={link.href}
-                onClick={onClose}
-                variants={{
-                  hidden: { opacity: 0, y: 16 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_YANDU } },
-                }}
-                className="font-[family-name:var(--font-display)] text-4xl font-normal tracking-[-0.02em] transition-colors hover:text-frost md:text-6xl"
-              >
-                {link.label}
-              </motion.a>
-            ))}
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 16 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_YANDU } },
-              }}
-              className="mt-8"
-            >
-              <Button asChild variant="arrow-dark" size="lg">
-                <a
-                  href={SITE.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={onClose}
-                >
-                  Conversar no WhatsApp
-                  <span className="accent-mark" aria-hidden="true" />
-                </a>
-              </Button>
-            </motion.div>
-          </motion.nav>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+            {link.label}
+          </a>
+        ))}
+        <div data-nav-item className="mt-8">
+          <PillLink href={SITE.whatsapp} external tone="stone">
+            Conversar no WhatsApp
+          </PillLink>
+        </div>
+      </nav>
+    </div>
   );
 }
