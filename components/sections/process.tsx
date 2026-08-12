@@ -1,58 +1,104 @@
 "use client";
 
-import { motion, useScroll } from "framer-motion";
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
-import { Eyebrow, Headline } from "@/components/headline";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { Display, Label } from "@/components/ui/primitives";
 import { PROCESS_INTRO, PROCESS_STEPS } from "@/content/site";
-import { fadeUp } from "@/lib/motion";
-import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
+import { gsap } from "@/lib/gsap";
 
 export function Process() {
-  const railRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useSafeReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: railRef,
-    offset: ["start center", "end center"],
-  });
+  // The rail fills as the section passes, and each step lifts out of dimmed
+  // state as it reaches the reading line -- scroll drives the whole sequence.
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const rail = section.querySelector<HTMLElement>("[data-rail]");
+        const steps = gsap.utils.toArray<HTMLElement>("[data-step]", section);
+
+        if (rail) {
+          gsap.fromTo(
+            rail,
+            { scaleY: 0 },
+            {
+              scaleY: 1,
+              ease: "none",
+              transformOrigin: "top",
+              scrollTrigger: {
+                trigger: section,
+                start: "top 60%",
+                end: "bottom 75%",
+                scrub: 0.4,
+              },
+            },
+          );
+        }
+
+        steps.forEach((step) => {
+          gsap.fromTo(
+            step,
+            { opacity: 0.3 },
+            {
+              opacity: 1,
+              duration: 0.4,
+              scrollTrigger: { trigger: step, start: "top 72%", once: true },
+            },
+          );
+        });
+      });
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="processo" className="bg-ash-mist px-6 py-28 md:px-10 md:py-36">
-      <div className="mx-auto max-w-[900px]">
-        <Eyebrow className="mb-5">{PROCESS_INTRO.eyebrow}</Eyebrow>
-        <Headline segments={PROCESS_INTRO.headline} className="max-w-xl" />
-        <Reveal variants={fadeUp} delay={0.12} className="mt-5">
-          <p className="max-w-md text-base leading-relaxed text-charcoal">{PROCESS_INTRO.paragraph}</p>
-        </Reveal>
+    <section ref={sectionRef} id="processo" className="px-6 py-24 md:px-10 md:py-32">
+      <div className="mx-auto max-w-[1320px]">
+        <div data-reveal-group>
+          <Label className="text-mist">{PROCESS_INTRO.label}</Label>
+          <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
+            <Display className="text-ink">{PROCESS_INTRO.headline}</Display>
+            <p data-reveal className="max-w-xs text-sm leading-relaxed text-graphite">
+              {PROCESS_INTRO.paragraph}
+            </p>
+          </div>
+        </div>
 
-        <div ref={railRef} className="relative mt-16">
-          <div className="absolute top-0 bottom-0 left-[15px] w-px bg-silver-veil/30 md:left-[19px]" aria-hidden="true" />
-          <motion.div
-            className="absolute top-0 left-[15px] w-px origin-top bg-vault-ink md:left-[19px]"
-            style={
-              reduceMotion
-                ? { height: "100%" }
-                : { height: "100%", scaleY: scrollYProgress }
-            }
+        <ol className="relative mt-16 md:mt-20">
+          <div
             aria-hidden="true"
+            className="absolute top-0 bottom-0 left-0 w-px bg-ink/15 md:left-[13%]"
+          />
+          <div
+            aria-hidden="true"
+            data-rail
+            className="absolute top-0 bottom-0 left-0 w-px origin-top bg-ink md:left-[13%]"
           />
 
-          <RevealGroup className="flex flex-col gap-12">
-            {PROCESS_STEPS.map((step) => (
-              <RevealItem key={step.number} className="grid grid-cols-[32px_1fr] gap-6 md:grid-cols-[40px_1fr] md:gap-10">
-                <span className="font-mono text-sm text-charcoal">{step.number}</span>
-                <div>
-                  <h3 className="font-[family-name:var(--font-display)] text-2xl italic tracking-[-0.01em] text-vault-ink">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 max-w-md text-base leading-relaxed text-charcoal">{step.description}</p>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
+          {PROCESS_STEPS.map((step) => (
+            <li
+              key={step.number}
+              data-step
+              className="grid grid-cols-1 gap-2 py-8 pl-8 md:grid-cols-[13%_1fr] md:gap-14 md:py-10 md:pl-0"
+            >
+              <span className="type-label text-mist md:pl-0">{step.number}</span>
+              <div className="md:pl-14">
+                <h3 className="type-display text-[clamp(24px,2.8vw,40px)] text-ink">
+                  {step.title}
+                </h3>
+                <p className="mt-3 max-w-lg text-base leading-relaxed text-graphite">
+                  {step.description}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

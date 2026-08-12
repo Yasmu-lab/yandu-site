@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { NAV_LINKS, SITE } from "@/content/site";
 import { cn } from "@/lib/utils";
 
@@ -26,41 +24,33 @@ export function SiteHeader() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300",
-          scrolled
-            ? "bg-bone/90 shadow-[0_1px_0_rgba(15,17,26,0.08)] backdrop-blur-md"
-            : "bg-transparent",
+          "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
+          scrolled ? "bg-stone/85 backdrop-blur-md" : "bg-transparent",
         )}
       >
-        <nav className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-5 md:px-10">
-          <Link
-            href="/#inicio"
-            className={cn(
-              "font-[family-name:var(--font-display)] text-lg italic tracking-[-0.01em] transition-colors",
-              scrolled ? "text-vault-ink" : "text-bone",
-            )}
-          >
-            yandu
-          </Link>
+        <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-10">
+          <a href="#inicio" className="type-wordmark text-xl text-ink">
+            Yandu
+          </a>
 
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-9 md:flex">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={cn(
-                  "font-mono text-xs uppercase tracking-[0.12em] transition-opacity hover:opacity-60",
-                  scrolled ? "text-vault-ink" : "text-bone",
-                )}
+                className="type-label text-ink transition-opacity hover:opacity-55"
               >
                 {link.label}
               </a>
             ))}
-            <Button asChild variant={scrolled ? "solid-dark" : "solid-light"} size="sm">
-              <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer">
-                Vamos conversar
-              </a>
-            </Button>
+            <a
+              href={SITE.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="type-label rounded-full bg-ink px-5 py-2.5 text-stone transition-colors hover:bg-slate"
+            >
+              Vamos conversar
+            </a>
           </div>
 
           <button
@@ -68,10 +58,7 @@ export function SiteHeader() {
             aria-expanded={menuOpen}
             aria-controls="nav-overlay"
             onClick={() => setMenuOpen(true)}
-            className={cn(
-              "font-mono text-xs uppercase tracking-[0.12em] transition-opacity hover:opacity-70 md:hidden",
-              scrolled ? "text-vault-ink" : "text-bone",
-            )}
+            className="type-label text-ink transition-opacity hover:opacity-60 md:hidden"
           >
             Menu
           </button>

@@ -5,7 +5,7 @@ export const SITE = {
   description:
     "Yandu é o estúdio de produto digital conduzido pela Yasmin: estratégia, design e desenvolvimento numa única mão, do primeiro rascunho ao deploy em produção.",
   locale: "pt_BR",
-  themeColor: "#0F111A",
+  themeColor: "#14130E",
   instagram: "https://www.instagram.com/yandu.oficial/",
   telegram: "https://t.me/+5551992627338",
   whatsapp:
@@ -16,64 +16,52 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { href: "/#trabalho", label: "Trabalho" },
-  { href: "/#capacidades", label: "Capacidades" },
-  { href: "/#processo", label: "Processo" },
-  { href: "/#sobre", label: "Sobre" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "#vitrine", label: "Vitrine" },
+  { href: "#pacotes", label: "Pacotes" },
+  { href: "#processo", label: "Processo" },
+  { href: "#estudio", label: "Estúdio" },
+  { href: "#faq", label: "FAQ" },
 ] as const;
 
 export const HERO = {
-  eyebrow: "Estúdio de produto digital · Vale do Rio Pardo, RS",
-  headline: [
-    { text: "Produto digital " },
-    { text: "com estratégia", accent: true },
-    { text: "por trás." },
-  ],
-  paragraph:
-    "A Yandu projeta e constrói sites, plataformas e automações para negócios que precisam de mais do que uma página bonita — precisam de algo que funcione, do banco de dados à publicação.",
-  cta: { href: "#trabalho", label: "Ver trabalho" },
-  ctaSecondary: { href: "#contato", label: "Iniciar um projeto" },
+  wordmark: "Yandu",
+  lockup: ["Estúdio", "Produto digital", "que funciona®"],
+  tagline: "Estratégia, design e código numa mão só.",
   meta: [
-    { label: "Fundação", value: "2026" },
-    { label: "Projetos no ar", value: "01" },
+    { label: "Base", value: "Vale do Rio Pardo, RS" },
     { label: "Atendimento", value: "Remoto, todo o Brasil" },
+    { label: "Desde", value: "2026" },
   ],
+  scrollCue: "Role",
 } as const;
 
-export const TICKER_ITEMS = [
-  "ESTRATÉGIA DE PRODUTO",
-  "UX / UI",
-  "DESENVOLVIMENTO",
-  "ARQUITETURA DE SISTEMAS",
-  "SEO TÉCNICO",
-  "AUTOMAÇÃO",
+export const ABOUT_INTRO = {
+  label: "Sobre nós",
+  headline: "Construindo produtos digitais que resolvem problema de verdade.",
+  paragraph:
+    "A Yandu junta duas coisas que raramente andam juntas: entendimento de negócio e mão na massa técnica. Antes de programar, penso em processo — é isso que separa um produto que funciona de um produto que só existe. Sou eu quem conduz cada projeto, do primeiro rascunho até o deploy, sem camada de repasse entre quem decide e quem constrói.",
+  cta: { href: "#contato", label: "Trabalhe comigo" },
+} as const;
+
+export const MARQUEE_ITEMS = [
+  "Ver o projeto",
+  "Estratégia de produto",
+  "Ver o projeto",
+  "Design e código",
 ] as const;
 
-export const INTRO = {
-  eyebrow: "[ NOSSO PONTO DE PARTIDA ]",
-  lead: [
-    { text: "Sua marca não precisa parecer maior. Precisa parecer " },
-    { text: "mais ela mesma", accent: true },
-    { text: " — e funcionar de verdade." },
-  ],
-  paragraph:
-    "Antes de qualquer linha de código, tem entendimento de negócio, estratégia e design por trás. É isso que separa um produto que funciona de um produto que só existe. Conduzo cada projeto sozinha, do primeiro rascunho até o deploy em produção — o que significa atenção direta e nenhuma camada de repasse entre quem decide e quem constrói.",
-  signature: "YANDU / ESTRATÉGIA / DESIGN / CÓDIGO",
+export const WORK_INTRO = {
+  label: "Vitrine",
+  headline: "Projeto mais recente",
+  paragraph: "Cada projeto nasce de um problema real. Este é o que já está no ar.",
 } as const;
 
 export type ProjectDetail = { label: string; value: string };
 
-export const WORK_INTRO = {
-  eyebrow: "[ TRABALHO NO AR ]",
-  headline: [{ text: "Prova real, " }, { text: "não promessa.", accent: true }],
-  paragraph:
-    "Cada projeto nasce de um problema real. Este é o que já foi resolvido — com mais chegando.",
-} as const;
-
 export const FEATURED_PROJECT = {
-  flag: "NO AR AGORA",
+  flag: "No ar agora",
   name: "Cuidadoras Conecta",
+  disciplines: "Estratégia · UX · UI · Desenvolvimento · Deploy",
   summary:
     "Plataforma que conecta famílias a cuidadoras de forma simples e organizada, na região do Vale do Rio Pardo. Construída do zero, do banco de dados à hospedagem.",
   image: {
@@ -98,17 +86,77 @@ export const FEATURED_PROJECT = {
   ] satisfies ProjectDetail[],
   tags: ["Plataforma web", "Banco de dados", "Deploy em produção"],
   href: "https://cuidadoras-conecta-rs.vercel.app/",
-  cta: "Acessar site",
+  cta: "Visualizar",
 } as const;
 
-export const WORK_NEXT_NOTE =
-  "Próximo projeto em construção — o portfólio cresce conforme cada trabalho vai ao ar.";
+export const WORK_NEXT = {
+  label: "Próximo",
+  title: "Seu projeto aqui",
+  description:
+    "A vitrine cresce a cada trabalho que vai ao ar. O próximo espaço está aberto — e pode ser o seu.",
+  cta: { href: "#contato", label: "Começar um projeto" },
+} as const;
+
+export type Package = {
+  id: string;
+  tab: string;
+  title: string;
+  description: string;
+  stack: string[];
+};
+
+export const PACKAGES_INTRO = {
+  label: "Nossos pacotes",
+  headline: "Organizados pelo problema que resolvem.",
+  paragraph: "Não pelo nome técnico do entregável.",
+} as const;
+
+export const PACKAGES: Package[] = [
+  {
+    id: "presenca",
+    tab: "Presença digital",
+    title: "Presença digital",
+    description:
+      "Site institucional ou landing page pra você existir online de forma profissional e ser encontrado por quem procura o que você faz.",
+    stack: ["Estratégia de produto", "UI", "SEO técnico", "Performance"],
+  },
+  {
+    id: "produto",
+    tab: "Produtos digitais",
+    title: "Produtos digitais",
+    description:
+      "Plataformas e sistemas web construídos do zero, com banco de dados e lógica de negócio real por trás — não só uma página estática.",
+    stack: ["Estratégia de produto", "UX", "Desenvolvimento", "Arquitetura de sistemas"],
+  },
+  {
+    id: "automacoes",
+    tab: "Automações",
+    title: "Automações",
+    description:
+      "Fluxos automáticos que organizam pedidos, atendimento e informações. Menos trabalho manual, menos coisa esquecida.",
+    stack: ["Automação", "Integrações", "Arquitetura de sistemas"],
+  },
+  {
+    id: "integracoes",
+    tab: "Integrações",
+    title: "Integrações",
+    description:
+      "Conexão entre ferramentas que hoje não conversam entre si, pra sua operação parar de depender de copiar e colar dado.",
+    stack: ["Integrações", "Automação", "Desenvolvimento"],
+  },
+  {
+    id: "dashboards",
+    tab: "Dashboards",
+    title: "Dashboards",
+    description:
+      "Painéis simples que juntam seus números num só lugar, pra você decidir com clareza — não no achismo.",
+    stack: ["UX", "UI", "Desenvolvimento", "Integrações"],
+  },
+] as const;
 
 export const CAPABILITIES_INTRO = {
-  eyebrow: "[ O QUE SUSTENTA CADA ENTREGA ]",
-  headline: [{ text: "Capacidades" }],
-  paragraph:
-    "Antes de qualquer linha de código, tem entendimento de negócio, estratégia e design por trás.",
+  label: "O que sustenta cada entrega",
+  headline: "Capacidades",
 } as const;
 
 export const CAPABILITIES = [
@@ -124,45 +172,6 @@ export const CAPABILITIES = [
   "Integrações",
 ] as const;
 
-export type Solution = {
-  title: string;
-  description: string;
-};
-
-export const SOLUTIONS_INTRO = {
-  eyebrow: "[ RESOLVE PROBLEMA, NÃO SÓ ENTREGA SITE ]",
-  headline: [{ text: "Soluções" }],
-  paragraph: "Organizadas pelo problema que resolvem, não pelo nome técnico do entregável.",
-} as const;
-
-export const SOLUTIONS: Solution[] = [
-  {
-    title: "Presença digital",
-    description:
-      "Site institucional ou landing page pra você existir online de forma profissional e ser encontrado por quem procura o que você faz.",
-  },
-  {
-    title: "Produtos digitais",
-    description:
-      "Plataformas e sistemas web construídos do zero, com banco de dados e lógica de negócio real por trás — não só uma página estática.",
-  },
-  {
-    title: "Automações",
-    description:
-      "Fluxos automáticos que organizam pedidos, atendimento e informações. Menos trabalho manual, menos coisa esquecida.",
-  },
-  {
-    title: "Integrações",
-    description:
-      "Conexão entre ferramentas que hoje não conversam entre si, pra sua operação parar de depender de copiar e colar dado.",
-  },
-  {
-    title: "Dashboards",
-    description:
-      "Painéis simples que juntam seus números num só lugar, pra você decidir com clareza — não no achismo.",
-  },
-] as const;
-
 export type ProcessStep = {
   number: string;
   title: string;
@@ -170,8 +179,8 @@ export type ProcessStep = {
 };
 
 export const PROCESS_INTRO = {
-  eyebrow: "[ SEM MISTÉRIO ]",
-  headline: [{ text: "Processo" }],
+  label: "Sem mistério",
+  headline: "Processo",
   paragraph: "Seis etapas, do entendimento do problema até a evolução contínua do que foi entregue.",
 } as const;
 
@@ -208,21 +217,19 @@ export const PROCESS_STEPS: ProcessStep[] = [
   },
 ] as const;
 
-export const ABOUT = {
-  eyebrow: "[ QUEM CONSTRÓI ]",
-  headline: [{ text: "Sobre a " }, { text: "Yandu", accent: true }],
-  paragraphs: [
-    "A Yandu junta duas coisas que raramente andam juntas: entendimento de negócio e mão na massa técnica. Antes de programar, penso em processo — é isso que faz o resultado funcionar de verdade, não só parecer bonito.",
-    "Sou eu quem conduz cada projeto, do primeiro entendimento até a publicação: atenção direta, nenhuma camada de repasse entre quem decide e quem constrói. A Yandu nasceu pra levar produto digital de verdade a quem mais precisa e menos tem acesso — pequenos negócios e profissionais que não têm tempo nem orçamento pra esperar meses por um resultado.",
-  ],
-  signatureLabel: "Yasmin, fundadora",
+export const STATEMENT = {
+  label: "Por que a Yandu existe",
+  quote:
+    "Produto digital de verdade pra quem mais precisa e menos tem acesso: pequenos negócios e profissionais que não têm tempo nem orçamento pra esperar meses por um resultado.",
+  author: "Yasmin",
+  role: "Fundadora da Yandu",
 } as const;
 
 export type FaqItem = { question: string; answer: string };
 
 export const FAQ_INTRO = {
-  eyebrow: "[ ANTES DE DECIDIR ]",
-  headline: [{ text: "Perguntas " }, { text: "frequentes" }],
+  label: "Antes de decidir",
+  headline: "Perguntas frequentes",
   paragraph: "O que a maioria pergunta antes de chamar no direct.",
 } as const;
 
@@ -234,30 +241,35 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     question: "Como funciona o pagamento?",
-    answer: "Valor e forma de pagamento são combinados na proposta, sem letra miúda. Nada muda no meio do caminho sem você saber antes.",
+    answer:
+      "Valor e forma de pagamento são combinados na proposta, sem letra miúda. Nada muda no meio do caminho sem você saber antes.",
   },
   {
     question: "Existe suporte depois da entrega?",
-    answer: "Sim. Ajustes finais já entram na entrega, e a evolução contínua do produto pode seguir depois, conforme sua necessidade.",
+    answer:
+      "Sim. Ajustes finais já entram na entrega, e a evolução contínua do produto pode seguir depois, conforme sua necessidade.",
   },
   {
     question: "Atende fora do Vale do Rio Pardo?",
-    answer: "O foco é a região, mas todo o trabalho é feito remotamente — negócios de outras cidades também podem chamar no direct.",
+    answer:
+      "O foco é a região, mas todo o trabalho é feito remotamente — negócios de outras cidades também podem chamar no direct.",
   },
   {
     question: "Preciso ter site pronto pra pensar em automação?",
-    answer: "Não. Automação e site são frentes independentes. Dá pra começar por onde o problema estiver mais urgente.",
+    answer:
+      "Não. Automação e site são frentes independentes. Dá pra começar por onde o problema estiver mais urgente.",
   },
   {
     question: "Não sei exatamente o que preciso, posso chamar mesmo assim?",
-    answer: "Sim — essa é justamente a primeira etapa do processo: entender o problema real antes de definir a solução.",
+    answer:
+      "Sim — essa é justamente a primeira etapa do processo: entender o problema real antes de definir a solução.",
   },
 ] as const;
 
 export const CONTACT = {
-  eyebrow: "[ O PRÓXIMO PONTO É SEU ]",
-  headline: [{ text: "Tire sua ideia " }, { text: "do papel ", accent: true }, { text: "agora." }],
-  paragraph: "Me conta o que você precisa. Respondo rápido e sem enrolar — a conversa começa pelo WhatsApp.",
+  label: "O próximo ponto é seu",
+  headline: "Tire sua ideia do papel.",
+  paragraph: "Me conta o que você precisa. Respondo rápido e sem enrolar.",
   links: [
     { label: "WhatsApp", href: SITE.whatsapp, primary: true },
     { label: "Telegram", href: SITE.telegram, primary: false },
@@ -266,9 +278,9 @@ export const CONTACT = {
 } as const;
 
 export const FOOTER = {
-  mark: "yandu",
+  wordmark: "Yandu",
   tagline: "Estúdio de produto digital",
-  links: "Sites · Plataformas · Automações",
+  contactLabel: "Fale direto",
   nav: NAV_LINKS,
   social: [
     { label: "WhatsApp", href: SITE.whatsapp },

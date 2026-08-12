@@ -1,34 +1,29 @@
-import { Eyebrow, Headline } from "@/components/headline";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { Display, Label } from "@/components/ui/primitives";
 import { CAPABILITIES, CAPABILITIES_INTRO } from "@/content/site";
-import { fadeUp } from "@/lib/motion";
 
 export function Capabilities() {
   return (
-    <section id="capacidades" className="bg-vault-ink px-6 py-28 text-bone md:px-10 md:py-36">
-      <div className="mx-auto max-w-[1280px]">
-        <Eyebrow className="mb-5" textClassName="text-silver-veil">
-          {CAPABILITIES_INTRO.eyebrow}
-        </Eyebrow>
-        <Headline segments={CAPABILITIES_INTRO.headline} textClassName="text-bone" className="max-w-xl" />
-        <Reveal variants={fadeUp} delay={0.12} className="mt-5">
-          <p className="max-w-md text-base leading-relaxed text-silver-veil">
-            {CAPABILITIES_INTRO.paragraph}
-          </p>
-        </Reveal>
+    <section className="bg-slate px-6 py-24 text-stone md:px-10 md:py-32">
+      <div className="mx-auto max-w-[1320px]" data-reveal-group>
+        <Label className="text-stone/60">{CAPABILITIES_INTRO.label}</Label>
+        <Display className="mt-8 text-stone">{CAPABILITIES_INTRO.headline}</Display>
 
-        <RevealGroup className="mt-16 flex flex-wrap gap-3 md:gap-4" stagger={0.05}>
+        {/* A numbered index rather than a tag cloud: the count is real
+            information about the studio's range. */}
+        <ol className="mt-14 grid gap-x-14 sm:grid-cols-2">
           {CAPABILITIES.map((capability, i) => (
-            <RevealItem key={capability}>
-              <span
-                className="tag-drift inline-block rounded-full border border-bone/25 px-5 py-2.5 text-sm text-bone/90 transition-colors hover:border-bone hover:text-bone"
-                style={{ animationDelay: `${(i % 5) * 0.4}s` }}
-              >
-                {capability}
+            <li
+              key={capability}
+              data-reveal
+              className="rule flex items-baseline gap-5 py-5 text-stone"
+            >
+              <span className="type-label text-stone/50">
+                {String(i + 1).padStart(2, "0")}
               </span>
-            </RevealItem>
+              <span className="type-display text-[clamp(20px,2vw,30px)]">{capability}</span>
+            </li>
           ))}
-        </RevealGroup>
+        </ol>
       </div>
     </section>
   );

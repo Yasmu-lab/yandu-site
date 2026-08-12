@@ -1,116 +1,78 @@
-"use client";
-
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import type { PointerEvent } from "react";
-
-import { Headline } from "@/components/headline";
-import { Button } from "@/components/ui/button";
+import { Asterisk } from "@/components/ui/primitives";
 import { HERO } from "@/content/site";
-import { EASE_YANDU } from "@/lib/motion";
-import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
+
+/**
+ * Poster ground built only from Yandu's own material: a drafting grid, an
+ * outlined echo of the wordmark, and flat panels drifting at their own rates.
+ * Every layer stays dark and low-contrast so the wordmark on top reads.
+ */
+function Ground() {
+  return (
+    <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+      <div data-parallax="4" className="hero-grid absolute inset-[-8%]" />
+
+      <p
+        data-parallax="-7"
+        className="hero-ghost absolute -top-[6%] -left-[3%] text-[26vw] whitespace-nowrap"
+      >
+        {HERO.wordmark}
+      </p>
+
+      <div
+        data-parallax="-9"
+        className="absolute top-[8%] -left-[6%] h-[42%] w-[34%] -rotate-6 bg-slate/70"
+      />
+      <div
+        data-parallax="11"
+        className="absolute -right-[4%] bottom-[10%] h-[38%] w-[30%] rotate-6 bg-slate-deep/80"
+      />
+      <div
+        data-parallax="-14"
+        className="absolute top-[16%] right-[14%] flex h-16 w-16 rotate-3 items-center justify-center bg-chalk md:h-24 md:w-24"
+      >
+        <Asterisk className="text-2xl text-ink md:text-4xl" />
+      </div>
+    </div>
+  );
+}
 
 export function Hero() {
-  const reduceMotion = useSafeReducedMotion();
-
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const springX = useSpring(pointerX, { stiffness: 40, damping: 16, mass: 0.6 });
-  const springY = useSpring(pointerY, { stiffness: 40, damping: 16, mass: 0.6 });
-  const fieldX = useTransform(springX, (v) => `${v * 3}%`);
-  const fieldY = useTransform(springY, (v) => `${v * 3}%`);
-
-  function onPointerMove(e: PointerEvent<HTMLElement>) {
-    if (reduceMotion) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
-    pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
-  }
-
-  function onPointerLeave() {
-    pointerX.set(0);
-    pointerY.set(0);
-  }
-
   return (
-    <section
-      id="inicio"
-      onPointerMove={onPointerMove}
-      onPointerLeave={onPointerLeave}
-      className="relative flex min-h-[100svh] w-full flex-col justify-between overflow-hidden bg-vault-ink px-6 pt-32 pb-10 md:px-10 md:pt-40"
-    >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <motion.div
-          className="absolute inset-0"
-          style={reduceMotion ? undefined : { x: fieldX, y: fieldY }}
-        >
-          <div className="hero-field" />
-        </motion.div>
-        <div className="hero-grid" />
-      </div>
+    <section id="inicio" className="px-3 pt-20 pb-3 md:px-4 md:pt-24 md:pb-4">
+      <div className="relative flex min-h-[86svh] flex-col justify-between overflow-hidden bg-ink p-6 text-stone md:min-h-[88svh] md:p-10">
+        <Ground />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col justify-center">
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE_YANDU, delay: 0.1 }}
-          className="font-mono text-xs uppercase tracking-[0.14em] text-silver-veil"
-        >
-          {HERO.eyebrow}
-        </motion.p>
+        <p className="type-label relative z-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-stone/70">
+          <Asterisk />
+          {HERO.lockup.join("  ·  ")}
+        </p>
 
-        <Headline
-          segments={HERO.headline}
-          as="h1"
-          size="hero"
-          textClassName="text-bone mt-5 max-w-[16ch]"
-        />
-
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE_YANDU, delay: 0.4 }}
-          className="mt-7 max-w-lg text-base leading-relaxed text-silver-veil"
-        >
-          {HERO.paragraph}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE_YANDU, delay: 0.52 }}
-          className="mt-10 flex flex-wrap items-center gap-4"
-        >
-          <Button asChild variant="solid-light" size="lg">
-            <a href={HERO.cta.href}>{HERO.cta.label}</a>
-          </Button>
-          <Button asChild variant="ghost-dark" size="lg">
-            <a href={HERO.ctaSecondary.href}>{HERO.ctaSecondary.label}</a>
-          </Button>
-        </motion.div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, ease: EASE_YANDU, delay: 0.7 }}
-        className="relative z-10 mx-auto mt-16 flex w-full max-w-[1280px] flex-wrap items-end justify-between gap-x-10 gap-y-6 border-t border-graphite pt-6"
-      >
-        <div className="flex flex-wrap gap-x-10 gap-y-4">
-          {HERO.meta.map((item) => (
-            <div key={item.label}>
-              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-silver-veil">
-                {item.label}
-              </p>
-              <p className="mt-1 text-sm text-bone">{item.value}</p>
-            </div>
-          ))}
+        <div className="relative z-10 flex flex-1 items-center py-12">
+          <div>
+            <h1 className="type-wordmark text-[clamp(76px,15vw,240px)] text-stone">
+              {HERO.wordmark}
+            </h1>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-stone/75 md:text-lg">
+              {HERO.tagline}
+            </p>
+          </div>
         </div>
 
-        <div aria-hidden="true" className="flex items-center gap-2 text-silver-veil">
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em]">Role</span>
-          <span className="scroll-cue-dot inline-block h-1.5 w-1.5 rounded-full bg-electric-sky" />
+        <div className="relative z-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-5 border-t border-stone/20 pt-5">
+          <dl className="flex flex-wrap gap-x-10 gap-y-4">
+            {HERO.meta.map((item) => (
+              <div key={item.label}>
+                <dt className="type-label text-stone/55">{item.label}</dt>
+                <dd className="mt-1.5 text-sm text-stone">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="type-label flex items-center gap-2 text-stone/55">
+            {HERO.scrollCue}
+            <Asterisk />
+          </p>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
