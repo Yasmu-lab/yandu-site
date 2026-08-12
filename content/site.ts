@@ -5,21 +5,20 @@ export const SITE = {
   description:
     "Yandu é o estúdio de produto digital conduzido pela Yasmin: estratégia, design e desenvolvimento numa única mão, do primeiro rascunho ao deploy em produção.",
   locale: "pt_BR",
-  themeColor: "#14130E",
+  themeColor: "#171713",
   instagram: "https://www.instagram.com/yandu.oficial/",
   telegram: "https://t.me/+5551992627338",
   whatsapp:
     "https://wa.me/5551992627338?text=Ol%C3%A1%2C%20Yandu!%20Quero%20conversar%20sobre%20um%20projeto.",
   email: "contato@yandu.com.br",
   areaServed: "Vale do Rio Pardo, RS",
-  founded: "2026",
 } as const;
 
 export const NAV_LINKS = [
   { href: "#vitrine", label: "Vitrine" },
+  { href: "#portfolio", label: "Projetos" },
   { href: "#pacotes", label: "Pacotes" },
   { href: "#processo", label: "Processo" },
-  { href: "#estudio", label: "Estúdio" },
   { href: "#faq", label: "FAQ" },
 ] as const;
 
@@ -30,7 +29,7 @@ export const HERO = {
   meta: [
     { label: "Base", value: "Vale do Rio Pardo, RS" },
     { label: "Atendimento", value: "Remoto, todo o Brasil" },
-    { label: "Desde", value: "2026" },
+    { label: "Entrega", value: "Ponta a ponta" },
   ],
   scrollCue: "Role",
 } as const;
@@ -44,40 +43,55 @@ export const ABOUT_INTRO = {
 } as const;
 
 export const MARQUEE_ITEMS = [
-  "Ver o projeto",
-  "Estratégia de produto",
-  "Ver o projeto",
-  "Design e código",
+  "Contabilidade",
+  "Saúde",
+  "Produtos digitais",
+  "Negócios locais",
+  "Estratégia",
+  "Design",
+  "Desenvolvimento",
 ] as const;
+
+/* ===== Case principal ===== */
 
 export const WORK_INTRO = {
   label: "Vitrine",
-  headline: "Projeto mais recente",
-  paragraph: "Cada projeto nasce de um problema real. Este é o que já está no ar.",
+  headline: "Projetos selecionados",
+  paragraph: "Estratégia, design e desenvolvimento aplicados a negócios reais.",
 } as const;
 
 export type ProjectDetail = { label: string; value: string };
 
 export const FEATURED_PROJECT = {
-  flag: "No ar agora",
+  flag: "Site publicado",
   name: "Cuidadoras Conecta",
-  disciplines: "Estratégia · UX · UI · Desenvolvimento · Deploy",
+  disciplines: "Estratégia · UX · UI · Desenvolvimento · Publicação",
   summary:
     "Plataforma que conecta famílias a cuidadoras de forma simples e organizada, na região do Vale do Rio Pardo. Construída do zero, do banco de dados à hospedagem.",
   image: {
     src: "/work/cuidadoras-conecta.png",
-    alt: "Card de compartilhamento da plataforma Cuidadoras Conecta",
+    alt: "Tela de abertura da plataforma Cuidadoras Conecta",
   },
   details: [
     {
       label: "Contexto",
       value:
-        "Famílias precisavam encontrar cuidadoras de confiança sem um canal central e organizado pra isso.",
+        "Famílias e cuidadoras da região se encontravam de forma informal, sem nenhum canal central organizado pra isso.",
+    },
+    {
+      label: "Problema",
+      value:
+        "Sem um lugar único, a busca dependia de indicação boca a boca — demorada para as famílias e invisível para quem oferecia o serviço.",
     },
     {
       label: "Papel da Yandu",
       value:
-        "Estratégia, UX, UI, desenvolvimento e publicação — do primeiro rascunho até o deploy em produção.",
+        "Projeto conduzido ponta a ponta: estratégia, UX, UI, desenvolvimento e publicação, do primeiro rascunho ao deploy.",
+    },
+    {
+      label: "Solução",
+      value:
+        "Plataforma web própria, com banco de dados estruturado e cadastro organizado, no lugar de uma página institucional estática.",
     },
     {
       label: "Resultado",
@@ -86,16 +100,208 @@ export const FEATURED_PROJECT = {
   ] satisfies ProjectDetail[],
   tags: ["Plataforma web", "Banco de dados", "Deploy em produção"],
   href: "https://cuidadoras-conecta-rs.vercel.app/",
-  cta: "Visualizar",
+  cta: "Ver projeto",
 } as const;
 
-export const WORK_NEXT = {
-  label: "Próximo",
-  title: "Seu projeto aqui",
-  description:
-    "A vitrine cresce a cada trabalho que vai ao ar. O próximo espaço está aberto — e pode ser o seu.",
-  cta: { href: "#contato", label: "Começar um projeto" },
+/* ===== Portfólio por segmento =====
+   `href` e `image` são null quando o endereço publicado ou o print real ainda
+   não foram confirmados. Nenhum dos dois é inventado: sem href o card não
+   recebe link nem selo de publicado, e sem image ele usa a composição
+   tipográfica no lugar de um print falso. */
+
+export type Segment = {
+  id: string;
+  label: string;
+  /** Tint aplicado no hover do card. Precisa ser escuro (o print fica sob ele). */
+  tint: string;
+};
+
+export const SEGMENTS: Segment[] = [
+  { id: "contabilidade", label: "Contabilidade", tint: "#173b32" },
+  { id: "saude", label: "Saúde", tint: "#1d4a3f" },
+  { id: "locais", label: "Negócios locais", tint: "#3a2f1c" },
+  { id: "liberais", label: "Profissionais liberais", tint: "#2b2a24" },
+  { id: "produtos", label: "Produtos digitais", tint: "#122b3a" },
+] as const;
+
+export type Project = {
+  id: string;
+  name: string;
+  segment: string;
+  /** Só quando confirmada. */
+  city: string | null;
+  kind: string;
+  services: string;
+  /** URL publicada e verificada, ou null. */
+  href: string | null;
+  image: { src: string; alt: string } | null;
+  /** Peso na grade editorial: wide ocupa duas colunas. */
+  weight?: "wide" | "tall" | "normal";
+};
+
+export const PROJECTS: Project[] = [
+  {
+    id: "cuidadoras-conecta",
+    name: "Cuidadoras Conecta",
+    segment: "produtos",
+    city: "Vale do Rio Pardo, RS",
+    kind: "Produto digital",
+    services: "Estratégia · UX · UI · Desenvolvimento · Publicação",
+    href: "https://cuidadoras-conecta-rs.vercel.app/",
+    image: {
+      src: "/work/cuidadoras-conecta.png",
+      alt: "Tela de abertura da plataforma Cuidadoras Conecta",
+    },
+    weight: "wide",
+  },
+  {
+    id: "marisa-schweickardt",
+    name: "Marisa Schweickardt Contabilidade",
+    segment: "contabilidade",
+    city: "Santa Cruz do Sul",
+    kind: "Site institucional",
+    services: "Direção visual · UI · Desenvolvimento · Publicação",
+    href: null,
+    image: null,
+  },
+  {
+    id: "plena",
+    name: "Plena Administração e Contabilidade",
+    segment: "contabilidade",
+    city: null,
+    kind: "Site institucional",
+    services: "Direção visual · UI · Desenvolvimento · Publicação",
+    href: null,
+    image: null,
+  },
+  {
+    id: "servicon",
+    name: "Servicon Contabilidade",
+    segment: "contabilidade",
+    city: null,
+    kind: "Site institucional",
+    services: "Direção visual · UI · Desenvolvimento · Publicação",
+    href: null,
+    image: null,
+  },
+  {
+    id: "zafira",
+    name: "Zafira Soluções Contábeis",
+    segment: "contabilidade",
+    city: null,
+    kind: "Site institucional",
+    services: "Direção visual · UI · Desenvolvimento · Publicação",
+    href: null,
+    image: null,
+  },
+  {
+    id: "luciana-rigon",
+    name: "Luciana Rigon Contadora",
+    segment: "contabilidade",
+    city: null,
+    kind: "Site institucional",
+    services: "Direção visual · UI · Desenvolvimento · Publicação",
+    href: null,
+    image: null,
+  },
+  {
+    id: "rubi",
+    name: "Rubi Assessoria e Gestão Contábil",
+    segment: "contabilidade",
+    city: null,
+    kind: "Site institucional",
+    services: "Direção visual · UI · Desenvolvimento · Publicação",
+    href: null,
+    image: null,
+  },
+  {
+    id: "espaco-saude-vera-cruz",
+    name: "Espaço Saúde Vera Cruz",
+    segment: "saude",
+    city: null,
+    kind: "Site institucional",
+    services: "Direção visual · UI · Desenvolvimento",
+    href: null,
+    image: null,
+  },
+] as const;
+
+export const PORTFOLIO_INTRO = {
+  label: "Projetos por segmento",
+  headline: [{ text: "Presença digital." }, { text: "Aplicada de verdade." }],
+  paragraph:
+    "Sites e produtos criados para diferentes negócios, sempre com uma direção visual própria.",
+  filterAllLabel: "Todos",
+  pendingNote: "Endereço em confirmação",
 } as const;
+
+export const PORTFOLIO_CTA = {
+  question: "Não encontrou exatamente o seu segmento?",
+  answer: "A direção visual não parte de um modelo pronto. Ela parte do seu negócio.",
+  cta: { href: SITE.whatsapp, label: "Conversar sobre meu projeto" },
+} as const;
+
+/* ===== Direções por segmento ===== */
+
+export type Direction = {
+  id: string;
+  title: string;
+  description: string;
+  segment: string;
+};
+
+export const DIRECTIONS_INTRO = {
+  label: "Um ponto de partida",
+  headline: "Uma direção para cada tipo de negócio.",
+} as const;
+
+export const DIRECTIONS: Direction[] = [
+  {
+    id: "contabilidade",
+    title: "Sites para contabilidade",
+    description:
+      "Presença digital confiável, organizada e próxima, sem aparência de template contábil genérico.",
+    segment: "contabilidade",
+  },
+  {
+    id: "saude",
+    title: "Sites para saúde",
+    description:
+      "Experiências acolhedoras e profissionais, desenvolvidas para facilitar a confiança e o contato.",
+    segment: "saude",
+  },
+  {
+    id: "liberais",
+    title: "Sites para profissionais liberais",
+    description:
+      "Sites que transformam experiência, personalidade e autoridade em uma presença digital clara.",
+    segment: "liberais",
+  },
+  {
+    id: "locais",
+    title: "Sites para negócios locais",
+    description:
+      "Estruturas objetivas para apresentar serviços, localização, diferenciais e canais de atendimento.",
+    segment: "locais",
+  },
+] as const;
+
+export const DIRECTIONS_CTA = {
+  href: SITE.whatsapp,
+  label: "Quero uma direção para o meu negócio",
+} as const;
+
+/* ===== Prova ===== */
+
+export const TRUST_ITEMS = [
+  "Projetos autorais",
+  "Entrega ponta a ponta",
+  "Sites responsivos",
+  "Atendimento remoto em todo o Brasil",
+  "Publicação e suporte",
+] as const;
+
+/* ===== Pacotes ===== */
 
 export type Package = {
   id: string;
@@ -171,6 +377,8 @@ export const CAPABILITIES = [
   "Automação",
   "Integrações",
 ] as const;
+
+/* ===== Processo ===== */
 
 export type ProcessStep = {
   number: string;
@@ -287,5 +495,5 @@ export const FOOTER = {
     { label: "Telegram", href: SITE.telegram },
     { label: "Instagram", href: SITE.instagram },
   ],
-  copyright: `© ${SITE.founded} Yandu`,
+  copyright: "© 2026 Yandu",
 } as const;

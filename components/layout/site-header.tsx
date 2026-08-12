@@ -25,11 +25,14 @@ export function SiteHeader() {
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
-          scrolled ? "bg-stone/85 backdrop-blur-md" : "bg-transparent",
+          scrolled ? "bg-cream/85 backdrop-blur-md" : "bg-transparent",
         )}
       >
         <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-10">
-          <a href="#inicio" className="type-wordmark text-xl text-ink">
+          <a
+            href="#inicio"
+            className="type-wordmark inline-flex min-h-11 items-center text-xl text-ink"
+          >
             Yandu
           </a>
 
@@ -38,7 +41,7 @@ export function SiteHeader() {
               <a
                 key={link.href}
                 href={link.href}
-                className="type-label text-ink transition-opacity hover:opacity-55"
+                className="type-label inline-flex min-h-11 items-center text-ink transition-opacity hover:opacity-55"
               >
                 {link.label}
               </a>
@@ -47,7 +50,7 @@ export function SiteHeader() {
               href={SITE.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="type-label rounded-full bg-ink px-5 py-2.5 text-stone transition-colors hover:bg-slate"
+              className="type-label inline-flex min-h-11 items-center rounded-full bg-ink px-5 text-cream transition-colors hover:bg-forest"
             >
               Vamos conversar
             </a>
@@ -58,7 +61,7 @@ export function SiteHeader() {
             aria-expanded={menuOpen}
             aria-controls="nav-overlay"
             onClick={() => setMenuOpen(true)}
-            className="type-label text-ink transition-opacity hover:opacity-60 md:hidden"
+            className="type-label -mr-2 inline-flex min-h-11 items-center px-2 text-ink transition-opacity hover:opacity-60 md:hidden"
           >
             Menu
           </button>

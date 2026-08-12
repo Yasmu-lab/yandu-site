@@ -3,45 +3,45 @@ import { FOOTER, SITE } from "@/content/site";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-slate px-6 pt-20 pb-8 text-stone md:px-10">
+    <footer className="bg-forest px-6 pt-20 pb-8 text-cream md:px-10">
       <div className="mx-auto max-w-[1400px]">
         <div className="grid gap-12 md:grid-cols-[1fr_auto_auto] md:gap-20">
           <div>
-            <p className="type-label text-stone/60">{FOOTER.tagline}</p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-stone/80">
+            <p className="type-label text-cream/60">{FOOTER.tagline}</p>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/80">
               {SITE.areaServed} · Atendimento remoto para todo o Brasil.
             </p>
           </div>
 
-          <nav className="flex flex-col gap-3">
-            <p className="type-label text-stone/60">Navegar</p>
+          <nav className="flex flex-col">
+            <p className="type-label text-cream/60">Navegar</p>
             {FOOTER.nav.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm text-stone/85 transition-colors hover:text-stone"
+                className="inline-flex min-h-11 items-center text-sm text-cream/85 transition-colors hover:text-cream"
               >
                 {link.label}
               </a>
             ))}
           </nav>
 
-          <div className="flex flex-col gap-3">
-            <p className="type-label text-stone/60">{FOOTER.contactLabel}</p>
+          <div className="flex flex-col">
+            <p className="type-label text-cream/60">{FOOTER.contactLabel}</p>
             {FOOTER.social.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-stone/85 transition-colors hover:text-stone"
+                className="inline-flex min-h-11 items-center text-sm text-cream/85 transition-colors hover:text-cream"
               >
                 {item.label} ↗
               </a>
             ))}
             <a
               href={`mailto:${SITE.email}`}
-              className="text-sm text-stone/85 transition-colors hover:text-stone"
+              className="inline-flex min-h-11 items-center text-sm text-cream/85 transition-colors hover:text-cream"
             >
               {SITE.email}
             </a>
@@ -63,15 +63,15 @@ export function SiteFooter() {
             fontSize="430"
             textLength="1000"
             lengthAdjust="spacing"
-            className="type-wordmark fill-stone"
+            className="type-wordmark fill-cream"
           >
             {FOOTER.wordmark.toUpperCase()}
           </text>
         </svg>
 
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-stone/20 pt-6">
-          <p className="type-label text-stone/60">{FOOTER.copyright}</p>
-          <Asterisk className="text-stone/60" />
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-cream/20 pt-6">
+          <p className="type-label text-cream/60">{FOOTER.copyright}</p>
+          <Asterisk className="text-cream/60" />
         </div>
       </div>
     </footer>

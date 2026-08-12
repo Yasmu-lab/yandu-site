@@ -3,9 +3,9 @@ import { CONTACT } from "@/content/site";
 
 export function Contact() {
   return (
-    <section id="contato" className="px-6 py-24 md:px-10 md:py-32">
+    <section id="contato" className="px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto max-w-[1320px]" data-reveal-group>
-        <Label className="text-mist">{CONTACT.label}</Label>
+        <Label className="text-graphite">{CONTACT.label}</Label>
 
         <Display size="large" className="mt-10 max-w-[14ch] text-ink">
           {CONTACT.headline}

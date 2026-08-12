@@ -29,21 +29,26 @@ export function Label({
   );
 }
 
-/** Poster-scale headline. Sizes are the page's only type scale steps. */
+/**
+ * Poster-scale headline. `split` hands the element to SplitText for a
+ * line-by-line mask reveal; plain reveals suit short one-liners.
+ */
 export function Display({
   children,
   className,
   as: Comp = "h2",
   size = "section",
+  split = true,
 }: {
   children: ReactNode;
   className?: string;
   as?: "h1" | "h2" | "h3" | "p";
   size?: "section" | "large";
+  split?: boolean;
 }) {
   return (
     <Comp
-      data-reveal
+      {...(split ? { "data-split": true } : { "data-reveal": true })}
       className={cn(
         "type-display",
         size === "large"
@@ -68,13 +73,13 @@ export function PillLink({
   href: string;
   children: ReactNode;
   external?: boolean;
-  tone?: "ink" | "stone" | "solid";
+  tone?: "ink" | "cream" | "solid";
   className?: string;
 }) {
   const tones = {
-    ink: "border-ink/30 text-ink hover:bg-ink hover:text-stone",
-    stone: "border-stone/40 text-stone hover:bg-stone hover:text-ink",
-    solid: "border-ink bg-ink text-stone hover:bg-transparent hover:text-ink",
+    ink: "border-ink/30 text-ink hover:bg-ink hover:text-cream",
+    cream: "border-cream/40 text-cream hover:bg-cream hover:text-ink",
+    solid: "border-ink bg-ink text-cream hover:border-coral hover:bg-coral hover:text-ink",
   } as const;
 
   return (
@@ -82,7 +87,7 @@ export function PillLink({
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={cn(
-        "type-label inline-flex items-center gap-2.5 rounded-full border px-6 py-3.5 transition-colors duration-300",
+        "type-label inline-flex min-h-11 items-center gap-2.5 rounded-full border px-6 transition-colors duration-300",
         tones[tone],
         className,
       )}
