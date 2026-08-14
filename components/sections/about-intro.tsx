@@ -3,7 +3,7 @@ import { ABOUT_INTRO } from "@/content/site";
 
 export function AboutIntro() {
   return (
-    <section className="px-6 py-20 md:px-10 md:py-28">
+    <section id="sobre" className="px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto max-w-[1320px]" data-reveal-group>
         <Label className="text-graphite">{ABOUT_INTRO.label}</Label>
 

@@ -15,10 +15,10 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { href: "#vitrine", label: "Vitrine" },
-  { href: "#portfolio", label: "Projetos" },
-  { href: "#pacotes", label: "Pacotes" },
+  { href: "#sobre", label: "Sobre" },
+  { href: "#capacidades", label: "Capacidades" },
   { href: "#processo", label: "Processo" },
+  { href: "#estudio", label: "Estúdio" },
   { href: "#faq", label: "FAQ" },
 ] as const;
 
