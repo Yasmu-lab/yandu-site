@@ -56,13 +56,15 @@ export const metadata: Metadata = {
     title: SITE.title,
     description: SITE.description,
     url: SITE.url,
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    // ?v=2 força Facebook, WhatsApp e Twitter a rebuscarem a imagem: eles
+    // guardam o preview por URL, então a arte nova só aparece com outra.
+    images: [{ url: "/og-image.png?v=2", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE.title,
     description: SITE.description,
-    images: ["/og-image.png"],
+    images: ["/og-image.png?v=2"],
   },
 };
 
